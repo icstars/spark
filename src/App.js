@@ -1,22 +1,25 @@
 import React from 'react';
-// import { FormDataProvider } from './contexts/FormDataContext';
-// import Form from './components/Form';
-// import ResumeMarkup from './components/ResumeMarkup';
-import Home from './Components/Home'
+
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Home from './Components/Home';
 import Header from './Components/Header';
 import Footer from './Components/Footer';
-import ReactDOM from "react-dom/client";
-import { BrowserRouter, Routes, Route, Router } from "react-router-dom";
-
+import NavMenu from './Components/NavMenu';
+import RightPanel from './Components/RightPanel';
+import DepMetrics from './Components/DepMetrics';
 
 function App() {
   return (
     <Router>
-      
       <Header />
-      {/* <NavMenu /> */}
-      <Route path="/" element={<Home />} />
-      {/* <People /> */}
+      <NavMenu />
+        <main>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/DepMetrics" element={<DepMetrics />} />
+          </Routes>
+        </main>
+        <RightPanel />
       <Footer />
     </Router>
   );

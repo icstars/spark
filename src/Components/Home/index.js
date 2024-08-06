@@ -2,6 +2,7 @@
 // import './css/style.css';
 
 // import'../../css/style.css';
+import { Link } from 'react-router-dom';
 
 function Home() {
   return (
@@ -66,7 +67,7 @@ function Home() {
         </div>
         <section class="right-section">
           <a class="right-h3" href="videos.html">
-            <h3 class="right-h3"> My latest videos:</h3>
+            <li><Link to ="/DepMetrics">Department metrics</Link></li>
           </a>
 
           <button id="resizeButton"></button>
