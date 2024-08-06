@@ -1,12 +1,12 @@
 function Footer() {
     return (
-        <div class="main-header">
-            <div class="logo-wrapper">
-                
+        <div className="main-header">
+            <div className="logo-wrapper">
+
             </div>
-                <nav class="main-nav">
+            <nav className="main-nav">
                 <h1>Footer</h1>
-                </nav>
+            </nav>
         </div>
 
     );

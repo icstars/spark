@@ -1,3 +1,16 @@
+.wrapper{
+    display: flex;
+    flex-direction: row;
+}
+
 .container{
     width: 60%;
+}
+
+.nav-menu{
+    width: 20%;
+}
+
+.right-panel{
+    width: 20%;
 }

@@ -7,19 +7,26 @@ import Footer from './Components/Footer';
 import NavMenu from './Components/NavMenu';
 import RightPanel from './Components/RightPanel';
 import DepMetrics from './Components/DepMetrics';
+import '/Users/ValeriiKharchenko/Documents/icstars/spark/src/css/style.css';
 
 function App() {
   return (
     <Router>
-      <Header />
-      <NavMenu />
-        <main>
+       <Header />
+      <div className="wrapper">
+        <div className="nav-menu">
+          <NavMenu />
+        </div>
+        <div className="container">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/DepMetrics" element={<DepMetrics />} />
           </Routes>
-        </main>
-        <RightPanel />
+        </div>
+        <div className="right-panel">
+          <RightPanel />
+        </div>
+      </div>
       <Footer />
     </Router>
   );
