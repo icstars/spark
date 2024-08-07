@@ -1,4 +1,5 @@
 import '/Users/ValeriiKharchenko/Documents/icstars/spark/src/Components/EvalOverlook/style.css'
+import React from 'react';
 
 function EvalOverlook() {
     return (
@@ -38,7 +39,11 @@ function EvalOverlook() {
                     <input type="text" className="comment-topic" placeholder="Type your comment..." />
                 </div>
             </div>
-            <div> <input type="text" className="comment-category" placeholder="Type your comment..." /></div>
+
+            <div>
+                <p>Comment about Teamwork:</p>
+                <input type="text" className="comment-category" placeholder="Type your comment..." />
+            </div>
         </div>
 
     );

@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
-import EvalOverlook from '../EvalOverlook';
-
+import React from 'react';
 function RightPanel() {
     return (
 

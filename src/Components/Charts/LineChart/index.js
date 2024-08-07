@@ -6,9 +6,7 @@ import {
     CategoryScale,
     LinearScale,
     PointElement,
-    LineElement,
-    plugins,
-    scales
+    LineElement
   } from "chart.js";
 
   ChartJS.register(
@@ -31,17 +29,17 @@ const data = {
   ]
 };
 
-const options = {
-    plugins:{
-        legend: true
-    },
-    scales:{
-        y:{
-            min: 0,
-            max: 4
-        }
-    }
-}
+// const options = {
+//     plugins:{
+//         legend: true
+//     },
+//     scales:{
+//         y:{
+//             min: 0,
+//             max: 4
+//         }
+//     }
+// }
 
 export default function LineChart() {
   return (
