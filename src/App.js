@@ -9,31 +9,38 @@ import RightPanel from './Components/RightPanel';
 import DepMetrics from './Components/DepMetrics';
 import People from './Components/People';
 import '/Users/ValeriiKharchenko/Documents/icstars/spark/src/css/style.css';
+import '/Users/ValeriiKharchenko/Documents/icstars/spark/src/css/reset.css';
 import Login from './Components/Login';
 import LineChart from './Components/Charts/LineChart';
+import EvalOverlook from './Components/EvalOverlook';
 
 function App() {
   return (
     <Router>
-      <Header />
+      <div className="header">
+        <Header />
+      </div>
       <div className="wrapper">
         <div className="nav-menu">
           <NavMenu />
         </div>
         <div className="container">
           <Routes>
-            <Route path='/Charts/LineChart' element={<LineChart />}/>
-            <Route path="/Login" element={<Login />}/>
+            <Route path='/Charts/LineChart' element={<LineChart />} />
+            <Route path="/Login" element={<Login />} />
             <Route path="/" element={<Home />} />
             <Route path="/DepMetrics" element={<DepMetrics />} />
             <Route path="/People" element={<People />} />
+            <Route path="/EvalOverlook" element={<EvalOverlook />} />
           </Routes>
         </div>
         <div className="right-panel">
           <RightPanel />
         </div>
       </div>
-      <Footer />
+      <div className="footer">
+        <Footer />
+      </div>
     </Router>
   );
 }

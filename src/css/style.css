@@ -1,16 +1,31 @@
 .wrapper{
     display: flex;
     flex-direction: row;
+    padding-top: 1%;
+    min-height: 780px;
 }
 
 .container{
-    width: 60%;
+    width: 70%;
 }
 
 .nav-menu{
-    width: 20%;
+    width: 10%;
 }
 
 .right-panel{
     width: 20%;
 }
+
+.header{
+    text-align: center;
+    background-color: rgb(128, 128, 128);
+}
+
+.footer{
+    text-align: center;
+    background-color: rgb(128, 128, 128);
+    min-height: 63px;
+}
+
+
