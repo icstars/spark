@@ -38,10 +38,13 @@
         "presets": "@babel/preset-env",
         "react-router-dom": "^6.26.0"
     },
-    
-        "babel": {
-          "presets": ["@babel/preset-env", "@babel/preset-react"]
-        },
+    "babel": {
+        "presets": [
+            "@babel/preset-env",
+            "@babel/preset-react",
+            "@babel/plugin-proposal-private-property-in-object"
+        ]
+    },
     "scripts": {
         "start": "set NODE_OPTIONS=--openssl-legacy-provider && react-scripts start",
         "build": "set NODE_OPTIONS=--openssl-legacy-provider && react-scripts build",
