@@ -1,5 +1,5 @@
 import React from "react";
-
+import '/Users/ValeriiKharchenko/Documents/icstars/spark/src/css/style.css';
 import { Line } from "react-chartjs-2";
 import {
     Chart as ChartJS,
