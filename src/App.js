@@ -5,7 +5,8 @@ import Home from './Components/Home';
 import Header from './Components/Header';
 import Footer from './Components/Footer';
 import NavMenu from './Components/NavMenu';
-import RightPanel from './Components/RightPanel';
+import PageHome from './Components/RightPanel/PageHome';
+// import pageDepDashboard from './Components/RightPanel/PageDepDashboard';
 import DepMetrics from './Components/DepMetrics';
 import People from './Components/People';
 import '/Users/ValeriiKharchenko/Documents/icstars/spark/src/css/style.css';
@@ -13,12 +14,18 @@ import '/Users/ValeriiKharchenko/Documents/icstars/spark/src/css/reset.css';
 import Login from './Components/Login';
 import LineChart from './Components/Charts/LineChart';
 import EvalOverlook from './Components/EvalOverlook';
+import { Helmet } from 'react-helmet';
+
 
 function App() {
+
   return (
     <Router>
       <div className="header">
         <Header />
+        <Helmet>
+          <title>Home</title>
+        </Helmet>
       </div>
       <div className="wrapper">
         <div className="nav-menu">
@@ -35,7 +42,7 @@ function App() {
           </Routes>
         </div>
         <div className="right-panel">
-          <RightPanel />
+          <PageHome />
         </div>
       </div>
       <div className="footer">

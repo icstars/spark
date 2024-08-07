@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import React from 'react';
-function RightPanel() {
+function pageHome() {
     return (
 
         <div>
@@ -13,4 +13,4 @@ function RightPanel() {
     );
 }
 
-export default RightPanel;
+export default pageHome;

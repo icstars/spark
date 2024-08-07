@@ -3,7 +3,7 @@ import React from 'react';
 
 function NavMenu() {
     return (
-        <div>
+        <div className='nav-menu-links'>
             <li><Link to="/">Home</Link></li>
             <li><Link to="/DepMetrics">Department metrics</Link></li>
             <li><Link to="/People">People</Link></li>
