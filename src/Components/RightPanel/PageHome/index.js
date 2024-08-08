@@ -3,7 +3,7 @@ import React from 'react';
 function pageHome() {
     return (
 
-        <div>
+        <div classname="container">
             <div>
             <Link to="/EvalOverlook"><button type="button">View evaluation</button></Link>
                 

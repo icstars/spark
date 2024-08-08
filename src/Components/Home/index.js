@@ -4,11 +4,15 @@ import LineChart from '../Charts/LineChart';
 function Home() {
   return (
 
-    <div>
+    <div className="home">
       <h1>Dashboard</h1>
+      <div className="block">
+
+      </div>
       <LineChart />
+
     </div>
-   
+
   );
 }
 
