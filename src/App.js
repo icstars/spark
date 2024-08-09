@@ -42,8 +42,8 @@ const Layout = () => {
       <div className="header">
         <Header />
         {/* Helmet is used for managing the document head, like setting the page title dynamically */}
-        <Helmet>
-          <title>Home</title>
+        <Helmet className="helmet">
+          
         </Helmet>
       </div>
 

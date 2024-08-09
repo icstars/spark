@@ -1,3 +1,7 @@
+.helmet{
+    transition: width 2s, height 4s;
+}
+
 .wrapper{
     display: flex;
     flex-direction: row;
@@ -35,18 +39,12 @@
     min-height: 63px;
 }
 
-<<<<<<< HEAD
 .LineChart{
-    width: 50%;
-    height: 50%;
+    width: 75%;
+    height: 75%;
 }
 
 
-=======
-.LineChart{ 
-    width: 50%;
-    height: 50%;
-}
 /* 
 .chart{
     justify-content: center;
@@ -59,7 +57,6 @@
     margin: 0 auto;
     text-align: center; 
 }   
->>>>>>> test
 
 .block{
     display: flex;
