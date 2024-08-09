@@ -6,11 +6,18 @@
 }
 
 .container{
-    width: 70%;
+    width: 65%;
+  
+    align-items: center;
+    flex-direction: column;
 }
 
+.container.full-width {
+    width: 100%; /* or any other value that makes it occupy the space of the right panel */
+  }
+
 .nav-menu{
-    width: 10%;
+    width: 15%;
 }
 
 .right-panel{
@@ -28,10 +35,33 @@
     min-height: 63px;
 }
 
+<<<<<<< HEAD
 .LineChart{
     width: 50%;
     height: 50%;
 }
 
 
+=======
+.LineChart{ 
+    width: 50%;
+    height: 50%;
+}
+/* 
+.chart{
+    justify-content: center;
+    display: inline;
+    align-self: center;
+} */
+.home{
+    width: 100%;
+    /* max-width: 1200px; или любое другое значение, подходящее для вашей задачи */
+    margin: 0 auto;
+    text-align: center; 
+}   
+>>>>>>> test
 
+.block{
+    display: flex;
+    justify-content: center;
+}

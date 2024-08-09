@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet';
 import '/Users/ValeriiKharchenko/Documents/icstars/spark/src/Components/EvalOverlook/style.css'
 import React from 'react';
 
@@ -5,6 +6,11 @@ function EvalOverlook() {
     return (
 
         <div>
+            <Helmet>
+                <title>
+                    Your evaluation
+                </title>
+            </Helmet>
             <div>
                 <h1>Bob's Rubrics</h1>
             </div>

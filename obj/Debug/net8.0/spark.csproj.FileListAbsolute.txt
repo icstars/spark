@@ -1,0 +1,15 @@
+C:\Users\ValeriiKharchenko\Documents\icstars\spark\bin\Debug\net8.0\spark.exe
+C:\Users\ValeriiKharchenko\Documents\icstars\spark\bin\Debug\net8.0\spark.deps.json
+C:\Users\ValeriiKharchenko\Documents\icstars\spark\bin\Debug\net8.0\spark.runtimeconfig.json
+C:\Users\ValeriiKharchenko\Documents\icstars\spark\bin\Debug\net8.0\spark.dll
+C:\Users\ValeriiKharchenko\Documents\icstars\spark\bin\Debug\net8.0\spark.pdb
+C:\Users\ValeriiKharchenko\Documents\icstars\spark\obj\Debug\net8.0\spark.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ValeriiKharchenko\Documents\icstars\spark\obj\Debug\net8.0\spark.AssemblyInfoInputs.cache
+C:\Users\ValeriiKharchenko\Documents\icstars\spark\obj\Debug\net8.0\spark.AssemblyInfo.cs
+C:\Users\ValeriiKharchenko\Documents\icstars\spark\obj\Debug\net8.0\spark.csproj.CoreCompileInputs.cache
+C:\Users\ValeriiKharchenko\Documents\icstars\spark\obj\Debug\net8.0\spark.sourcelink.json
+C:\Users\ValeriiKharchenko\Documents\icstars\spark\obj\Debug\net8.0\spark.dll
+C:\Users\ValeriiKharchenko\Documents\icstars\spark\obj\Debug\net8.0\refint\spark.dll
+C:\Users\ValeriiKharchenko\Documents\icstars\spark\obj\Debug\net8.0\spark.pdb
+C:\Users\ValeriiKharchenko\Documents\icstars\spark\obj\Debug\net8.0\spark.genruntimeconfig.cache
+C:\Users\ValeriiKharchenko\Documents\icstars\spark\obj\Debug\net8.0\ref\spark.dll

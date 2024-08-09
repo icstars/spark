@@ -4,11 +4,13 @@ import LineChart from '../Charts/LineChart';
 function Home() {
   return (
 
-    <div>
-      <h1>Welcome to the Left 4 Dead 2 Remake Project!</h1>
-      <LineChart />
+    <div className="home">
+      <h1>Dashboard</h1>
+      <div className="block">
+        {/* exporting chart from LineChart as an element*/}
+        <LineChart />
+      </div>
     </div>
-   
   );
 }
 
