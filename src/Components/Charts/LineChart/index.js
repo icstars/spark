@@ -1,10 +1,5 @@
 import React from "react";
-<<<<<<< HEAD
-import '/Users/ValeriiKharchenko/Documents/icstars/spark/src/css/style.css';
-=======
-
 // Import the Line component from react-chartjs-2, which is used to create line charts
->>>>>>> test
 import { Line } from "react-chartjs-2";
 
 // Import necessary modules from chart.js to create and configure the chart
