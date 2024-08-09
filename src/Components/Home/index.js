@@ -7,12 +7,10 @@ function Home() {
     <div className="home">
       <h1>Dashboard</h1>
       <div className="block">
-
+        {/* exporting chart from LineChart as an element*/}
+        <LineChart />
       </div>
-      <LineChart />
-
     </div>
-
   );
 }
 
