@@ -1,19 +1,20 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import { HelmetProvider, Helmet } from 'react-helmet-async'; //import HelmetProvider due to last updates as Helmet outdated
+import './css/style.css';
+import './css/reset.css';
 import Home from './Components/Home';
-import Header from './Components/Header';
+import Header from './Components/Header/';
 import Footer from './Components/Footer';
 import NavMenu from './Components/NavMenu';
 import PageHome from './Components/RightPanel/PageHome';
 import PageDepDashboard from './Components/RightPanel/PageDepDashboard';
 import DepMetrics from './Components/DepMetrics';
 import People from './Components/People';
-import './css/style.css';
-import './css/reset.css';
 import Login from './Components/Login';
 import LineChart from './Components/Charts/LineChart';
 import EvalOverlook from './Components/EvalOverlook';
-import { HelmetProvider, Helmet } from 'react-helmet-async'; //import HelmetProvider due to last updates as Helmet outdated
+
 
 // Layout component defines the structure of the page with Header, Footer, and dynamic content based on routes.
 const Layout = () => {
@@ -43,7 +44,7 @@ const Layout = () => {
         <Header />
         {/* Helmet is used for managing the document head, like setting the page title dynamically */}
         <Helmet className="helmet">
-          
+
         </Helmet>
       </div>
 
