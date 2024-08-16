@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v8.0": {
-      "Spark/1.0.0": {
+      "spark/1.0.0": {
         "dependencies": {
           "Aspire.Hosting.MySql": "8.1.0",
           "Aspire.Pomelo.EntityFrameworkCore.MySql": "8.1.0",
@@ -17,7 +17,7 @@
           "Pomelo.EntityFrameworkCore.MySql": "8.0.2"
         },
         "runtime": {
-          "Spark.dll": {}
+          "spark.dll": {}
         }
       },
       "Aspire.Hosting/8.1.0": {
@@ -1100,7 +1100,7 @@
     }
   },
   "libraries": {
-    "Spark/1.0.0": {
+    "spark/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
