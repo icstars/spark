@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace spark
 {
-    public class Employee
+    public class User
     {
         public int? id { get; set; }
         public int? manager_id { get; set; }

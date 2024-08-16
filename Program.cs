@@ -1,11 +1,14 @@
+using k8s.KubeConfigModels;
 using Microsoft.EntityFrameworkCore;
-using SparkAPI.Data; // Ensure this using statement is present
+using spark;
+
+
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Use the connection string from appsettings.json
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+builder.Services.AddDbContext<SparkDb>(options =>
     options.UseMySql(
         builder.Configuration.GetConnectionString("sparkdb"),
         ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("sparkdb"))
@@ -29,10 +32,9 @@ var app = builder.Build();
 app.UseCors(myPolicy);
 
 
-
-app.MapPost("/login", async (Employee employee, ApplicationDbContext db) =>
+app.MapPost("/login", async (spark.User employee, SparkDb db) =>
 {
-    var user = await db.Employees
+    var user = await db.user
         .FirstOrDefaultAsync(u => u.username == employee.username && u.password == employee.password);
 
     if (user == null)
@@ -45,29 +47,29 @@ app.MapPost("/login", async (Employee employee, ApplicationDbContext db) =>
 });
 
 // Update the endpoints to interact with the Employees table
-app.MapGet("/employees", async (ApplicationDbContext db) =>
-    await db.Employees.ToListAsync());
+app.MapGet("/employees", async (SparkDb db) =>
+    await db.user.ToListAsync());
 
-app.MapGet("/employees/admins", async (ApplicationDbContext db) =>
-    await db.Employees.Where(t => t.is_admin).ToListAsync());
+app.MapGet("/employees/admins", async (SparkDb db) =>
+    await db.user.Where(t => t.is_admin).ToListAsync());
 
-app.MapGet("/employees/{id}", async (int id, ApplicationDbContext db) =>
-    await db.Employees.FindAsync(id)
-        is Employee employee
+app.MapGet("/employees/{id}", async (int id, SparkDb db) =>
+    await db.user.FindAsync(id)
+        is spark.User employee
             ? Results.Ok(employee)
             : Results.NotFound());
 
-app.MapPost("/employees", async (Employee employee, ApplicationDbContext db) =>
+app.MapPost("/employees", async (spark.User employee, SparkDb db) =>
 {
-    db.Employees.Add(employee);
+    db.user.Add(employee);
     await db.SaveChangesAsync();
 
     return Results.Created($"/employees/{employee.id}", employee);
 });
 
-app.MapPut("/employees/{id}", async (int id, Employee inputEmployee, ApplicationDbContext db) =>
+app.MapPut("/employees/{id}", async (int id, spark.User inputEmployee, SparkDb db) =>
 {
-    var employee = await db.Employees.FindAsync(id);
+    var employee = await db.user.FindAsync(id);
 
     if (employee is null) return Results.NotFound();
 
@@ -82,11 +84,11 @@ app.MapPut("/employees/{id}", async (int id, Employee inputEmployee, Application
     return Results.NoContent();
 });
 
-app.MapDelete("/employees/{id}", async (int id, ApplicationDbContext db) =>
+app.MapDelete("/employees/{id}", async (int id, SparkDb db) =>
 {
-    if (await db.Employees.FindAsync(id) is Employee employee)
+    if (await db.user.FindAsync(id) is spark.User employee)
     {
-        db.Employees.Remove(employee);
+        db.user.Remove(employee);
         await db.SaveChangesAsync();
         return Results.NoContent();
     }
