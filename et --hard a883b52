@@ -1,0 +1,27 @@
+[33m80f29b8[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mtest[m[33m)[m added functionality to login page, still work in progress with CORS, but realization is close, as well made css style for login page, made conditions for header, footer, navMenu in app.js
+[33ma883b52[m connected mysql database files like DbContext.cs appsettings.json appsettings.Development.json were added
+[33mab505af[m fixing files
+[33m016b635[m test
+[33m4edde19[m test
+[33mcf10d19[m test
+[33mf293c77[m dad
+[33m3434b9f[m[33m ([m[1;31morigin/feature[m[33m)[m up to date
+[33mb39170e[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m small changes
+[33mdc8d65a[m fixed problem with import
+[33m7f2010d[m up to date
+[33m5a9d246[m fixed error
+[33meef1254[m Resolved merge conflicts
+[33m76eb3b9[m comments added, cleaned a code a bit, added .net entity package, to connect project to database
+[33m9014d03[m added .net to the project, dynamic right section, css full-width, HelmetProvider, different tipe of rightPanel, a lot of conditions for right panel in App.js, new arrow func Layout in App.js
+[33ma21707f[m added helmet library, made dynamic tab names, prepared page for a future hook components
+[33m228e42d[m fixed warning @babel/plugin-proposal-private-property-in-object
+[33m73a108b[m impemented component linechart into home page
+[33m4f1c7fb[m added babel package, implemented LineChart in Home page
+[33m7e37d53[m added Eval page, Charts, some additional information on each page
+[33mfe6b6ff[m added chart2.js added couple pages
+[33mc836c1a[m css applied for wrapper, container, right-panel, so flex as well
+[33m359e085[m added routes, added more structure, added departments page template, navMenu, RightPanel
+[33m492f99c[m routes connected, made first stem in App.js
+[33mf60931d[m add basic templete for home page, just a scratch
+[33m753b43c[m start
+[33me66c335[m Initialize project using Create React App
