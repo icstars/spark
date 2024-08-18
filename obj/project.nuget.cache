@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "btWKxYYGdpE=",
+  "dgSpecHash": "twFzMZXRw60=",
   "success": true,
-  "projectFilePath": "C:\\Users\\RostyslavHarasymiak\\Desktop\\Project\\ProjectTest\\spark\\spark.csproj",
+  "projectFilePath": "c:\\Users\\RostyslavHarasymiak\\Desktop\\Project\\ProjectTest\\spark\\spark.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\RostyslavHarasymiak\\.nuget\\packages\\aspire.hosting\\8.1.0\\aspire.hosting.8.1.0.nupkg.sha512",
     "C:\\Users\\RostyslavHarasymiak\\.nuget\\packages\\aspire.hosting.mysql\\8.1.0\\aspire.hosting.mysql.8.1.0.nupkg.sha512",

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\RostyslavHarasymiak\\Desktop\\Project\\ProjectTest\\spark\\spark.csproj": {}
+    "c:\\Users\\RostyslavHarasymiak\\Desktop\\Project\\ProjectTest\\spark\\spark.csproj": {}
   },
   "projects": {
-    "C:\\Users\\RostyslavHarasymiak\\Desktop\\Project\\ProjectTest\\spark\\spark.csproj": {
+    "c:\\Users\\RostyslavHarasymiak\\Desktop\\Project\\ProjectTest\\spark\\spark.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\RostyslavHarasymiak\\Desktop\\Project\\ProjectTest\\spark\\spark.csproj",
+        "projectUniqueName": "c:\\Users\\RostyslavHarasymiak\\Desktop\\Project\\ProjectTest\\spark\\spark.csproj",
         "projectName": "spark",
-        "projectPath": "C:\\Users\\RostyslavHarasymiak\\Desktop\\Project\\ProjectTest\\spark\\spark.csproj",
+        "projectPath": "c:\\Users\\RostyslavHarasymiak\\Desktop\\Project\\ProjectTest\\spark\\spark.csproj",
         "packagesPath": "C:\\Users\\RostyslavHarasymiak\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\RostyslavHarasymiak\\Desktop\\Project\\ProjectTest\\spark\\obj\\",
+        "outputPath": "c:\\Users\\RostyslavHarasymiak\\Desktop\\Project\\ProjectTest\\spark\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -63,6 +63,10 @@
               "version": "[2.2.0, )"
             },
             "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.8, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[8.0.8, )"
             },
