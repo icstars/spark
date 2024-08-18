@@ -4,8 +4,8 @@ function pageHome() {
     return (
 
         <div>
-            <div>
-            <Link to="/EvalOverlook"><button type="button">View evaluation</button></Link>
+            <div className="right-panel-view-evaluation-button">
+                <Link className="evaluation-button" to="/EvalOverlook"><button type="button">View evaluation</button></Link>
             </div>
         </div>
 
