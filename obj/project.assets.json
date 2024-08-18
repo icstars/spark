@@ -5096,24 +5096,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\RostyslavHarasymiak\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\ValeriiKharchenko\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\RostyslavHarasymiak\\Desktop\\Project\\ProjectTest\\spark\\spark.csproj",
+      "projectUniqueName": "c:\\Users\\ValeriiKharchenko\\Documents\\icstars\\spark\\spark.csproj",
       "projectName": "spark",
-      "projectPath": "C:\\Users\\RostyslavHarasymiak\\Desktop\\Project\\ProjectTest\\spark\\spark.csproj",
-      "packagesPath": "C:\\Users\\RostyslavHarasymiak\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\RostyslavHarasymiak\\Desktop\\Project\\ProjectTest\\spark\\obj\\",
+      "projectPath": "c:\\Users\\ValeriiKharchenko\\Documents\\icstars\\spark\\spark.csproj",
+      "packagesPath": "C:\\Users\\ValeriiKharchenko\\.nuget\\packages\\",
+      "outputPath": "c:\\Users\\ValeriiKharchenko\\Documents\\icstars\\spark\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\RostyslavHarasymiak\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\ValeriiKharchenko\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -5197,7 +5192,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
