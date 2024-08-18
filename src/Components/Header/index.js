@@ -1,15 +1,23 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import profile_icon from "./img/profile_icon.svg";
+
+
 function Header() {
     return (
+
         <div className="main-header">
             <div className="logo-wrapper">
+                <img src={profile_icon} alt="logo-img"></img>
             </div>
-            <h1>Header</h1>
+
             <input type="text" className="searchinput" placeholder="Search.." />
-            <Link to="/Login">Login</Link>
+            <div className="header-login-element">
+                <Link to="/Login">Login</Link>
+                <img src={profile_icon} alt="profile-img"></img>
+            </div>
+            
             <nav className="main-nav">
-                
             </nav>
         </div>
 
