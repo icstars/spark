@@ -21,12 +21,20 @@ function Login() {
                 }
             });
 
+            console.log('Server response:', response.data); // Логируем весь ответ от сервера
+
             if (response.data.success) {
-                // Store user information in local storage or context
+                const userId = response.data.id;
+                console.log('User ID:', userId); // Логируем значение userId для проверки
+
+                localStorage.setItem('userId', userId);
                 localStorage.setItem('username', response.data.username);
 
-                // Redirect to home page or dashboard
-                navigate('/');
+                if (userId) {
+                    navigate(`/home/${userId}`);
+                } else {
+                    console.error('User ID is undefined');
+                }
             } else {
                 setError(response.data.message);
             }
@@ -35,6 +43,7 @@ function Login() {
             console.error(error);
         }
     };
+
 
     return (
         <div className="login-wrapper">

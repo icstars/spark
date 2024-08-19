@@ -77,7 +77,7 @@ const Layout = () => {
             {/* Define routes and their corresponding components */}
             <Route path='/Charts/LineChart' element={<LineChart />} />
             <Route path="/Login" element={<Login />} />
-            <Route path="/" element={<Home />} />
+            <Route path="/home/:id" element={<Home />} />
             <Route path="/DepMetrics" element={<DepMetrics />} />
             <Route path="/People" element={<People />} />
             <Route path="/EvalOverlook" element={<EvalOverlook />} />

@@ -1,3 +1,4 @@
+using IdentityModel.OidcClient;
 using k8s.KubeConfigModels;
 using Microsoft.EntityFrameworkCore;
 using spark;
@@ -16,7 +17,7 @@ builder.Services.AddDbContext<SparkDb>(options =>
 
 
 
-var  myPolicy= "mypolicy";
+var myPolicy = "mypolicy";
 
 builder.Services.AddCors(options =>
 {
@@ -43,7 +44,7 @@ app.MapPost("/login", async (spark.User employee, SparkDb db) =>
     }
 
     // Optionally, you can generate a JWT token here for authentication
-    return Results.Json(new { success = true, username = user.username });
+    return Results.Json(new { success = true, id = user.id, username = user.username });
 });
 
 // Get all employees
@@ -51,6 +52,15 @@ app.MapGet("/employees", async (SparkDb db) =>
     await db.user
     .Include(u => u.department) //adding data about department
     .ToListAsync());
+
+app.MapGet("/users/{id}", async (int id, SparkDb db) =>
+{
+    var user = await db.user
+        .Include(u => u.department) // Include department data
+        .FirstOrDefaultAsync(u => u.id == id);
+
+    return user is not null ? Results.Ok(user) : Results.NotFound();
+});
 
 app.MapGet("/employees/admins", async (SparkDb db) =>
     await db.user.Where(t => t.is_admin).ToListAsync());
