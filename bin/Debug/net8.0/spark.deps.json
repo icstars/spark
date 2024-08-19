@@ -12,6 +12,7 @@
           "Aspire.Pomelo.EntityFrameworkCore.MySql": "8.1.0",
           "Microsoft.AspNetCore.Cors": "2.2.0",
           "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": "8.0.8",
+          "Microsoft.EntityFrameworkCore": "8.0.8",
           "Microsoft.EntityFrameworkCore.InMemory": "8.0.8",
           "Microsoft.EntityFrameworkCore.SqlServer": "8.0.8",
           "Pomelo.EntityFrameworkCore.MySql": "8.0.2"

@@ -13,7 +13,7 @@ builder.Services.AddDbContext<SparkDb>(options =>
     options.UseMySql(
         builder.Configuration.GetConnectionString("sparkdb"),
         ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("sparkdb"))
-    ));
+    ).LogTo(Console.WriteLine, LogLevel.Information));
 
 
 
@@ -47,9 +47,20 @@ app.MapPost("/login", async (spark.User employee, SparkDb db) =>
     return Results.Json(new { success = true, id = user.id, username = user.username });
 });
 
-// Update the endpoints to interact with the Employees table
+// Get all employees
 app.MapGet("/employees", async (SparkDb db) =>
-    await db.user.ToListAsync());
+    await db.user
+    .Include(u => u.department) //adding data about department
+    .ToListAsync());
+
+app.MapGet("/users/{id}", async (int id, SparkDb db) =>
+{
+    var user = await db.user
+        .Include(u => u.department) // Include department data
+        .FirstOrDefaultAsync(u => u.id == id);
+
+    return user is not null ? Results.Ok(user) : Results.NotFound();
+});
 
 app.MapGet("/users/{id}", async (int id, SparkDb db) =>
 {

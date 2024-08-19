@@ -31,12 +31,14 @@ function Home() {
   return (
 
     <div className="home">
+      <Helmet>Home</Helmet>
       {user ? (
         <div>
           <h1>Welcome, {user.firstname} {user.lastname}</h1>
           <p>Role: {user.company_role}</p>
           <p>Department: {user.department?.name}</p>
           <p>Email: {user.email}</p>
+          <LineChart />
         </div>
       ) : (
         <p>Loading...</p>
