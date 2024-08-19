@@ -1,15 +1,11 @@
 import { Link } from 'react-router-dom';
 import React from 'react';
 
+import profile_icon from "./img/profile_icon.svg";
+import metrics_icon from "./img/metrics_icon.svg";
+import people_icon from "./img/people_icon.svg";
+
 function NavMenu() {
-<<<<<<< Updated upstream
-    return (
-        <div className='nav-menu-links'>
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/DepMetrics">Department metrics</Link></li>
-            <li><Link to="/People">People</Link></li>
-            {/* <li><Link to="/Charts/LineChart">Charts</Link></li> */}
-=======
     const userId = localStorage.getItem('userId');
 
     return (
@@ -37,9 +33,8 @@ function NavMenu() {
                 </div>
                 {/* <li><Link to="/Charts/LineChart">Charts</Link></li> */}
             </ul>
->>>>>>> Stashed changes
         </div>
     );
-}
+};
 
 export default NavMenu;

@@ -60,6 +60,15 @@ app.MapGet("/users/{id}", async (int id, SparkDb db) =>
     return user is not null ? Results.Ok(user) : Results.NotFound();
 });
 
+app.MapGet("/users/{id}", async (int id, SparkDb db) =>
+{
+    var user = await db.user
+        .Include(u => u.department) // Include department data
+        .FirstOrDefaultAsync(u => u.id == id);
+
+    return user is not null ? Results.Ok(user) : Results.NotFound();
+});
+
 app.MapGet("/employees/admins", async (SparkDb db) =>
     await db.user.Where(t => t.is_admin).ToListAsync());
 
