@@ -36,7 +36,7 @@ function EvalOverlook() {
         "4 Points",
         "5 Points"
     ];
-    
+
     return (
 
         <div>
@@ -54,7 +54,7 @@ function EvalOverlook() {
                         <img className="return-button-icon"></img>Return
                     </button>
                 </div>
-                <div className = 'h1-evaluation-container'>
+                <div className='h1-evaluation-container'>
                     <h1 className='h1-evaluation-title'>Teamwork</h1>
                 </div>
             </div>
@@ -63,25 +63,29 @@ function EvalOverlook() {
                 <hr className='hr-element'></hr>
             </div>
 
-            <div>
+            <div className='cat-wrapper'>
                 <div>
                     <h2 className='h2-evaluatoin-title'>Collaboration</h2>
                 </div>
-                <div className="title-wrapper">
-                    {[...Array(5)].map((_, index) => (
-                        <div
-                            key={index}
-                            className={`wrapper-element ${selectedIndex === index ? 'selected' : ''}`}
-                            onClick={() => handleClick(index)}
-                            onMouseEnter={() => handleMouseEnter(index)}
-                            onMouseLeave={handleMouseLeave}
-                        >
-                            {(hoveredIndex === index || clickedIndex === index) && (
-                                <p className="hover-explanation">{explanations[index]}</p>
-                            )}
-                            <p>Text {index + 1}</p>
-                        </div>
-                    ))}
+                <div className='option-wrapper'>
+
+
+                    <div className="title-wrapper">
+                        {[...Array(5)].map((_, index) => (
+                            <div
+                                key={index}
+                                className={`wrapper-element ${selectedIndex === index ? 'selected' : ''}`}
+                                onClick={() => handleClick(index)}
+                                onMouseEnter={() => handleMouseEnter(index)}
+                                onMouseLeave={handleMouseLeave}
+                            >
+                                {(hoveredIndex === index || clickedIndex === index) && (
+                                    <p className="hover-explanation">{explanations[index]}</p>
+                                )}
+                                <p className="option">Text {index + 1}</p>
+                            </div>
+                        ))}
+                    </div>
                 </div>
                 <div>
                     <p className="comment-title">Comment about Collaboration:</p>

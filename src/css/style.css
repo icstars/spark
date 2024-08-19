@@ -2,6 +2,10 @@
     transition: width 2s, height 4s;
 }
 
+body{
+    margin: 0;
+}
+
 .container{
     width: 65%;
   
