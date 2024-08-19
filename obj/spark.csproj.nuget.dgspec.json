@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\ValeriiKharchenko\\Documents\\icstars\\spark\\spark.csproj": {}
+    "C:\\Users\\ValeriiKharchenko\\Documents\\icstars\\spark\\spark.csproj": {}
   },
   "projects": {
-    "c:\\Users\\ValeriiKharchenko\\Documents\\icstars\\spark\\spark.csproj": {
+    "C:\\Users\\ValeriiKharchenko\\Documents\\icstars\\spark\\spark.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\ValeriiKharchenko\\Documents\\icstars\\spark\\spark.csproj",
+        "projectUniqueName": "C:\\Users\\ValeriiKharchenko\\Documents\\icstars\\spark\\spark.csproj",
         "projectName": "spark",
-        "projectPath": "c:\\Users\\ValeriiKharchenko\\Documents\\icstars\\spark\\spark.csproj",
+        "projectPath": "C:\\Users\\ValeriiKharchenko\\Documents\\icstars\\spark\\spark.csproj",
         "packagesPath": "C:\\Users\\ValeriiKharchenko\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\ValeriiKharchenko\\Documents\\icstars\\spark\\obj\\",
+        "outputPath": "C:\\Users\\ValeriiKharchenko\\Documents\\icstars\\spark\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\ValeriiKharchenko\\AppData\\Roaming\\NuGet\\NuGet.Config",
