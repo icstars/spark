@@ -27,9 +27,10 @@ const Layout = () => {
     '/': <PageHome />,
     '/DepMetrics': <PageDepDashboard />
   };
-  const leftPanelComponents = {
-    '/': <NavMenu />
-  }
+  // const leftPanelComponents = {                --------------------------------------------
+  //   '/': <NavMenu />,
+  //   '/Home': <Home />
+  // }
   const headerComponent = {
     '/Header': <Header />
   };
@@ -38,39 +39,40 @@ const Layout = () => {
   };
   // Array of routes where the RightPanel should not be displayed.
   const notApplyPages = ['/People', '/Login', '/EvalOverlook'];
-  const notApplyLeftMenu = ['/Login'];
+  // const notApplyLeftMenu = ['/Login'];               --------------------------------------------
   const notApplyHeaderAndFooter = ['/Login'];
+  const notApplyNavMenu = ['/EvalOverlook', '/Login'];
   // Determine the RightPanel component to display based on the current route.
   // If no specific component is found, default to PageHome.
   const RightPanelComponent = rightPanelComponents[location.pathname] || <PageHome />;
-  const LeftPanelComponent = leftPanelComponents[location.pathname] || <NavMenu />;
-  const HeaderComponent = headerComponent[location.pathname] || <Header />
-  const FooterComponent = footerComponent[location.pathname] || <Footer />
+  // const LeftPanelComponent = leftPanelComponents[location.pathname] || <NavMenu />;                --------------------------------------------
+  const HeaderComponent = headerComponent[location.pathname] || <Header />;
+  const FooterComponent = footerComponent[location.pathname] || <Footer />;
   // Check if the current route is in the list of routes where RightPanel should not be displayed.
   const displayRightPanel = !notApplyPages.includes(location.pathname);
-  const displayLeftPanel = !notApplyLeftMenu.includes(location.pathname);
+  // const displayLeftPanel = !notApplyLeftMenu.includes(location.pathname);                --------------------------------------------
   const displayHeaderFooter = !notApplyHeaderAndFooter.includes(location.pathname);
-
+  const displayNavMenu = !notApplyNavMenu.includes(location.pathname);
 
 
   return (
     <>
       {/* Header section */}
       {HeaderComponent && displayHeaderFooter && (
-        <div className="header">
-          <Header />
-          {/* Helmet is used for managing the document head, like setting the page title dynamically */}
-          <Helmet className="helmet">
-          </Helmet>
-        </div>
-      )}
-      {/* Main wrapper for the content and navigation */}
-      <div className="wrapper">
-        {/* Navigation Menu */}
-        {displayLeftPanel && LeftPanelComponent && (
-          <div className="nav-menu">
-            <NavMenu />
+          <div className="header">
+            <Header />
+            {/* Helmet is used for managing the document head, like setting the page title dynamically */}
+            <Helmet className="helmet">
+            </Helmet>
           </div>
+        )}
+        {/* Main wrapper for the content and navigation */}
+        <div className="wrapper">
+          {/* Navigation Menu */}
+          {displayNavMenu && (
+            <div className="nav-menu">
+              <NavMenu />
+            </div>
         )}
         {/* Main content area that changes based on the active route */}
         <div className={`container ${displayRightPanel ? '' : 'full-width'}`}>
