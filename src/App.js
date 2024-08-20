@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation, Navigate } from 'react-router-dom';
 import { HelmetProvider, Helmet } from 'react-helmet-async'; //import HelmetProvider due to last updates as Helmet outdated
 import './css/style.css';
 import './css/reset.css';
@@ -14,6 +14,7 @@ import People from './Components/People';
 import Login from './Components/Login';
 import LineChart from './Components/Charts/LineChart';
 import EvalOverlook from './Components/EvalOverlook';
+import PrivateRoute from './Components/PrivateRoute';
 
 
 // Layout component defines the structure of the page with Header, Footer, and dynamic content based on routes.
@@ -75,12 +76,16 @@ const Layout = () => {
         <div className={`container ${displayRightPanel ? '' : 'full-width'}`}>
           <Routes>
             {/* Define routes and their corresponding components */}
+            <Route path="/Login" element={<Login />} /> {/*Public Route*/}
+
+            {/* Private */}
             <Route path='/Charts/LineChart' element={<LineChart />} />
-            <Route path="/Login" element={<Login />} />
-            <Route path="/home/:id" element={<Home />} />
-            <Route path="/DepMetrics" element={<DepMetrics />} />
-            <Route path="/People" element={<People />} />
-            <Route path="/EvalOverlook" element={<EvalOverlook />} />
+            <Route path="/home/:id" element={<PrivateRoute> <Home /> </PrivateRoute>} />
+            <Route path="/DepMetrics" element={<PrivateRoute> <DepMetrics /> </PrivateRoute>} />
+            <Route path="/People" element={<PrivateRoute> <People /> </PrivateRoute>} />
+            <Route path="/EvalOverlook" element={<PrivateRoute> <EvalOverlook /> </PrivateRoute>} />
+            {/* Редирект на страницу логина для несуществующих маршрутов */}
+            <Route path="*" element={<Navigate to="/Login" />} />
           </Routes>
         </div>
 
