@@ -1,17 +1,18 @@
 import { Helmet } from 'react-helmet';
-import React, { useState } from 'react';
+import React, { useState} from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import return_icon from '../img/union-1.svg'
 import './eval-overlook-style.css';
 
 function EvalOverlook() {
 
+   
+
     const navigate = useNavigate();
-
-    const handleButtonClick = () => {
-        navigate('/');
+   
+    const handleBack = () => {
+        navigate(-1); // This goes back one step in the history stack
     };
-
     const [selectedIndex, setSelectedIndex] = useState(null);
     const [hoveredIndex, setHoveredIndex] = useState(null);
     const [clickedIndex, setClickedIndex] = useState(null); // State for click
@@ -50,8 +51,8 @@ function EvalOverlook() {
             </div>
             <div className="title-container">
                 <div className="return-button-container">
-                    <button onClick={handleButtonClick}>
-                        <img className="return-button-icon"></img>Return
+                    <button onClick={handleBack}>
+                        <img className="return-button-icon" src={return_icon} alt='img'></img>Return
                     </button>
                 </div>
                 <div className='h1-evaluation-container'>

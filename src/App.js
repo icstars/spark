@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation, Navigate } from 'react-router-dom';
 import { HelmetProvider, Helmet } from 'react-helmet-async'; //import HelmetProvider due to last updates as Helmet outdated
 import './css/style.css';
 import './css/reset.css';
@@ -15,6 +14,7 @@ import People from './Components/People';
 import Login from './Components/Login';
 import LineChart from './Components/Charts/LineChart';
 import EvalOverlook from './Components/EvalOverlook';
+import PrivateRoute from './Components/PrivateRoute';
 
 
 // Layout component defines the structure of the page with Header, Footer, and dynamic content based on routes.
@@ -27,10 +27,10 @@ const Layout = () => {
     '/': <PageHome />,
     '/DepMetrics': <PageDepDashboard />
   };
-  const leftPanelComponents = {
-    '/': <NavMenu />,
-    '/Home': <Home />
-  }
+  // const leftPanelComponents = {                --------------------------------------------
+  //   '/': <NavMenu />,
+  //   '/Home': <Home />
+  // }
   const headerComponent = {
     '/Header': <Header />
   };
@@ -39,52 +39,55 @@ const Layout = () => {
   };
   // Array of routes where the RightPanel should not be displayed.
   const notApplyPages = ['/People', '/Login', '/EvalOverlook'];
-  const notApplyLeftMenu = ['/Login'];
+  // const notApplyLeftMenu = ['/Login'];               --------------------------------------------
   const notApplyHeaderAndFooter = ['/Login'];
   const notApplyNavMenu = ['/EvalOverlook', '/Login'];
   // Determine the RightPanel component to display based on the current route.
   // If no specific component is found, default to PageHome.
   const RightPanelComponent = rightPanelComponents[location.pathname] || <PageHome />;
-  const LeftPanelComponent = leftPanelComponents[location.pathname] || <NavMenu />;
+  // const LeftPanelComponent = leftPanelComponents[location.pathname] || <NavMenu />;                --------------------------------------------
   const HeaderComponent = headerComponent[location.pathname] || <Header />;
   const FooterComponent = footerComponent[location.pathname] || <Footer />;
   // Check if the current route is in the list of routes where RightPanel should not be displayed.
   const displayRightPanel = !notApplyPages.includes(location.pathname);
-  const displayLeftPanel = !notApplyLeftMenu.includes(location.pathname);
+  // const displayLeftPanel = !notApplyLeftMenu.includes(location.pathname);                --------------------------------------------
   const displayHeaderFooter = !notApplyHeaderAndFooter.includes(location.pathname);
   const displayNavMenu = !notApplyNavMenu.includes(location.pathname);
-
 
 
   return (
     <>
       {/* Header section */}
       {HeaderComponent && displayHeaderFooter && (
-        <div className="header">
-          <Header />
-          {/* Helmet is used for managing the document head, like setting the page title dynamically */}
-          <Helmet className="helmet">
-          </Helmet>
-        </div>
-      )}
-      {/* Main wrapper for the content and navigation */}
-      <div className="wrapper">
-        {/* Navigation Menu */}
-        {displayNavMenu && (
-          <div className="nav-menu">
-            <NavMenu />
+          <div className="header">
+            <Header />
+            {/* Helmet is used for managing the document head, like setting the page title dynamically */}
+            <Helmet className="helmet">
+            </Helmet>
           </div>
+        )}
+        {/* Main wrapper for the content and navigation */}
+        <div className="wrapper">
+          {/* Navigation Menu */}
+          {displayNavMenu && (
+            <div className="nav-menu">
+              <NavMenu />
+            </div>
         )}
         {/* Main content area that changes based on the active route */}
         <div className={`container ${displayRightPanel ? '' : 'full-width'}`}>
           <Routes>
             {/* Define routes and their corresponding components */}
+            <Route path="/Login" element={<Login />} /> {/*Public Route*/}
+
+            {/* Private */}
             <Route path='/Charts/LineChart' element={<LineChart />} />
-            <Route path="/Login" element={<Login />} />
-            <Route path="/" element={<Home />} />
-            <Route path="/DepMetrics" element={<DepMetrics />} />
-            <Route path="/People" element={<People />} />
-            <Route path="/EvalOverlook" element={<EvalOverlook />} />
+            <Route path="/home/:id" element={<PrivateRoute> <Home /> </PrivateRoute>} />
+            <Route path="/DepMetrics" element={<PrivateRoute> <DepMetrics /> </PrivateRoute>} />
+            <Route path="/People" element={<PrivateRoute> <People /> </PrivateRoute>} />
+            <Route path="/EvalOverlook" element={<PrivateRoute> <EvalOverlook /> </PrivateRoute>} />
+            {/* Редирект на страницу логина для несуществующих маршрутов */}
+            <Route path="*" element={<Navigate to="/Login" />} />
           </Routes>
         </div>
 
