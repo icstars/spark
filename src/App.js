@@ -62,12 +62,10 @@ const Layout = () => {
         </div>
       )}
       {/* Main wrapper for the content and navigation */}
-      <div className="wrapper">
+      <main className="wrapper">
         {/* Navigation Menu */}
         {displayNavMenu && (
-          <div className="nav-menu">
-            <NavMenuCheck />
-          </div>
+          <NavMenuCheck />
         )}
         {/* Main content area that changes based on the active route */}
         <div className={`container ${displayRightPanel ? '' : 'full-width'}`}>
@@ -92,13 +90,11 @@ const Layout = () => {
             {RightPanelComponent}
           </div>
         )}
-      </div>
+      </main>
 
       {/* Footer section */}
       {displayHeaderFooter && FooterComponent && (
-        <div className="footer">
           <Footer />
-        </div>
       )}
     </>
   );

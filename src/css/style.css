@@ -88,7 +88,7 @@
     width: 15%;
 }
 
-.nav-element{
+.nav-menu > li{
     display: flex; /* Enable flexbox */
     padding: 0; /* Remove default padding */
     margin: 0; /* Remove default margin */
