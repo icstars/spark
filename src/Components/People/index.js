@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 function People() {
     const [people, setPeople] = useState([]);
     const [error, setError] = useState('');
+
     // const [departments, setDepartments] = useState([]);
 
     useEffect(() => {
@@ -29,8 +31,10 @@ function People() {
                 <h2>People</h2>
                 {error && <p style={{ color: 'red' }}>{error}</p>}
                 <ul>
+
                     {people.map(person => (
                         <li key={person.id}>
+                            <Link to={`/home/${person.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                             <p>Username: {person.username}</p>
                             <p>First Name: {person.firstname}</p>
                             <p>Last Name: {person.lastname}</p>
@@ -38,9 +42,7 @@ function People() {
                             <p>Role: {person.company_role}</p>
                             <p>Department: {person.department?.name}</p>
                             <p>Admin: {person.is_admin ? 'Yes' : 'No'}</p>
-                    {/* {departments.map(department => (
-                        <li key={department.id}>
-                            <p>department: {department.name}</p> */}
+                            </Link>
                         </li>
                     ))}
                 </ul>
