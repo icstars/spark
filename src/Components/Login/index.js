@@ -5,6 +5,7 @@ import axios from 'axios'; // or use fetch
 import './login-style.css';
 
 function Login() {
+    
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -20,13 +21,29 @@ function Login() {
                     'Content-Type': 'application/json'
                 }
             });
-
+    
+            console.log('Server response:', response.data); // just conslole output for a check of our server response
+    
             if (response.data.success) {
-                // Store user information in local storage or context
+                const isAdmin = response.data.isAdmin || false;
+                const isManager = response.data.isManager || false;
+                const userId = response.data.id;
+    
+                localStorage.setItem('isAuthenticated', 'true');
+                localStorage.setItem('isAdmin', isAdmin);
+                localStorage.setItem('isManager', isManager);
+                localStorage.setItem('userId', userId);
                 localStorage.setItem('username', response.data.username);
-
-                // Redirect to home page or dashboard
-                navigate('/');
+    
+                console.log('User ID:', userId);
+                console.log('Is Admin:', isAdmin);
+                console.log('Is Manager:', isManager); // just conslole output for a check
+    
+                if (userId) {
+                    navigate(`/home/${userId}`);
+                } else {
+                    console.error('User ID is undefined');
+                }
             } else {
                 setError(response.data.message);
             }
@@ -35,7 +52,7 @@ function Login() {
             console.error(error);
         }
     };
-
+    
     return (
         <div className="login-wrapper">
             <Helmet>

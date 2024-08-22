@@ -9,6 +9,7 @@ using spark;
         }
 
         public DbSet<User> user => Set<User>();
+        public DbSet<Department> department => Set<Department>();
         // Add other DbSet properties for your tables
     }
 

@@ -1,9 +1,7 @@
+using IdentityModel.OidcClient;
 using k8s.KubeConfigModels;
 using Microsoft.EntityFrameworkCore;
 using spark;
-
-
-
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,11 +10,9 @@ builder.Services.AddDbContext<SparkDb>(options =>
     options.UseMySql(
         builder.Configuration.GetConnectionString("sparkdb"),
         ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("sparkdb"))
-    ));
+    ).LogTo(Console.WriteLine, LogLevel.Information));
 
-
-
-var  myPolicy= "mypolicy";
+var myPolicy = "mypolicy";
 
 builder.Services.AddCors(options =>
 {
@@ -26,11 +22,9 @@ builder.Services.AddCors(options =>
     .AllowAnyHeader());
 });
 
-
 var app = builder.Build();
 
 app.UseCors(myPolicy);
-
 
 app.MapPost("/login", async (spark.User employee, SparkDb db) =>
 {
@@ -42,13 +36,35 @@ app.MapPost("/login", async (spark.User employee, SparkDb db) =>
         return Results.Json(new { success = false, message = "Invalid username or password" });
     }
 
+    bool isAdmin = user.is_admin;
+    // Check if user has dependent users
+    bool isManager = await db.user.AnyAsync(u => u.manager_id == user.id);
+
     // Optionally, you can generate a JWT token here for authentication
-    return Results.Json(new { success = true, username = user.username });
+    return Results.Json(new
+    {
+        success = true,
+        id = user.id,
+        username = user.username,
+        isAdmin = isAdmin,
+        isManager = isManager
+    });
 });
 
-// Update the endpoints to interact with the Employees table
+// Get all employees
 app.MapGet("/employees", async (SparkDb db) =>
-    await db.user.ToListAsync());
+    await db.user
+    .Include(u => u.department) //adding data about department
+    .ToListAsync());
+
+app.MapGet("/users/{id}", async (int id, SparkDb db) =>
+{
+    var user = await db.user
+        .Include(u => u.department) // Include department data
+        .FirstOrDefaultAsync(u => u.id == id);
+
+    return user is not null ? Results.Ok(user) : Results.NotFound();
+});
 
 app.MapGet("/employees/admins", async (SparkDb db) =>
     await db.user.Where(t => t.is_admin).ToListAsync());
