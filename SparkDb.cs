@@ -1,7 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using spark;
+using spark.Models;
 
-    public class SparkDb : DbContext
+public class SparkDb : DbContext
     {
         public SparkDb(DbContextOptions<SparkDb> options)
             : base(options)
@@ -10,7 +11,23 @@ using spark;
 
         public DbSet<User> user => Set<User>();
         public DbSet<Department> department => Set<Department>();
-        // Add other DbSet properties for your tables
+        public DbSet<EvaluationForm> evaluation_form => Set<EvaluationForm>();
+        public DbSet<Behavior> behavior => Set<Behavior>();
+        public DbSet<Category> category => Set<Category>();
+        public DbSet<Topic> topic => Set<Topic>();
+        public DbSet<CategoryComment> category_comment => Set<CategoryComment>();
+        public DbSet<TopicComment> topic_comment => Set<TopicComment>();
+        public DbSet<EvaluationOption> evaluation_option => Set<EvaluationOption>();
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // Configure the one-to-many relationship explicitly (optional)
+            modelBuilder.Entity<Category>()
+                .HasMany(c => c.topic)
+                .WithOne(t => t.category)
+                .HasForeignKey(t => t.category_id);
+        }
     }
 
     

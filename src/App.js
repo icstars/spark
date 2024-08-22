@@ -14,6 +14,7 @@ import People from './Components/People';
 import Login from './Components/Login';
 import LineChart from './Components/Charts/LineChart';
 import EvalOverlook from './Components/EvalOverlook';
+import Eval from './Components/Eval';
 import PrivateRoute from './Components/PrivateRoute';
 
 
@@ -34,10 +35,10 @@ const Layout = () => {
     '/Footer': <Footer />
   };
   // Array of routes where the RightPanel should not be displayed.
-  const notApplyPages = ['/People', '/Login', '/EvalOverlook'];
+  const notApplyPages = ['/People', '/Login', '/EvalOverlook', '/Eval'];
   // const notApplyLeftMenu = ['/Login'];               --------------------------------------------
   const notApplyHeaderAndFooter = ['/Login'];
-  const notApplyNavMenu = ['/EvalOverlook', '/Login'];
+  const notApplyNavMenu = ['/EvalOverlook','/Eval', '/Login'];
   // Determine the RightPanel component to display based on the current route.
   // If no specific component is found, default to PageHome.
   const RightPanelComponent = rightPanelComponents[location.pathname] || <PageHome />;
@@ -81,6 +82,7 @@ const Layout = () => {
             <Route path="/DepMetrics" element={<PrivateRoute allowedRoles={['admin', 'manager']} > <DepMetrics /> </PrivateRoute>} />
             <Route path="/People" element={<PrivateRoute allowedRoles={['admin', 'manager']} > <People /> </PrivateRoute>} />
             <Route path="/EvalOverlook" element={<PrivateRoute allowedRoles={['admin', 'manager', 'employee']} > <EvalOverlook /> </PrivateRoute>} />
+            <Route path="/Eval" element={<PrivateRoute allowedRoles={['admin', 'manager']} > <Eval /> </PrivateRoute>} />
             {/* Редирект на страницу логина для несуществующих маршрутов */}
             <Route path="*" element={<Navigate to="/Login" />} />
           </Routes>

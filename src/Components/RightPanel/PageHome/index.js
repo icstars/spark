@@ -6,6 +6,7 @@ function pageHome() {
         <div>
             <div className="right-panel-view-evaluation-button">
                 <Link className="evaluation-button" to="/EvalOverlook"><button type="button">View evaluation</button></Link>
+                <Link className="evaluation-button" to="/Eval"><button type="button">evaluation</button></Link>
             </div>
         </div>
 

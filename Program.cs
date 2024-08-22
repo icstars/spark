@@ -1,7 +1,9 @@
+using System.Text.Json.Serialization;
 using IdentityModel.OidcClient;
 using k8s.KubeConfigModels;
 using Microsoft.EntityFrameworkCore;
 using spark;
+using spark.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +13,7 @@ builder.Services.AddDbContext<SparkDb>(options =>
         builder.Configuration.GetConnectionString("sparkdb"),
         ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("sparkdb"))
     ).LogTo(Console.WriteLine, LogLevel.Information));
-
+builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options => options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 var myPolicy = "mypolicy";
 
 builder.Services.AddCors(options =>
@@ -26,7 +28,7 @@ var app = builder.Build();
 
 app.UseCors(myPolicy);
 
-app.MapPost("/login", async (spark.User employee, SparkDb db) =>
+app.MapPost("/login", async (spark.Models.User employee, SparkDb db) =>
 {
     var user = await db.user
         .FirstOrDefaultAsync(u => u.username == employee.username && u.password == employee.password);
@@ -66,16 +68,144 @@ app.MapGet("/users/{id}", async (int id, SparkDb db) =>
     return user is not null ? Results.Ok(user) : Results.NotFound();
 });
 
+
+
+// app.MapGet("/categories", async (SparkDb db) =>
+//     await db.category
+//     //adding data about department
+//     .ToListAsync());
+// app.MapGet("/topics", async (SparkDb db) =>
+//     await db.topic
+//     //adding data about department
+//     .ToListAsync());
+
+app.MapGet("/categories", async (SparkDb db) =>
+    await db.category
+    .Include(c => c.topic)
+        .ThenInclude(t => t.EvaluationOptions)
+    .ToListAsync());
+
+
+// app.MapPost("/eval", async (spark.Models.EvaluationForm form, SparkDb db) =>
+// {
+//     db.evaluation_form.Add(form);
+//     await db.SaveChangesAsync();
+
+//     return Results.Created($"/eval/{form.id}", form);
+// });
+app.MapGet("/eval{id}", async (SparkDb db) =>
+    await db.topic
+    .Include(t => t.EvaluationOptions)
+    .ToListAsync());
+
+app.MapPost("/api/evaluate", async ([Microsoft.AspNetCore.Mvc.FromBody] EvaluationRequest request, SparkDb db) =>
+{
+    // Создаем запись EvaluationForm
+    var form = new EvaluationForm
+    {
+        user_id = request.UserId,
+        manager_id = request.ManagerId,
+        created = DateTime.UtcNow,
+        deparment_id = request.DepartmentId,
+        is_ready = true
+    };
+    
+    db.evaluation_form.Add(form);
+    await db.SaveChangesAsync();  // Сохраните, чтобы получить form.id
+
+    // Сохранение выбранных опций
+    foreach (var selectedOption in request.SelectedOptions)
+    {
+        var optionRecord = new EvaluationForm
+        {
+            option_id = selectedOption.OptionId,
+            user_id = form.user_id,
+            manager_id = form.manager_id,
+            deparment_id = form.deparment_id,
+            created = form.created,
+            is_ready = form.is_ready
+        };
+        db.evaluation_form.Add(optionRecord);
+    }
+
+    // Сохранение комментариев к темам
+    foreach (var topicComment in request.TopicComments)
+    {
+        var comment = new TopicComment
+        {
+            topic_id = topicComment.TopicId,
+            comment = topicComment.Comment,
+            form_id = form.id
+        };
+        db.topic_comment.Add(comment);
+    }
+
+    // Сохранение комментариев к категориям
+    foreach (var categoryComment in request.CategoryComments)
+    {
+        var comment = new CategoryComment
+        {
+            category_id = categoryComment.CategoryId,
+            comment = categoryComment.Comment,
+            form_id = form.id
+        };
+        db.category_comment.Add(comment);
+    }
+
+    await db.SaveChangesAsync();
+
+    return Results.Ok(new { success = true });
+});
+
+
+
+///////////////////////////////////////////////////////
+///
+
+// app.MapPost("/evaluate", async ([Microsoft.AspNetCore.Mvc.FromBody] EvaluationRequest request, SparkDb db) =>
+
+// {
+//     // Создаем новую форму оценки
+//     db.evaluation_form.Add(request.form);
+//     await db.SaveChangesAsync();
+
+//     // Привязываем все EvaluationOptions к форме
+//     foreach (var option in request.options)
+//     {
+//         option.form_id = request.form.id;
+//         db.evaluation_option.Add(option);
+//     }
+
+//     // Привязываем все TopicComments к форме
+//     foreach (var comment in request.topicComments)
+//     {
+//         comment.form_id = request.form.id;
+//         db.topic_comment.Add(comment);
+//     }
+
+//     // Привязываем CategoryComment к форме
+//     request.categoryComment.form_id = request.form.id;
+//     db.category_comment.Add(request.categoryComment);
+
+//     // Сохраняем изменения
+//     await db.SaveChangesAsync();
+
+//     return Results.Ok(new { success = true });
+// });
+
+
+//////////////////////
+
 app.MapGet("/employees/admins", async (SparkDb db) =>
     await db.user.Where(t => t.is_admin).ToListAsync());
 
 app.MapGet("/employees/{id}", async (int id, SparkDb db) =>
     await db.user.FindAsync(id)
-        is spark.User employee
+        is spark.Models.User employee
             ? Results.Ok(employee)
             : Results.NotFound());
 
-app.MapPost("/employees", async (spark.User employee, SparkDb db) =>
+app.MapPost("/employees", async (spark.Models.User employee, SparkDb db) =>
 {
     db.user.Add(employee);
     await db.SaveChangesAsync();
@@ -83,7 +213,7 @@ app.MapPost("/employees", async (spark.User employee, SparkDb db) =>
     return Results.Created($"/employees/{employee.id}", employee);
 });
 
-app.MapPut("/employees/{id}", async (int id, spark.User inputEmployee, SparkDb db) =>
+app.MapPut("/employees/{id}", async (int id, spark.Models.User inputEmployee, SparkDb db) =>
 {
     var employee = await db.user.FindAsync(id);
 
@@ -102,7 +232,7 @@ app.MapPut("/employees/{id}", async (int id, spark.User inputEmployee, SparkDb d
 
 app.MapDelete("/employees/{id}", async (int id, SparkDb db) =>
 {
-    if (await db.user.FindAsync(id) is spark.User employee)
+    if (await db.user.FindAsync(id) is spark.Models.User employee)
     {
         db.user.Remove(employee);
         await db.SaveChangesAsync();
