@@ -11,7 +11,7 @@ namespace spark.Models
         public int id { get; set; }
         public int user_id { get; set; }
         public DateTime? created { get; set; }
-        public int deparment_id { get; set; }
+        public int department_id { get; set; }
         public int manager_id { get; set; }
         public bool is_ready { get; set; }
         public int option_id { get; set; } // Foreign Key

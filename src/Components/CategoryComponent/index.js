@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../EvalOverlook/eval-overlook-style.css';
 import { useParams } from "react-router-dom";
-
+import axios from 'axios';
 const CategoryComponent = ({ categories }) => {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -11,6 +11,23 @@ const CategoryComponent = ({ categories }) => {
     const handleBack = () => {
         navigate(-1);
     };
+
+    const [departmentId, setDepartmentId] = useState(null); // State for department ID
+    const [error, setError] = useState('');
+
+    useEffect(() => {
+        // Fetch the user's department ID from the backend
+        axios.get(`http://localhost:5212/users/${id}`)
+            .then(response => {
+                if (response.data && response.data.department) {
+                    setDepartmentId(response.data.department.id); // Store department ID in state
+                }
+            })
+            .catch(error => {
+                setError('Failed to fetch user department');
+                console.error(error);
+            });
+    }, [id]);
 
     const handleClick = (topicId, optionIndex) => {
         setSelectedIndexes(prevState => ({
@@ -53,9 +70,9 @@ const CategoryComponent = ({ categories }) => {
     // Function to gather all data and submit to backend
     const handleSubmitForm = async () => {
         const payload = {
-            
-            userId: id,
-            managerId: localStorage.getItem('userId'),
+            userId: parseInt(id),
+            departmentId: departmentId, // Add department ID here
+            managerId: parseInt(localStorage.getItem('userId')),
             selectedOptions: [],  // For storing selected options
             topicComments: [],    // For storing topic comments
             categoryComments: []  // For storing category comments
@@ -112,6 +129,7 @@ const CategoryComponent = ({ categories }) => {
 
     return (
         <div>
+            
             {categories.map(category => (
                 <div className='cat-wrapper' key={category.id}>
                     <div className='h1-evaluation-container'>

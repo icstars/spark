@@ -10,7 +10,6 @@ function Eval() {
     const [user, setUser] = useState(null);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(true);  // Loading state for data fetching
-
     // Fetch user data
     useEffect(() => {
         if (!id) {

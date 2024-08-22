@@ -101,6 +101,10 @@ app.MapGet("/eval/{id}", async (int id, SparkDb db) =>
 
     return user is not null ? Results.Ok(user) : Results.NotFound();
 });
+app.MapGet("/evaluate", async (int id, SparkDb db) =>
+     await db.user
+      .Include(u => u.department).ToListAsync());
+
 app.MapPost("/evaluate", async ([Microsoft.AspNetCore.Mvc.FromBody] EvaluationRequest request, SparkDb db) =>
 {
     var form = new EvaluationForm
@@ -108,14 +112,13 @@ app.MapPost("/evaluate", async ([Microsoft.AspNetCore.Mvc.FromBody] EvaluationRe
         user_id = request.UserId,
         manager_id = request.ManagerId,
         created = DateTime.UtcNow,
-        deparment_id = 1, // Замените на актуальный department_id
+        department_id = request.DepartmentId, 
         is_ready = true
     };
-    
-    db.evaluation_form.Add(form);
-    await db.SaveChangesAsync();  // Сохраните, чтобы получить form.id
 
-    // Сохранение выбранных опций
+    db.evaluation_form.Add(form);
+    await db.SaveChangesAsync();
+
     foreach (var selectedOption in request.SelectedOptions)
     {
         var optionRecord = new EvaluationForm
@@ -123,14 +126,13 @@ app.MapPost("/evaluate", async ([Microsoft.AspNetCore.Mvc.FromBody] EvaluationRe
             option_id = selectedOption.OptionId,
             user_id = form.user_id,
             manager_id = form.manager_id,
-            deparment_id = form.deparment_id,
+            department_id = form.department_id,
             created = form.created,
             is_ready = form.is_ready
         };
         db.evaluation_form.Add(optionRecord);
     }
 
-    // Сохранение комментариев к темам
     foreach (var topicComment in request.TopicComments)
     {
         var comment = new TopicComment
@@ -142,7 +144,6 @@ app.MapPost("/evaluate", async ([Microsoft.AspNetCore.Mvc.FromBody] EvaluationRe
         db.topic_comment.Add(comment);
     }
 
-    // Сохранение комментариев к категориям
     foreach (var categoryComment in request.CategoryComments)
     {
         var comment = new CategoryComment
@@ -155,10 +156,8 @@ app.MapPost("/evaluate", async ([Microsoft.AspNetCore.Mvc.FromBody] EvaluationRe
     }
 
     await db.SaveChangesAsync();
-
     return Results.Ok(new { success = true });
 });
-
 
 
 ///////////////////////////////////////////////////////
