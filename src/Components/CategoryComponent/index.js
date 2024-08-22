@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../EvalOverlook/eval-overlook-style.css';
+import { useParams } from "react-router-dom";
 
 const CategoryComponent = ({ categories }) => {
+    const { id } = useParams();
     const navigate = useNavigate();
     const [selectedIndexes, setSelectedIndexes] = useState({});
     const [comments, setComments] = useState({});
-
     const handleBack = () => {
         navigate(-1);
     };
@@ -52,6 +53,9 @@ const CategoryComponent = ({ categories }) => {
     // Function to gather all data and submit to backend
     const handleSubmitForm = async () => {
         const payload = {
+            
+            userId: id,
+            managerId: localStorage.getItem('userId'),
             selectedOptions: [],  // For storing selected options
             topicComments: [],    // For storing topic comments
             categoryComments: []  // For storing category comments

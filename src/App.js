@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes, useLocation, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation, Navigate, useMatch} from 'react-router-dom';
 import { HelmetProvider, Helmet } from 'react-helmet-async'; //import HelmetProvider due to last updates as Helmet outdated
 import './css/style.css';
 import './css/reset.css';
@@ -18,6 +18,7 @@ import Eval from './Components/Eval';
 import PrivateRoute from './Components/PrivateRoute';
 
 
+
 // Layout component defines the structure of the page with Header, Footer, and dynamic content based on routes.
 const Layout = () => {
 
@@ -25,20 +26,22 @@ const Layout = () => {
   const location = useLocation();
   // Object mapping routes to their corresponding RightPanel components.
   const rightPanelComponents = {
-    '/': <PageHome />,
+    '/home/:id': <PageHome />,
     '/DepMetrics': <PageDepDashboard />
   };
   const headerComponent = {
     '/Header': <Header />
   };
-  const footerComponent = {
+  const footerComponent = {             
     '/Footer': <Footer />
   };
+  // Matching routes that have parameters
+  const matchEval = useMatch('/Eval/:id');
   // Array of routes where the RightPanel should not be displayed.
-  const notApplyPages = ['/People', '/Login', '/EvalOverlook', '/Eval'];
+  const notApplyPages = ['/People', '/Login', '/EvalOverlook', ,matchEval?.pathname];
   // const notApplyLeftMenu = ['/Login'];               --------------------------------------------
   const notApplyHeaderAndFooter = ['/Login'];
-  const notApplyNavMenu = ['/EvalOverlook','/Eval', '/Login'];
+  const notApplyNavMenu = ['/EvalOverlook',matchEval?.pathname, '/Login'];
   // Determine the RightPanel component to display based on the current route.
   // If no specific component is found, default to PageHome.
   const RightPanelComponent = rightPanelComponents[location.pathname] || <PageHome />;
@@ -82,7 +85,8 @@ const Layout = () => {
             <Route path="/DepMetrics" element={<PrivateRoute allowedRoles={['admin', 'manager']} > <DepMetrics /> </PrivateRoute>} />
             <Route path="/People" element={<PrivateRoute allowedRoles={['admin', 'manager']} > <People /> </PrivateRoute>} />
             <Route path="/EvalOverlook" element={<PrivateRoute allowedRoles={['admin', 'manager', 'employee']} > <EvalOverlook /> </PrivateRoute>} />
-            <Route path="/Eval" element={<PrivateRoute allowedRoles={['admin', 'manager']} > <Eval /> </PrivateRoute>} />
+            <Route path="/Eval/:id" element={<PrivateRoute allowedRoles={['admin', 'manager']} > <Eval /> </PrivateRoute>} />
+
             {/* Редирект на страницу логина для несуществующих маршрутов */}
             <Route path="*" element={<Navigate to="/Login" />} />
           </Routes>

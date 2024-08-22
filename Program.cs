@@ -93,20 +93,22 @@ app.MapGet("/categories", async (SparkDb db) =>
 
 //     return Results.Created($"/eval/{form.id}", form);
 // });
-app.MapGet("/eval{id}", async (SparkDb db) =>
-    await db.topic
-    .Include(t => t.EvaluationOptions)
-    .ToListAsync());
-
-app.MapPost("/api/evaluate", async ([Microsoft.AspNetCore.Mvc.FromBody] EvaluationRequest request, SparkDb db) =>
+app.MapGet("/eval/{id}", async (int id, SparkDb db) =>
 {
-    // Создаем запись EvaluationForm
+    var user = await db.user
+        .Include(u => u.department) // Include department data
+        .FirstOrDefaultAsync(u => u.id == id);
+
+    return user is not null ? Results.Ok(user) : Results.NotFound();
+});
+app.MapPost("/evaluate", async ([Microsoft.AspNetCore.Mvc.FromBody] EvaluationRequest request, SparkDb db) =>
+{
     var form = new EvaluationForm
     {
         user_id = request.UserId,
         manager_id = request.ManagerId,
         created = DateTime.UtcNow,
-        deparment_id = request.DepartmentId,
+        deparment_id = 1, // Замените на актуальный department_id
         is_ready = true
     };
     
