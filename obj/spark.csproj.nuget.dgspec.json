@@ -1,6 +1,7 @@
 {
   "format": 1,
   "restore": {
+<<<<<<< HEAD
     "C:\\Users\\TremarDenzelThomas\\Documents\\projects\\spark\\spark.csproj": {}
   },
   "projects": {
@@ -15,6 +16,22 @@
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\TremarDenzelThomas\\AppData\\Roaming\\NuGet\\NuGet.Config"
+=======
+    "C:\\Users\\DeantratriceRoss\\Documents\\icstars\\spark\\spark.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\DeantratriceRoss\\Documents\\icstars\\spark\\spark.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\DeantratriceRoss\\Documents\\icstars\\spark\\spark.csproj",
+        "projectName": "spark",
+        "projectPath": "C:\\Users\\DeantratriceRoss\\Documents\\icstars\\spark\\spark.csproj",
+        "packagesPath": "C:\\Users\\DeantratriceRoss\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\DeantratriceRoss\\Documents\\icstars\\spark\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\DeantratriceRoss\\AppData\\Roaming\\NuGet\\NuGet.Config"
+>>>>>>> ab5b5fe912077f621ae12e90879106de407ce9ba
         ],
         "originalTargetFrameworks": [
           "net8.0"
