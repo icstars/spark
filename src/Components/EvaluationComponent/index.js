@@ -66,7 +66,7 @@ function EvaluationComponent() {
           payload.selectedOptions.push({
             categoryId: section.id,   // ID категории
             topicId: subSection.id,   // ID топика (подраздела)
-            optionId: selectedIndexes[subSection.id]  // ID выбранной опции
+            score: selectedIndexes[subSection.id]  // ID выбранной опции
           });
         }
 

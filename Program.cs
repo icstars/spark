@@ -84,7 +84,63 @@ app.MapGet("/evaluate", async (int id, SparkDb db) =>
      await db.user
       .Include(u => u.department).ToListAsync());
 
+app.MapPost("/evaluation", async (EvaluationRequest formDto, SparkDb _context) =>
+{
+    // Шаг 1: Create a record in the evaluation_form table
+    var evaluationForm = new EvaluationForm
+    {
+        user_id = formDto.UserId,
+        department_id = formDto.DepartmentId,
+        manager_id = formDto.ManagerId,
+        created = DateTime.Now,
+        is_ready = true  
+    };
 
+    _context.evaluation_form.Add(evaluationForm);
+    await _context.SaveChangesAsync();
+
+    // Getting the ID of the new evaluation_form record for use in other tables ??
+    int formId = evaluationForm.id;
+
+    // Шаг 2: Inserting data into the option_evaluation table
+    foreach (var option in formDto.EvaluationOptions)
+    {
+        var optionEvaluation = new EvaluationOption
+        {
+            topic_id = option.TopicId,
+            comment = option.Comment,
+            score = option.Score
+            
+        };
+        _context.evaluation_option.Add(optionEvaluation);
+    }
+
+    foreach (var topic in formDto.Topic)
+    {
+        var topicEntity = new Topic
+        {
+            category_id = topic.CategoryId,
+        };
+        _context.topic.Add(topicEntity);
+    }
+
+    // Шаг 3: Inserting comments for categories
+    foreach (var categoryComment in formDto.CategoryComments)
+    {
+        var categoryCommentEntity = new CategoryComment
+        {
+            category_id = categoryComment.CategoryId,
+            comment = categoryComment.Comment,
+            form_id = formId  // We use the received formId
+        };
+        _context.category_comment.Add(categoryCommentEntity);
+    }
+
+    // We save all changes to the database
+    await _context.SaveChangesAsync();
+
+    return Results.Ok(new { message = "Evaluation form created successfully!" });
+});
 
 
 //////////////////////
