@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import {Link} from 'react-router-dom';
+import checkmark_icon from "./img/check.png";
+import edit_icon from "./img/edit.png";
+import delete_icon from "./img/delete.png";
+import './people-style.css';
 
 function People() {
     const [people, setPeople] = useState([]);
     const [loading, setLoading] = useState(true);
     const [sortField, setSortField] = useState(null);
     const [sortOrder, setSortOrder] = useState('asc');
+    const [openMenuId, setOpenMenuId] = useState(null);
 
     // Fetch data from API
     useEffect(() => {
@@ -61,17 +66,27 @@ function People() {
         setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
     };
     
+    // Three dotes dropdown menu
+    const handleMenuToggle = (id) => {
+        if (openMenuId === id) {
+            setOpenMenuId(null); // Close the menu if it's already open
+        } else {
+            setOpenMenuId(id); // Open the menu for the clicked item
+        }
+    };
 
     if (loading) {
         return <p>Loading...</p>;
     }
 
     return (
-        <div className='container'>
+        <div className="people-container">
+            <h1>People</h1>
             <table>
                 <thead>
                     <tr>
                         <th><input type="checkbox" /></th>
+                        <th>Image</th>
                         <th onClick={() => handleSort('name')}>
                             Full Name {sortField === 'name' && (sortOrder === 'asc' ? '🔼' : '🔽')}</th>
                         <th>Date</th>
@@ -79,25 +94,49 @@ function People() {
                             Department{sortField === 'department' && (sortOrder === 'asc' ? '🔼' : '🔽')}</th>
                         <th onClick={() => handleSort('title')}>
                             Title{sortField === 'title' && (sortOrder === 'asc' ? '🔼' : '🔽')}</th>
-                        <th>Email</th>
+                        <th className='th-email'>Email</th>
                         <th>Status</th>
-                        <th>Action</th>
+                        <th className="th-action">Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     {people.map(p => (
                         <tr key={p.id}>
                             <td><input type="checkbox" /></td>
-                            <td>{p.firstname} {p.lastname}</td>
-                            <td>{p.date}</td>
-                            <td>{p.department?.name}</td>
-                            <td>{p.title}</td>
-                            <td>{p.email}</td>
-                            <td>{p.status}</td>
+                            <td><img src="" alt="Avatar"/></td>
                             <td>
-                                <button>Edit</button>
-                                <button>Delete</button>
+                                <Link to={`/home/${p.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                    {p.firstname} {p.lastname}
+                                </Link>
                             </td>
+                            <td>September 9, 2024{/*{p.date}*/}</td>
+                            <td>{p.department?.name}</td>
+                            <td>TitleTitle{/*{p.title}*/}</td> 
+                            <td className='td-email'>{p.email}</td>
+                            <td>
+                                <button className="td-status-b">Status</button>{/*{p.status}*/}
+                            </td>
+                            <td className="td-action-b"><div className="ellipsis-container">
+                                <button
+                                    className="ellipsis-button"
+                                    onClick={() => handleMenuToggle(p.id)}
+                                >
+                                    {openMenuId === p.id && (
+                                        <div className="dropdown-menu">
+                                            <button onClick={() => alert('Evaluate')}>
+                                                <img src={checkmark_icon} alt="checkmark"/>Evaluate
+                                            </button>
+                                            <button onClick={() => alert('Edit action')}>
+                                                <img src={edit_icon} alt="edit"/>Edit
+                                            </button>
+                                            <button onClick={() => alert('Delete action')}>
+                                                <img src={delete_icon} alt="delete"/>Delete
+                                            </button>
+                                        </div>
+                                    )}
+                                    &#x2026; {/* This represents the three dots */}
+                                </button>
+                            </div></td>
                         </tr>
                     ))}
                 </tbody>

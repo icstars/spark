@@ -7,8 +7,8 @@ body{
 }
 
 .container{
-    width: 65%;
-  
+    width: 100%;
+    display: flex;
     align-items: center;
     flex-direction: column;
 }
@@ -40,9 +40,9 @@ body{
 
 /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 
-.container.full-width {
-    width: 100%; /* or any other value that makes it occupy the space of the right panel */
-  }
+/* .container.full-width {
+    width: 100%;
+} */
 
 .footer{
     text-align: center;
@@ -89,7 +89,8 @@ body{
 }
 
 .nav-menu{
-    width: 15%;
+    width: 100%;
+    max-width: 250px;
 }
 
 .nav-element{
@@ -102,6 +103,7 @@ body{
     display: flex; /* Enable flexbox for list items */
     align-items: center; /* Vertically center items */
     padding: 5px 10px 5px 15px;
+    width: 100%;
 }
 
 .nav-element:hover li{
@@ -110,25 +112,14 @@ body{
     border-radius: 0px 4px 4px 0px; /* Rounded corners for the highlight */
 }
 
-.nav-element-link-1{
-    padding-right: 88px;
-}
-
-.nav-element-link-2{
-    white-space: nowrap; /* Prevent text from wrapping to a new line */
-    text-decoration: none;
-}
-
-.nav-element-link-3{
-    padding-right: 83px;
-}
-
 .nav-element-icon{
     width: 20px; /* Adjust width as needed */
     height: 20px; /* Adjust height as needed */
     margin-right: 10px; /* Space between image and link */
 }
 .nav-element-link{
+    display: flex;
+    align-items: center;
     text-decoration: none; /* Remove underline from link */
     color: #000; /* Set text color */
     font-size: 16px; /* Adjust font size as needed */
