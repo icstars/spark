@@ -9,9 +9,7 @@ function NavMenu() {
     const userId = localStorage.getItem('userId');
 
     return (
-
         <div>
-
             <ul className='nav-menu'>
                 <div className='nav-element'>
                     <li>
@@ -31,7 +29,6 @@ function NavMenu() {
                         <Link className='nav-element-link nav-element-link-3' to="/People">People</Link>
                     </li>
                 </div>
-                {/* <li><Link to="/Charts/LineChart">Charts</Link></li> */}
             </ul>
         </div>
     );

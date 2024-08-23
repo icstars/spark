@@ -9,7 +9,7 @@ namespace spark.Models
     {
         public EvaluationForm? form { get; set; }
         public List<EvaluationOption>? options { get; set; }
-        public List<TopicComment>? topicComments { get; set; }
+        public List<EvaluationOption>? comment { get; set; }
         public CategoryComment? categoryComment { get; set; }
     }
 }

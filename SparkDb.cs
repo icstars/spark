@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using spark;
 using spark.Models;
 
 public class SparkDb : DbContext
@@ -16,9 +15,7 @@ public class SparkDb : DbContext
         public DbSet<Category> category => Set<Category>();
         public DbSet<Topic> topic => Set<Topic>();
         public DbSet<CategoryComment> category_comment => Set<CategoryComment>();
-        public DbSet<TopicComment> topic_comment => Set<TopicComment>();
         public DbSet<EvaluationOption> evaluation_option => Set<EvaluationOption>();
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

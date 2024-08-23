@@ -45,7 +45,7 @@ const CategoryComponent = ({ categories }) => {
 
     const handleMouseLeave = (topicId) => {
         setSelectedIndexes(prevState => ({
-            ...prevState, 
+            ...prevState,
             [`hover-${topicId}`]: null
         }));
     };
@@ -69,6 +69,7 @@ const CategoryComponent = ({ categories }) => {
 
     // Function to gather all data and submit to backend
     const handleSubmitForm = async () => {
+
         const payload = {
             userId: parseInt(id),
             departmentId: departmentId, // Add department ID here
@@ -129,7 +130,7 @@ const CategoryComponent = ({ categories }) => {
 
     return (
         <div>
-            
+
             {categories.map(category => (
                 <div className='cat-wrapper' key={category.id}>
                     <div className='h1-evaluation-container'>
@@ -151,9 +152,9 @@ const CategoryComponent = ({ categories }) => {
                                                     onMouseEnter={() => handleMouseEnter(topic.id, optionIndex)}
                                                     onMouseLeave={() => handleMouseLeave(topic.id)}
                                                 >
-                                                    
+
                                                     {(selectedIndexes[`hover-${topic.id}`] === optionIndex || selectedIndexes[topic.id] === optionIndex) && (
-                                                        
+
                                                         <p className="hover-explanation">{explanations[optionIndex]}</p>
                                                     )}
                                                     <p className="option">{option.text}</p>

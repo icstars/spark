@@ -1,20 +1,15 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
+using spark.Models;
 
-namespace spark.Models
+public class Topic
 {
-    public class Topic
-    {
-        public int id { get; set; }
-        public int category_id { get; set; } // Foreign Key
-        public string? name { get; set; }
+    public int id { get; set; }
+    public int category_id { get; set; } // Foreign Key
 
-        [ForeignKey("category_id")]
-        public Category? category { get; set; }
-        public ICollection<EvaluationOption>? EvaluationOptions { get; set; }
-        public ICollection<TopicComment>? TopicComments { get; set; }
-    }
+    [ForeignKey("category_id")]
+    public Category? category { get; set; }
+
+    // This collection corresponds to the EvaluationOptions
+    public ICollection<EvaluationOption>? EvaluationOptions { get; set; }
+
 }

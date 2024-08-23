@@ -25,6 +25,7 @@
 }
 
 .h1-evaluation-title {
+  text-align: center;
   margin: 0;
   /* Remove default margin if needed */
   font-weight: bold;
@@ -41,7 +42,7 @@
   display: flex;
   justify-content: space-around; /* Center elements horizontally */
   align-items: center; /* Center elements vertically */
-  flex-direction: column; /* Align items vertically in a column */
+  flex-direction: row; /* Align items vertically in a column */
   width: 100%; /* Ensure full width for centering */
   margin-top: 30px;
 }

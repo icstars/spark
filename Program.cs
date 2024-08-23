@@ -1,8 +1,5 @@
 using System.Text.Json.Serialization;
-using IdentityModel.OidcClient;
-using k8s.KubeConfigModels;
 using Microsoft.EntityFrameworkCore;
-using spark;
 using spark.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -68,31 +65,12 @@ app.MapGet("/users/{id}", async (int id, SparkDb db) =>
     return user is not null ? Results.Ok(user) : Results.NotFound();
 });
 
-
-
-// app.MapGet("/categories", async (SparkDb db) =>
-//     await db.category
-//     //adding data about department
-//     .ToListAsync());
-// app.MapGet("/topics", async (SparkDb db) =>
-//     await db.topic
-//     //adding data about department
-//     .ToListAsync());
-
 app.MapGet("/categories", async (SparkDb db) =>
     await db.category
-    .Include(c => c.topic)
-        .ThenInclude(t => t.EvaluationOptions)
+    // .Include(c => c.topic)
+    //     .ThenInclude(t => t.EvaluationOptions)
     .ToListAsync());
 
-
-// app.MapPost("/eval", async (spark.Models.EvaluationForm form, SparkDb db) =>
-// {
-//     db.evaluation_form.Add(form);
-//     await db.SaveChangesAsync();
-
-//     return Results.Created($"/eval/{form.id}", form);
-// });
 app.MapGet("/eval/{id}", async (int id, SparkDb db) =>
 {
     var user = await db.user
@@ -101,98 +79,81 @@ app.MapGet("/eval/{id}", async (int id, SparkDb db) =>
 
     return user is not null ? Results.Ok(user) : Results.NotFound();
 });
+
 app.MapGet("/evaluate", async (int id, SparkDb db) =>
      await db.user
       .Include(u => u.department).ToListAsync());
 
-app.MapPost("/evaluate", async ([Microsoft.AspNetCore.Mvc.FromBody] EvaluationRequest request, SparkDb db) =>
+
+app.MapPost("/evaluate", async (spark.Models.EvaluationRequest request, SparkDb db) =>
 {
-    var form = new EvaluationForm
+    if (request == null || request.form == null)
     {
-        user_id = request.UserId,
-        manager_id = request.ManagerId,
+        return Results.BadRequest("Invalid request payload.");
+    }
+
+    // Create and save the evaluation form
+    var evaluationForm = new EvaluationForm
+    {
+        user_id = request.form.user_id,
+        department_id = request.form.department_id,
+        manager_id = request.form.manager_id,
         created = DateTime.UtcNow,
-        department_id = request.DepartmentId, 
-        is_ready = true
+        is_ready = true // Mark the form as completed
     };
 
-    db.evaluation_form.Add(form);
+    db.evaluation_form.Add(evaluationForm);
     await db.SaveChangesAsync();
 
-    foreach (var selectedOption in request.SelectedOptions)
+    // Save selected options (evaluation of topics)
+    if (request.options != null && request.options.Count > 0)
     {
-        var optionRecord = new EvaluationForm
+        foreach (var option in request.options)
         {
-            option_id = selectedOption.OptionId,
-            user_id = form.user_id,
-            manager_id = form.manager_id,
-            department_id = form.department_id,
-            created = form.created,
-            is_ready = form.is_ready
-        };
-        db.evaluation_form.Add(optionRecord);
+            var evaluationOption = new EvaluationOption
+            {
+                topic_id = option.topic_id,
+                score = option.score,
+                comment = option.comment
+            };
+
+            db.evaluation_option.Add(evaluationOption);
+            await db.SaveChangesAsync();  // Save each option
+        }
     }
 
-    foreach (var topicComment in request.TopicComments)
+    // Save topic comments
+    if (request.comment != null && request.comment.Count > 0)
     {
-        var comment = new TopicComment
+        foreach (var topicComment in request.comment)
         {
-            topic_id = topicComment.TopicId,
-            comment = topicComment.Comment,
-            form_id = form.id
-        };
-        db.topic_comment.Add(comment);
+            var behavior = new Behavior
+            {
+                form_id = evaluationForm.id,
+                text = topicComment.comment
+            };
+
+            db.behavior.Add(behavior);
+            await db.SaveChangesAsync();  // Save each topic comment
+        }
     }
 
-    foreach (var categoryComment in request.CategoryComments)
+    // Save category comments
+    if (request.categoryComment != null)
     {
-        var comment = new CategoryComment
+        var categoryComment = new CategoryComment
         {
-            category_id = categoryComment.CategoryId,
-            comment = categoryComment.Comment,
-            form_id = form.id
+            category_id = request.categoryComment.category_id,
+            form_id = evaluationForm.id,
+            comment = request.categoryComment.comment
         };
-        db.category_comment.Add(comment);
+
+        db.category_comment.Add(categoryComment);
+        await db.SaveChangesAsync();  // Save category comment
     }
 
-    await db.SaveChangesAsync();
-    return Results.Ok(new { success = true });
+    return Results.Ok(new { success = true, message = "Evaluation submitted successfully." });
 });
-
-
-///////////////////////////////////////////////////////
-///
-
-// app.MapPost("/evaluate", async ([Microsoft.AspNetCore.Mvc.FromBody] EvaluationRequest request, SparkDb db) =>
-
-// {
-//     // Создаем новую форму оценки
-//     db.evaluation_form.Add(request.form);
-//     await db.SaveChangesAsync();
-
-//     // Привязываем все EvaluationOptions к форме
-//     foreach (var option in request.options)
-//     {
-//         option.form_id = request.form.id;
-//         db.evaluation_option.Add(option);
-//     }
-
-//     // Привязываем все TopicComments к форме
-//     foreach (var comment in request.topicComments)
-//     {
-//         comment.form_id = request.form.id;
-//         db.topic_comment.Add(comment);
-//     }
-
-//     // Привязываем CategoryComment к форме
-//     request.categoryComment.form_id = request.form.id;
-//     db.category_comment.Add(request.categoryComment);
-
-//     // Сохраняем изменения
-//     await db.SaveChangesAsync();
-
-//     return Results.Ok(new { success = true });
-// });
 
 
 //////////////////////

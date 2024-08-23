@@ -3,6 +3,7 @@ import axios from 'axios';
 import CategoryComponent from '../CategoryComponent';
 import { Helmet } from 'react-helmet';
 import { useParams } from "react-router-dom";
+import EvalOverlook from '../EvalOverlook';
 
 function Eval() {
     const [categories, setCategories] = useState([]);
@@ -20,7 +21,7 @@ function Eval() {
 
         const fetchUserData = async () => {
             try {
-                
+
                 const response = await axios.get(`http://localhost:5212/eval/${id}`);
                 setUser(response.data);
             } catch (error) {
@@ -66,7 +67,8 @@ function Eval() {
             <h1>Evaluation Page</h1>
             {/* Render CategoryComponent only if categories are available */}
             {categories.length > 0 ? (
-                <CategoryComponent categories={categories} />
+                // <CategoryComponent categories={categories} />
+                <EvalOverlook categories={categories}/>
             ) : (
                 <p>No categories available.</p>
             )}

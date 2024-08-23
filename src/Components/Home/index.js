@@ -31,7 +31,6 @@ function Home() {
   }
 
   return (
-
     <div className="home">
       <Helmet>Home</Helmet>
       {user ? (
@@ -46,8 +45,6 @@ function Home() {
       ) : (
         <p>Loading...</p>
       )}
-      
-      
     </div>
   );
 }
