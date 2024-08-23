@@ -143,9 +143,33 @@
 
 .evaluation-button{
 
-    width: 1000px;
-    margin: 0px 20px 0px 20px;
-    padding: 10px 20px 10px 20px;
-
+    width: 150px; /* Set the width of the container */
+    margin: 0px 20px; /* Set the top/bottom margin */
+    padding: 10px 20px; /* Add padding to the container */
+    background-color: black; /* Set the container background color to black */
+    border-radius: 10px; /* Round the corners of the container */
+    display: flex; /* Use flex to center the button */
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
 }
+
+/* Styling the button itself */
+   .evaluation-button button {
+    width: 100%; /* Make the button fill the container */
+    padding: 0; /* Remove default padding */
+    background-color: transparent; /* Make the button background transparent */
+    color: white; /* Set the text color to white */
+    border: none; /* Remove any border */
+    border-radius: 10px; /* Ensure corners match container */
+    font-size: 12px; /* Set font size */
+    font-family: 'Roboto', sans-serif; /* Set font family */
+    font-weight: 500; /* Set font weight */
+    text-align: center; /* Center the text */
+    line-height: 1.5; /* Set line height for text */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    outline: none; /* Remove the default outline on focus */
+} 
+
+
+
 /*|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| */
