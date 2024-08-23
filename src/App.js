@@ -13,7 +13,7 @@ import DepMetrics from './Components/DepMetrics';
 import People from './Components/People';
 import Login from './Components/Login';
 import LineChart from './Components/Charts/LineChart';
-import EvalOverlook from './Components/EvalOverlook';
+import EvaluationComponent from './Components/EvaluationComponent';
 import Eval from './Components/Eval';
 import PrivateRoute from './Components/PrivateRoute';
 
@@ -36,9 +36,9 @@ const Layout = () => {
   // Matching routes that have parameters
   const matchEval = useMatch('/Eval/:id');
   // Array of routes where the RightPanel should not be displayed.
-  const notApplyPages = ['/People', '/Login', '/EvalOverlook', , matchEval?.pathname];
+  const notApplyPages = ['/People', '/Login', '/EvaluationComponent', , matchEval?.pathname];
   const notApplyHeaderAndFooter = ['/Login'];
-  const notApplyNavMenu = ['/EvalOverlook', matchEval?.pathname, '/Login'];
+  const notApplyNavMenu = ['/EvaluationComponent', matchEval?.pathname, '/Login'];
   // Determine the RightPanel component to display based on the current route.
   // If no specific component is found, default to PageHome.
   const RightPanelComponent = rightPanelComponents[location.pathname] || <PageHome />;
@@ -78,7 +78,7 @@ const Layout = () => {
             <Route path="/home/:id" element={<PrivateRoute allowedRoles={['admin', 'manager', 'employee']}> <Home /> </PrivateRoute>} />
             <Route path="/DepMetrics" element={<PrivateRoute allowedRoles={['admin', 'manager']} > <DepMetrics /> </PrivateRoute>} />
             <Route path="/People" element={<PrivateRoute allowedRoles={['admin', 'manager']} > <People /> </PrivateRoute>} />
-            <Route path="/EvalOverlook" element={<PrivateRoute allowedRoles={['admin', 'manager', 'employee']} > <EvalOverlook /> </PrivateRoute>} />
+            <Route path="/EvaluationComponent" element={<PrivateRoute allowedRoles={['admin', 'manager', 'employee']} > <EvaluationComponent /> </PrivateRoute>} />
             <Route path="/Eval/:id" element={<PrivateRoute allowedRoles={['admin', 'manager']} > <Eval /> </PrivateRoute>} />
             {/* Редирект на страницу логина для несуществующих маршрутов */}
             <Route path="*" element={<Navigate to="/Login" />} />

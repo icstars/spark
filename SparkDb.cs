@@ -26,6 +26,3 @@ public class SparkDb : DbContext
                 .HasForeignKey(t => t.category_id);
         }
     }
-
-    
-

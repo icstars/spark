@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import CategoryComponent from '../CategoryComponent';
 import { Helmet } from 'react-helmet';
 import { useParams } from "react-router-dom";
-import EvalOverlook from '../EvalOverlook';
+import EvalOverlook from '../EvaluationComponent';
 
 function Eval() {
+
     const [categories, setCategories] = useState([]);
     const { id } = useParams();
     const [user, setUser] = useState(null);
@@ -21,7 +21,6 @@ function Eval() {
 
         const fetchUserData = async () => {
             try {
-
                 const response = await axios.get(`http://localhost:5212/eval/${id}`);
                 setUser(response.data);
             } catch (error) {

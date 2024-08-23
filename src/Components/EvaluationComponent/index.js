@@ -5,18 +5,20 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import './eval-overlook-style.css';
 
-function EvalOverlook() {
+
+
+function EvaluationComponent() {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  // Хранение состояний для всех оценок и комментариев
+  // Storing the situation for all ratings and comments
   const [selectedIndexes, setSelectedIndexes] = useState({});
   const [comments, setComments] = useState({});
   const [departmentId, setDepartmentId] = useState(null);
   const [error, setError] = useState('');
 
   useEffect(() => {
-    // Получение ID отдела пользователя
+    // Getting the user's department ID
     axios.get(`http://localhost:5212/users/${id}`)
       .then(response => {
         if (response.data && response.data.department) {
@@ -29,15 +31,15 @@ function EvalOverlook() {
       });
   }, [id]);
 
-  // Обработчик для выбора оценок
+  // Handler for selecting ratings
   const handleRatingChange = (categoryId, topicId, optionId) => {
     setSelectedIndexes(prev => ({
       ...prev,
-      [topicId]: optionId // Используем `id` топика и опции
+      [topicId]: optionId // Using the topic `id` and options
     }));
   };
 
-  // Обработчик для изменения комментариев к подразделам и разделам
+  // Handler for changing comments to subsections and sections
   const handleCommentChange = (key, value) => {
     setComments(prev => ({
       ...prev,
@@ -45,21 +47,21 @@ function EvalOverlook() {
     }));
   };
 
-  // Функция для отправки формы на сервер
+  // Function for submitting a form to the server
   const handleSubmitForm = async () => {
     const payload = {
       userId: parseInt(id),
       departmentId: departmentId,
       managerId: parseInt(localStorage.getItem('userId')),
-      selectedOptions: [],  // Для хранения выбранных вариантов
-      topicComments: [],    // Для комментариев к подразделам
-      categoryComments: []  // Для комментариев к разделам
+      selectedOptions: [],  // To store selected options
+      topicComments: [],    // For comments on subsections
+      categoryComments: []  // For comments on sections
     };
 
-    // Проходим по каждому разделу и собираем выбранные оценки и комментарии
+    // We go through each section and collect selected ratings and comments
     sections.forEach((section) => {
       section.subSections.forEach((subSection) => {
-        // Если оценка выбрана, добавляем ее в payload
+        // If the rating is selected, add it to the payload
         if (selectedIndexes[subSection.id] !== undefined) {
           payload.selectedOptions.push({
             categoryId: section.id,   // ID категории
@@ -499,4 +501,4 @@ function EvalOverlook() {
   );
 }
 
-export default EvalOverlook;
+export default EvaluationComponent;

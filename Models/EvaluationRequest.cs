@@ -7,9 +7,12 @@ namespace spark.Models
 {
     public class EvaluationRequest
     {
-        public EvaluationForm? form { get; set; }
-        public List<EvaluationOption>? options { get; set; }
-        public List<EvaluationOption>? comment { get; set; }
-        public CategoryComment? categoryComment { get; set; }
+        public int UserId { get; set; }  // Matches 'userId' in the payload
+    public int DepartmentId { get; set; }  // Matches 'departmentId' in the payload
+    public int ManagerId { get; set; }  // Matches 'managerId' in the payload
+
+    public List<SelectedOption>? SelectedOptions { get; set; }  // Matches 'selectedOptions' in the payload
+    public List<EvaluationOption>? TopicComments { get; set; }  // Matches 'topicComments' in the payload
+    public List<CategoryComment>? CategoryComments { get; set; }  // Matches 'categoryComments' in the payload
     }
 }
