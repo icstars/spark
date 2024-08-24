@@ -110,9 +110,10 @@ app.MapPost("/evaluate", async (EvaluationRequest formDto, SparkDb _context) =>
             topic_id = option.TopicId,
             comment = option.Comment,
             score = option.Score,
-            form_id = formId
+            form_id = 1
         };
         _context.evaluation_option.Add(optionEvaluation);
+         await _context.SaveChangesAsync();
     }
 
     // Шаг 3: Inserting comments for categories
@@ -122,9 +123,10 @@ app.MapPost("/evaluate", async (EvaluationRequest formDto, SparkDb _context) =>
         {
             category_id = categoryComment.CategoryId,
             comment = categoryComment.Comment,
-            form_id = formId  // We use the received formId
+            form_id = 1  // We use the received formId
         };
         _context.category_comment.Add(categoryCommentEntity);
+         await _context.SaveChangesAsync();
     }
 
     // We save all changes to the database
