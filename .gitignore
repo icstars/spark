@@ -26,7 +26,6 @@ yarn-error.log*
 appsettings.json
 
 appsettings
-/bin/*
 /obj
 spark.generated.sln
-
+.gitignore
