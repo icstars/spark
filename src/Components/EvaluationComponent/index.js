@@ -53,7 +53,7 @@ function EvaluationComponent() {
       userId: parseInt(id),
       departmentId: departmentId,
       managerId: parseInt(localStorage.getItem('userId')),
-      selectedOptions: [],  // To store selected options
+      evaluationOptions: [],  // To store selected options
       topicComments: [],    // For comments on subsections
       categoryComments: []  // For comments on sections
     };
@@ -63,7 +63,7 @@ function EvaluationComponent() {
       section.subSections.forEach((subSection) => {
         // If the rating is selected, add it to the payload
         if (selectedIndexes[subSection.id] !== undefined) {
-          payload.selectedOptions.push({
+          payload.evaluationOptions.push({
             categoryId: section.id,   // ID категории
             topicId: subSection.id,   // ID топика (подраздела)
             score: selectedIndexes[subSection.id]  // ID выбранной опции
@@ -87,7 +87,7 @@ function EvaluationComponent() {
         });
       }
     });
-
+    console.log(payload)
     console.log("Отправляемые данные:", JSON.stringify(payload, null, 2));
 
     // Отправка данных на сервер

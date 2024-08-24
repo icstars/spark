@@ -12,11 +12,11 @@ namespace spark.Models
         public int DepartmentId { get; set; }  // Matches 'departmentId' in the payload
         public int ManagerId { get; set; }  // Matches 'managerId' in the payload
 
-        public List<EvaluationOptionDto>? EvaluationOptions { get; set; }  // Matches 'topicComments' in the payload
+        public List<EvaluationOptionDto>? EvaluationOptions { get; set; }  // Matches 'EvaluationOptions' in the payload
         public List<CategoryCommentDto>? CategoryComments { get; set; }  // Matches 'categoryComments' in the payload
 
-    //     public ICollection<EvaluationOptionDto>? EvaluationOptions { get; set; } = new List<EvaluationOptionDto>();
-    // public ICollection<CategoryCommentDto>? CategoryComments { get; set; } = new List<CategoryCommentDto>();
+        // public ICollection<EvaluationOptionDto>? EvaluationOptions { get; set; } = new List<EvaluationOptionDto>();
+        // public ICollection<CategoryCommentDto>? CategoryComments { get; set; } = new List<CategoryCommentDto>();
     }
 
 

@@ -101,19 +101,20 @@ app.MapPost("/evaluate", async (EvaluationRequest formDto, SparkDb _context) =>
 
     // Getting the ID of the new evaluation_form record for use in other tables ??
     int formId = evaluationForm.id;
-
+    
     // Шаг 2: Inserting data into the option_evaluation table
     foreach (var option in formDto.EvaluationOptions)
     {
+        
         var optionEvaluation = new EvaluationOption
         {
             topic_id = option.TopicId,
             comment = option.Comment,
             score = option.Score,
-            form_id = 1
+            form_id = formId
         };
         _context.evaluation_option.Add(optionEvaluation);
-         await _context.SaveChangesAsync();
+         
     }
 
     // Шаг 3: Inserting comments for categories
@@ -123,10 +124,10 @@ app.MapPost("/evaluate", async (EvaluationRequest formDto, SparkDb _context) =>
         {
             category_id = categoryComment.CategoryId,
             comment = categoryComment.Comment,
-            form_id = 1  // We use the received formId
+            form_id = formId // We use the received formId
         };
         _context.category_comment.Add(categoryCommentEntity);
-         await _context.SaveChangesAsync();
+         
     }
 
     // We save all changes to the database
