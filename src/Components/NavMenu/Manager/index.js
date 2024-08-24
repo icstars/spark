@@ -9,23 +9,34 @@ function NavMenu() {
     const userId = localStorage.getItem('userId');
 
     return (
-        <nav>
+
+        <div>
+
             <ul className='nav-menu'>
-                <li>
-                    <img className='nav-element-icon' src={profile_icon} alt="Home icon"></img>
-                    <Link className='nav-element-link nav-element-link-1' to={`/home/${userId}`}>Home</Link>
-                </li>
-                <li>
-                    <img className='nav-element-icon' src={metrics_icon} alt="DeptMetricsIcon"></img>
-                    <Link className='nav-element-link nav-element-link-2' to="/DepMetrics">Department metrics</Link>
-                </li>
-                <li>
-                    <img className='nav-element-icon' src={people_icon} alt="icon"></img>
-                    <Link className='nav-element-link nav-element-link-3' to="/People">People</Link>
-                </li>
+                <div className='nav-element'>
+                    <li>
+                        <Link className='nav-element-link' to={`/home/${userId}`}>
+                            <img className='nav-element-icon' src={profile_icon} alt="Home icon"></img>Home
+                        </Link>
+                    </li>
+                </div>
+                <div className='nav-element'>
+                    <li>
+                        <Link className='nav-element-link' to="/DepMetrics">
+                            <img className='nav-element-icon' src={metrics_icon} alt="DeptMetricsIcon"></img>Department metrics
+                        </Link>
+                    </li>
+                </div>
+                <div className='nav-element'>
+                    <li>
+                        <Link className='nav-element-link' to="/People">
+                            <img className='nav-element-icon' src={people_icon} alt="icon"></img>People
+                        </Link>
+                    </li>
+                </div>
                 {/* <li><Link to="/Charts/LineChart">Charts</Link></li> */}
             </ul>
-        </nav>
+        </div>
     );
 };
 
