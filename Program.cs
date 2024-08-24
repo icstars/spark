@@ -80,66 +80,78 @@ app.MapGet("/eval/{id}", async (int id, SparkDb db) =>
     return user is not null ? Results.Ok(user) : Results.NotFound();
 });
 
-app.MapGet("/evaluate", async (int id, SparkDb db) =>
-     await db.user
-      .Include(u => u.department).ToListAsync());
+// app.MapGet("/evaluate", async (int id, SparkDb db) =>
+//      await db.user
+//       .Include(u => u.department).ToListAsync());
 
-app.MapPost("/evaluation", async (EvaluationRequest formDto, SparkDb _context) =>
+app.MapPost("/evaluate", async (HttpRequest request, SparkDb _context) =>
 {
-    // Шаг 1: Create a record in the evaluation_form table
-    var evaluationForm = new EvaluationForm
+    try
     {
-        user_id = formDto.UserId,
-        department_id = formDto.DepartmentId,
-        manager_id = formDto.ManagerId,
-        created = DateTime.Now,
-        is_ready = true  
-    };
+        // Чтение JSON из запроса
+        var payload = await request.ReadFromJsonAsync<EvaluationRequest>();
 
-    _context.evaluation_form.Add(evaluationForm);
-    await _context.SaveChangesAsync();
-
-    // Getting the ID of the new evaluation_form record for use in other tables ??
-    int formId = evaluationForm.id;
-
-    // Шаг 2: Inserting data into the option_evaluation table
-    foreach (var option in formDto.EvaluationOptions)
-    {
-        var optionEvaluation = new EvaluationOption
+        if (payload == null)
         {
-            topic_id = option.TopicId,
-            comment = option.Comment,
-            score = option.Score
-            
-        };
-        _context.evaluation_option.Add(optionEvaluation);
-    }
-
-    foreach (var topic in formDto.Topic)
-    {
-        var topicEntity = new Topic
+            return Results.BadRequest("Invalid JSON data");
+        }
+        // Шаг 1: Create a record in the evaluation_form table
+        var evaluationForm = new EvaluationForm
         {
-            category_id = topic.CategoryId,
+            user_id = payload.UserId,
+            department_id = payload.DepartmentId,
+            manager_id = payload.ManagerId,
+            created = DateTime.Now,
+            is_ready = true
         };
-        _context.topic.Add(topicEntity);
-    }
 
-    // Шаг 3: Inserting comments for categories
-    foreach (var categoryComment in formDto.CategoryComments)
-    {
-        var categoryCommentEntity = new CategoryComment
+        // Шаг 2: Inserting data into the option_evaluation table
+        foreach (var option in payload.EvaluationOptions)
         {
-            category_id = categoryComment.CategoryId,
-            comment = categoryComment.Comment,
-            form_id = formId  // We use the received formId
-        };
-        _context.category_comment.Add(categoryCommentEntity);
+            var optionEvaluation = new EvaluationOption
+            {
+                topic_id = option.TopicId,
+                comment = option.Comment,
+                score = option.Score
+
+            };
+            _context.evaluation_option.Add(optionEvaluation);
+        }
+
+        foreach (var topic in payload.Topic)
+        {
+            var topicEntity = new Topic
+            {
+                category_id = topic.CategoryId,
+            };
+            _context.topic.Add(topicEntity);
+        }
+
+        // Шаг 3: Inserting comments for categories
+        foreach (var categoryComment in payload.CategoryComments)
+        {
+            var categoryCommentEntity = new CategoryComment
+            {
+                category_id = categoryComment.CategoryId,
+                comment = categoryComment.Comment,
+                form_id = categoryComment.FormId  // We use the received formId
+            };
+            _context.category_comment.Add(categoryCommentEntity);
+        }
+
+       // Добавляем форму оценки в базу данных
+        _context.evaluation_form.Add(evaluationForm);
+        await _context.SaveChangesAsync();  // Сохраняем изменения в базе данных
+
+        // Возвращаем успешный ответ
+        return Results.Ok("Form submitted successfully");
     }
-
-    // We save all changes to the database
-    await _context.SaveChangesAsync();
-
-    return Results.Ok(new { message = "Evaluation form created successfully!" });
+    
+     catch (Exception ex)  // Обработка исключений
+    {
+    // Если возникает ошибка, возвращаем статус 500 (внутренняя ошибка сервера)
+    return Results.Problem($"Internal server error: {ex.Message}", statusCode: 500);
+}
 });
 
 

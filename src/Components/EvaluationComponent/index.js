@@ -16,20 +16,42 @@ function EvaluationComponent() {
   const [comments, setComments] = useState({});
   const [departmentId, setDepartmentId] = useState(null);
   const [error, setError] = useState('');
+  const [people, setPeople] = useState([]);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    // Getting the user's department ID
-    axios.get(`http://localhost:5212/users/${id}`)
-      .then(response => {
-        if (response.data && response.data.department) {
-          setDepartmentId(response.data.department.id); // Сохранение ID отдела
+    const fetchData = async () => {
+      try {
+        // Fetch user details
+        const userResponse = await axios.get(`http://localhost:5212/users/${id}`);
+        if (userResponse.data && userResponse.data.department) {
+          setDepartmentId(userResponse.data.department.id);
+
+          // Set people only if it's an array
+          if (Array.isArray(userResponse.data)) {
+            setPeople(userResponse.data);
+          }
+
+          // Check if the user is a manager or admin and then fetch employees
+          axios.get('http://localhost:5212/employees')
+            .then(response => {
+              console.log(response.data)
+              setPeople(response.data);
+            })
+          axios.get(`http://localhost:5212/users/${id}`)
+            .then(response => {
+              setUser(response.data);
+            })
         }
-      })
-      .catch(error => {
-        setError('Failed to fetch user department');
+      } catch (error) {
+        setError('Failed to fetch data');
         console.error(error);
-      });
+      }
+    };
+
+    fetchData();
   }, [id]);
+
 
   // Handler for selecting ratings
   const handleRatingChange = (categoryId, topicId, optionId) => {
@@ -47,6 +69,7 @@ function EvaluationComponent() {
     }));
   };
 
+  //method to allowed ------ TODO
   // Function for submitting a form to the server
   const handleSubmitForm = async () => {
     const payload = {
@@ -87,7 +110,7 @@ function EvaluationComponent() {
         });
       }
     });
-
+//access through endpoint
     console.log("Отправляемые данные:", JSON.stringify(payload, null, 2));
 
     // Отправка данных на сервер
@@ -438,10 +461,12 @@ function EvaluationComponent() {
   return (
     <div>
       <Helmet>
-        <title>Your evaluation</title>
+        <title>Evaluation</title>
       </Helmet>
       <div>
-        <h1>Bob's Rubrics</h1>
+      {/* {user ? (<h1> {user.firstname}</h1>)}  work in progress */}
+        {people.map(person => (
+          <h1 key={person.id}> {person.firstname}</h1>))}
       </div>
       <button onClick={() => navigate(-1)}>
         <img className="return-button-icon" src={return_icon} alt="Return" /> Return
