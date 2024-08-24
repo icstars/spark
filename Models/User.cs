@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace spark
+namespace spark.Models
 {
     public class User
     {
@@ -17,11 +17,12 @@ namespace spark
         public string? password { get; set; }
         public bool is_admin { get; set; }
         public string? firstname { get; set; }
-        public string? lastname { get; set; }  
+        public string? lastname { get; set; }
+        
 
         public int? department_id { get; set; } // Foreign Key
-        
+
         [ForeignKey("department_id")]
-        public Department? department {get; set;} //connection with department
+        public Department? department { get; set; } //connection with department
     }
 }

@@ -1,7 +1,6 @@
-using IdentityModel.OidcClient;
-using k8s.KubeConfigModels;
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
-using spark;
+using spark.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +10,7 @@ builder.Services.AddDbContext<SparkDb>(options =>
         builder.Configuration.GetConnectionString("sparkdb"),
         ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("sparkdb"))
     ).LogTo(Console.WriteLine, LogLevel.Information));
-
+builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options => options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 var myPolicy = "mypolicy";
 
 builder.Services.AddCors(options =>
@@ -26,7 +25,7 @@ var app = builder.Build();
 
 app.UseCors(myPolicy);
 
-app.MapPost("/login", async (spark.User employee, SparkDb db) =>
+app.MapPost("/login", async (spark.Models.User employee, SparkDb db) =>
 {
     var user = await db.user
         .FirstOrDefaultAsync(u => u.username == employee.username && u.password == employee.password);
@@ -66,16 +65,92 @@ app.MapGet("/users/{id}", async (int id, SparkDb db) =>
     return user is not null ? Results.Ok(user) : Results.NotFound();
 });
 
+app.MapGet("/categories", async (SparkDb db) =>
+    await db.category
+    // .Include(c => c.topic)
+    //     .ThenInclude(t => t.EvaluationOptions)
+    .ToListAsync());
+
+app.MapGet("/eval/{id}", async (int id, SparkDb db) =>
+{
+    var user = await db.user
+        .Include(u => u.department) // Include department data
+        .FirstOrDefaultAsync(u => u.id == id);
+
+    return user is not null ? Results.Ok(user) : Results.NotFound();
+});
+
+// app.MapGet("/evaluate", async (int id, SparkDb db) =>
+//      await db.user
+//       .Include(u => u.department).ToListAsync());
+
+app.MapPost("/evaluate", async (EvaluationRequest formDto, SparkDb _context) =>
+{
+    // Шаг 1: Create a record in the evaluation_form table
+    var evaluationForm = new EvaluationForm
+    {
+        user_id = formDto.UserId,
+        department_id = formDto.DepartmentId,
+        manager_id = formDto.ManagerId,
+        created = DateTime.Now,
+        is_ready = true,
+    };
+
+    _context.evaluation_form.Add(evaluationForm);
+    await _context.SaveChangesAsync();
+
+    // Getting the ID of the new evaluation_form record for use in other tables ??
+    int formId = evaluationForm.id;
+    
+    // Шаг 2: Inserting data into the option_evaluation table
+    foreach (var option in formDto.EvaluationOptions)
+    {
+        
+        var optionEvaluation = new EvaluationOption
+        {
+            topic_id = option.TopicId,
+            comment = option.Comment,
+            score = option.Score,
+            form_id = formId
+        };
+        _context.option_evaluation.Add(optionEvaluation);
+    
+    }
+
+    
+
+    // Шаг 3: Inserting comments for categories
+    foreach (var categoryComment in formDto.CategoryComments)
+    {
+        var categoryCommentEntity = new CategoryComment
+        {
+            category_id = categoryComment.CategoryId,
+            comment = categoryComment.Comment,
+            form_id = formId // We use the received formId
+        };
+        _context.category_comment.Add(categoryCommentEntity);
+       
+    }
+
+    // We save all changes to the database
+    await _context.SaveChangesAsync();
+
+    return Results.Ok(new { message = "Evaluation form created successfully!" });
+});
+
+
+//////////////////////
+
 app.MapGet("/employees/admins", async (SparkDb db) =>
     await db.user.Where(t => t.is_admin).ToListAsync());
 
 app.MapGet("/employees/{id}", async (int id, SparkDb db) =>
     await db.user.FindAsync(id)
-        is spark.User employee
+        is spark.Models.User employee
             ? Results.Ok(employee)
             : Results.NotFound());
 
-app.MapPost("/employees", async (spark.User employee, SparkDb db) =>
+app.MapPost("/employees", async (spark.Models.User employee, SparkDb db) =>
 {
     db.user.Add(employee);
     await db.SaveChangesAsync();
@@ -83,7 +158,7 @@ app.MapPost("/employees", async (spark.User employee, SparkDb db) =>
     return Results.Created($"/employees/{employee.id}", employee);
 });
 
-app.MapPut("/employees/{id}", async (int id, spark.User inputEmployee, SparkDb db) =>
+app.MapPut("/employees/{id}", async (int id, spark.Models.User inputEmployee, SparkDb db) =>
 {
     var employee = await db.user.FindAsync(id);
 
@@ -102,7 +177,7 @@ app.MapPut("/employees/{id}", async (int id, spark.User inputEmployee, SparkDb d
 
 app.MapDelete("/employees/{id}", async (int id, SparkDb db) =>
 {
-    if (await db.user.FindAsync(id) is spark.User employee)
+    if (await db.user.FindAsync(id) is spark.Models.User employee)
     {
         db.user.Remove(employee);
         await db.SaveChangesAsync();

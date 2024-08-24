@@ -1,7 +1,6 @@
 function Employee() {
     return (
         <div>
-
         </div>
     )
 }

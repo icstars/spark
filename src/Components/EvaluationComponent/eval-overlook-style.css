@@ -25,6 +25,7 @@
 }
 
 .h1-evaluation-title {
+  text-align: center;
   margin: 0;
   /* Remove default margin if needed */
   font-weight: bold;
@@ -41,29 +42,39 @@
   display: flex;
   justify-content: space-around; /* Center elements horizontally */
   align-items: center; /* Center elements vertically */
-  flex-direction: column; /* Align items vertically in a column */
+  flex-direction: row; /* Align items vertically in a column */
   width: 100%; /* Ensure full width for centering */
-
+  margin-top: 30px;
 }
 
 .title-wrapper {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
+  flex-direction: row;
   /* Distributes space between items */
   align-items: center;
   /* margin-top: 20px; */
   width: 99%;
+  margin-top: 25px;
+
+ 
 }
 
 .wrapper-element {
+ 
   flex: 1;
   position: relative;
-  /* Each element takes up an equal amount of space */
   box-shadow: 2px 2px 5px gray;
   margin: 5px;
-  border-radius: 5%;
-  padding: 100px;
-
+  border-radius: 3%;
+  padding: 20px; /* Уменьшил padding, чтобы текст не выглядел слишком далеко от границ */
+  height: 200px; /* Задал фиксированную высоту для всех элементов */
+  max-width: 300px; /* Можно задать максимальную ширину, чтобы избежать слишком широких элементов */
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 
 .wrapper-element:hover {

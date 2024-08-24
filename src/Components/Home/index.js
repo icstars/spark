@@ -3,12 +3,14 @@ import LineChart from '../Charts/LineChart';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from "react-router-dom";
 import axios from 'axios';
+import PageHome from '../RightPanel/PageHome';
 
 function Home() {
   const { id } = useParams();
   const [user, setUser] = useState(null); 
   const [error, setError] = useState('');
 
+ 
   useEffect(() => {
     if (!id) {
       setError('User ID is not provided in the URL');
@@ -29,7 +31,6 @@ function Home() {
   }
 
   return (
-
     <div className="home">
       <Helmet>Home</Helmet>
       {user ? (
@@ -39,12 +40,11 @@ function Home() {
           <p>Department: {user.department?.name}</p>
           <p>Email: {user.email}</p>
           <LineChart />
+          <PageHome userId={id} />
         </div>
       ) : (
         <p>Loading...</p>
       )}
-      
-
     </div>
   );
 }
