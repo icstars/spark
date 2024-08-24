@@ -5096,27 +5096,39 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\ValeriiKharchenko\\.nuget\\packages\\": {}
+<<<<<<< HEAD
+    "C:\\Users\\TremarDenzelThomas\\.nuget\\packages\\": {}
+=======
+    "C:\\Users\\DeantratriceRoss\\.nuget\\packages\\": {}
+>>>>>>> ab5b5fe912077f621ae12e90879106de407ce9ba
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Users\\ValeriiKharchenko\\Documents\\icstars\\spark\\spark.csproj",
+<<<<<<< HEAD
+      "projectUniqueName": "C:\\Users\\TremarDenzelThomas\\Documents\\projects\\spark\\spark.csproj",
       "projectName": "spark",
-      "projectPath": "c:\\Users\\ValeriiKharchenko\\Documents\\icstars\\spark\\spark.csproj",
-      "packagesPath": "C:\\Users\\ValeriiKharchenko\\.nuget\\packages\\",
-      "outputPath": "c:\\Users\\ValeriiKharchenko\\Documents\\icstars\\spark\\obj\\",
+      "projectPath": "C:\\Users\\TremarDenzelThomas\\Documents\\projects\\spark\\spark.csproj",
+      "packagesPath": "C:\\Users\\TremarDenzelThomas\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\TremarDenzelThomas\\Documents\\projects\\spark\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\ValeriiKharchenko\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\TremarDenzelThomas\\AppData\\Roaming\\NuGet\\NuGet.Config"
+=======
+      "projectUniqueName": "C:\\Users\\DeantratriceRoss\\Documents\\icstars\\spark\\spark.csproj",
+      "projectName": "spark",
+      "projectPath": "C:\\Users\\DeantratriceRoss\\Documents\\icstars\\spark\\spark.csproj",
+      "packagesPath": "C:\\Users\\DeantratriceRoss\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\DeantratriceRoss\\Documents\\icstars\\spark\\obj\\",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "C:\\Users\\DeantratriceRoss\\AppData\\Roaming\\NuGet\\NuGet.Config"
+>>>>>>> ab5b5fe912077f621ae12e90879106de407ce9ba
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -5192,7 +5204,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

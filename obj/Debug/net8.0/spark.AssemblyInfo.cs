@@ -13,7 +13,15 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("spark")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
+<<<<<<< HEAD
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d0cc780b231ac9f71662e438198ed0434654f455")]
+=======
+<<<<<<< HEAD
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+994baef2f9672cb078831016848bcd59561f8b30")]
+=======
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4bc6a4a317f3281f422c1088babf3103f677d828")]
+>>>>>>> ab5b5fe912077f621ae12e90879106de407ce9ba
+>>>>>>> 2104cbeee53306268138ae974fda7c02503aeefc
 [assembly: System.Reflection.AssemblyProductAttribute("spark")]
 [assembly: System.Reflection.AssemblyTitleAttribute("spark")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

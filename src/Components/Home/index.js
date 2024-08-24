@@ -6,7 +6,7 @@ import axios from 'axios';
 
 function Home() {
   const { id } = useParams();
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null); 
   const [error, setError] = useState('');
 
   useEffect(() => {

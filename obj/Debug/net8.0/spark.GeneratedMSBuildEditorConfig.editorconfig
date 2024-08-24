@@ -9,11 +9,27 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = spark
 build_property.RootNamespace = spark
+<<<<<<< HEAD
 build_property.ProjectDir = C:\Users\RostyslavHarasymiak\Desktop\Project\ProjectTest\spark\
+=======
+<<<<<<< HEAD
+build_property.ProjectDir = C:\Users\TremarDenzelThomas\Documents\projects\spark\
+=======
+build_property.ProjectDir = C:\Users\DeantratriceRoss\Documents\icstars\spark\
+>>>>>>> ab5b5fe912077f621ae12e90879106de407ce9ba
+>>>>>>> 2104cbeee53306268138ae974fda7c02503aeefc
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+<<<<<<< HEAD
 build_property.MSBuildProjectDirectory = C:\Users\RostyslavHarasymiak\Desktop\Project\ProjectTest\spark
+=======
+<<<<<<< HEAD
+build_property.MSBuildProjectDirectory = C:\Users\TremarDenzelThomas\Documents\projects\spark
+=======
+build_property.MSBuildProjectDirectory = C:\Users\DeantratriceRoss\Documents\icstars\spark
+>>>>>>> ab5b5fe912077f621ae12e90879106de407ce9ba
+>>>>>>> 2104cbeee53306268138ae974fda7c02503aeefc
 build_property._RazorSourceGeneratorDebug = 

@@ -8,7 +8,9 @@ function Header() {
     const handleLogout = () => {
         localStorage.removeItem('userId');
         localStorage.removeItem('username');
-        
+        localStorage.removeItem('isAuthenticated');
+        localStorage.removeItem('isAdmin');
+        localStorage.removeItem('isManager');
         navigate('/Login'); //going to login page
     }
 

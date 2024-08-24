@@ -3,9 +3,6 @@ using k8s.KubeConfigModels;
 using Microsoft.EntityFrameworkCore;
 using spark;
 
-
-
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Use the connection string from appsettings.json
@@ -14,8 +11,6 @@ builder.Services.AddDbContext<SparkDb>(options =>
         builder.Configuration.GetConnectionString("sparkdb"),
         ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("sparkdb"))
     ).LogTo(Console.WriteLine, LogLevel.Information));
-
-
 
 var myPolicy = "mypolicy";
 
@@ -27,11 +22,9 @@ builder.Services.AddCors(options =>
     .AllowAnyHeader());
 });
 
-
 var app = builder.Build();
 
 app.UseCors(myPolicy);
-
 
 app.MapPost("/login", async (spark.User employee, SparkDb db) =>
 {
@@ -43,8 +36,19 @@ app.MapPost("/login", async (spark.User employee, SparkDb db) =>
         return Results.Json(new { success = false, message = "Invalid username or password" });
     }
 
+    bool isAdmin = user.is_admin;
+    // Check if user has dependent users
+    bool isManager = await db.user.AnyAsync(u => u.manager_id == user.id);
+
     // Optionally, you can generate a JWT token here for authentication
-    return Results.Json(new { success = true, id = user.id, username = user.username });
+    return Results.Json(new
+    {
+        success = true,
+        id = user.id,
+        username = user.username,
+        isAdmin = isAdmin,
+        isManager = isManager
+    });
 });
 
 // Get all employees

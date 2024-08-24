@@ -6,7 +6,7 @@ import './css/reset.css';
 import Home from './Components/Home';
 import Header from './Components/Header/';
 import Footer from './Components/Footer';
-import NavMenu from './Components/NavMenu';
+import NavMenuCheck from './Components/NavMenu/NavMenuCheck';
 import PageHome from './Components/RightPanel/PageHome';
 import PageDepDashboard from './Components/RightPanel/PageDepDashboard';
 import DepMetrics from './Components/DepMetrics';
@@ -19,18 +19,14 @@ import PrivateRoute from './Components/PrivateRoute';
 
 // Layout component defines the structure of the page with Header, Footer, and dynamic content based on routes.
 const Layout = () => {
+
   // useLocation hook gives the current route location, which can be used to determine the active route.
   const location = useLocation();
-
   // Object mapping routes to their corresponding RightPanel components.
   const rightPanelComponents = {
     '/': <PageHome />,
     '/DepMetrics': <PageDepDashboard />
   };
-  // const leftPanelComponents = {                --------------------------------------------
-  //   '/': <NavMenu />,
-  //   '/Home': <Home />
-  // }
   const headerComponent = {
     '/Header': <Header />
   };
@@ -54,25 +50,22 @@ const Layout = () => {
   const displayHeaderFooter = !notApplyHeaderAndFooter.includes(location.pathname);
   const displayNavMenu = !notApplyNavMenu.includes(location.pathname);
 
-
   return (
     <>
       {/* Header section */}
       {HeaderComponent && displayHeaderFooter && (
-          <div className="header">
-            <Header />
-            {/* Helmet is used for managing the document head, like setting the page title dynamically */}
-            <Helmet className="helmet">
-            </Helmet>
-          </div>
-        )}
-        {/* Main wrapper for the content and navigation */}
-        <div className="wrapper">
-          {/* Navigation Menu */}
-          {displayNavMenu && (
-            <div className="nav-menu">
-              <NavMenu />
-            </div>
+        <div className="header">
+          <Header />
+          {/* Helmet is used for managing the document head, like setting the page title dynamically */}
+          <Helmet className="helmet">
+          </Helmet>
+        </div>
+      )}
+      {/* Main wrapper for the content and navigation */}
+      <main className="wrapper">
+        {/* Navigation Menu */}
+        {displayNavMenu && (
+          <NavMenuCheck />
         )}
         {/* Main content area that changes based on the active route */}
         <div className={`container ${displayRightPanel ? '' : 'full-width'}`}>
@@ -82,10 +75,10 @@ const Layout = () => {
 
             {/* Private */}
             <Route path='/Charts/LineChart' element={<LineChart />} />
-            <Route path="/home/:id" element={<PrivateRoute> <Home /> </PrivateRoute>} />
-            <Route path="/DepMetrics" element={<PrivateRoute> <DepMetrics /> </PrivateRoute>} />
-            <Route path="/People" element={<PrivateRoute> <People /> </PrivateRoute>} />
-            <Route path="/EvalOverlook" element={<PrivateRoute> <EvalOverlook /> </PrivateRoute>} />
+            <Route path="/home/:id" element={<PrivateRoute allowedRoles={['admin', 'manager', 'employee']}> <Home /> </PrivateRoute>} />
+            <Route path="/DepMetrics" element={<PrivateRoute allowedRoles={['admin', 'manager']} > <DepMetrics /> </PrivateRoute>} />
+            <Route path="/People" element={<PrivateRoute allowedRoles={['admin', 'manager']} > <People /> </PrivateRoute>} />
+            <Route path="/EvalOverlook" element={<PrivateRoute allowedRoles={['admin', 'manager', 'employee']} > <EvalOverlook /> </PrivateRoute>} />
             {/* Редирект на страницу логина для несуществующих маршрутов */}
             <Route path="*" element={<Navigate to="/Login" />} />
           </Routes>
@@ -97,13 +90,11 @@ const Layout = () => {
             {RightPanelComponent}
           </div>
         )}
-      </div>
+      </main>
 
       {/* Footer section */}
       {displayHeaderFooter && FooterComponent && (
-        <div className="footer">
           <Footer />
-        </div>
       )}
     </>
   );
