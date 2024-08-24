@@ -25,7 +25,7 @@ namespace spark.Models
         public int TopicId { get; set; }
         public string? Comment { get; set; }
         public int Score { get; set; }
-        public int form_id { get; set; }
+        public int FormId { get; set; }
     }
 
     public class CategoryCommentDto

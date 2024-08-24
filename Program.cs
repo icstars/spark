@@ -113,9 +113,11 @@ app.MapPost("/evaluate", async (EvaluationRequest formDto, SparkDb _context) =>
             score = option.Score,
             form_id = formId
         };
-        _context.evaluation_option.Add(optionEvaluation);
-         
+        _context.option_evaluation.Add(optionEvaluation);
+    
     }
+
+    
 
     // Шаг 3: Inserting comments for categories
     foreach (var categoryComment in formDto.CategoryComments)
@@ -127,7 +129,7 @@ app.MapPost("/evaluate", async (EvaluationRequest formDto, SparkDb _context) =>
             form_id = formId // We use the received formId
         };
         _context.category_comment.Add(categoryCommentEntity);
-         
+       
     }
 
     // We save all changes to the database

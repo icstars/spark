@@ -15,7 +15,7 @@ public class SparkDb : DbContext
         public DbSet<Category> category => Set<Category>();
         public DbSet<Topic> topic => Set<Topic>();
         public DbSet<CategoryComment> category_comment => Set<CategoryComment>();
-        public DbSet<EvaluationOption> evaluation_option => Set<EvaluationOption>();
+        public DbSet<EvaluationOption> option_evaluation => Set<EvaluationOption>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

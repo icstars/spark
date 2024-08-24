@@ -66,6 +66,7 @@ function EvaluationComponent() {
           payload.evaluationOptions.push({
             categoryId: section.id,   // ID категории
             topicId: subSection.id,   // ID топика (подраздела)
+            comment: comments[`subSection-${subSection.id}`],
             score: selectedIndexes[subSection.id]  // ID выбранной опции
           });
         }
@@ -99,7 +100,7 @@ function EvaluationComponent() {
         },
         body: JSON.stringify(payload),
       });
-
+      console.log(response);
       if (!response.ok) {
         throw new Error('Failed to submit evaluation form');
       }
