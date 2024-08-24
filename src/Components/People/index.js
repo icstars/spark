@@ -48,8 +48,8 @@ function People() {
                     break;
                 case 'title':
                     // Directly access the title for sorting
-                    aField = a.title.toLowerCase();
-                    bField = b.title.toLowerCase();
+                    aField = '${a.title}'.toLowerCase();
+                    bField = '${b.title}'.toLowerCase();
                     break;
                 default:
                     aField = '';
@@ -88,12 +88,12 @@ function People() {
                         <th><input type="checkbox" /></th>
                         <th>Image</th>
                         <th onClick={() => handleSort('name')}>
-                            Full Name {sortField === 'name' && (sortOrder === 'asc' ? '🔼' : '🔽')}</th>
+                            Full Name{sortField === 'name' && (sortOrder === 'asc' ? '▲' : '▼')}</th>
                         <th>Date</th>
                         <th onClick={() => handleSort('department')}>
-                            Department{sortField === 'department' && (sortOrder === 'asc' ? '🔼' : '🔽')}</th>
+                            Department{sortField === 'name' && (sortOrder === 'asc' ? '▲' : '▼')}</th>
                         <th onClick={() => handleSort('title')}>
-                            Title{sortField === 'title' && (sortOrder === 'asc' ? '🔼' : '🔽')}</th>
+                            Title{sortField === 'name' && (sortOrder === 'asc' ? '▲' : '▼')}</th>
                         <th className='th-email'>Email</th>
                         <th>Status</th>
                         <th className="th-action">Action</th>
