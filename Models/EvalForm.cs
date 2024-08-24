@@ -14,11 +14,5 @@ namespace spark.Models
         public int department_id { get; set; }
         public int manager_id { get; set; }
         public bool is_ready { get; set; }
-        public int option_id { get; set; } // Foreign Key
-
-
-
-        [ForeignKey("option_id")]
-        public EvaluationOption? EvaluationOption { get; set; }
     }
 }

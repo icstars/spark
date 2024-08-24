@@ -80,11 +80,11 @@ app.MapGet("/eval/{id}", async (int id, SparkDb db) =>
     return user is not null ? Results.Ok(user) : Results.NotFound();
 });
 
-app.MapGet("/evaluate", async (int id, SparkDb db) =>
-     await db.user
-      .Include(u => u.department).ToListAsync());
+// app.MapGet("/evaluate", async (int id, SparkDb db) =>
+//      await db.user
+//       .Include(u => u.department).ToListAsync());
 
-app.MapPost("/evaluation", async (EvaluationRequest formDto, SparkDb _context) =>
+app.MapPost("/evaluate", async (EvaluationRequest formDto, SparkDb _context) =>
 {
     // Шаг 1: Create a record in the evaluation_form table
     var evaluationForm = new EvaluationForm
@@ -93,7 +93,7 @@ app.MapPost("/evaluation", async (EvaluationRequest formDto, SparkDb _context) =
         department_id = formDto.DepartmentId,
         manager_id = formDto.ManagerId,
         created = DateTime.Now,
-        is_ready = true  
+        is_ready = true,
     };
 
     _context.evaluation_form.Add(evaluationForm);
@@ -109,19 +109,10 @@ app.MapPost("/evaluation", async (EvaluationRequest formDto, SparkDb _context) =
         {
             topic_id = option.TopicId,
             comment = option.Comment,
-            score = option.Score
-            
+            score = option.Score,
+            form_id = formId
         };
         _context.evaluation_option.Add(optionEvaluation);
-    }
-
-    foreach (var topic in formDto.Topic)
-    {
-        var topicEntity = new Topic
-        {
-            category_id = topic.CategoryId,
-        };
-        _context.topic.Add(topicEntity);
     }
 
     // Шаг 3: Inserting comments for categories

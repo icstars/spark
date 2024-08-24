@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,7 +14,9 @@ namespace spark.Models
 
         public List<EvaluationOptionDto>? EvaluationOptions { get; set; }  // Matches 'topicComments' in the payload
         public List<CategoryCommentDto>? CategoryComments { get; set; }  // Matches 'categoryComments' in the payload
-         public List<TopicDto>? Topic { get; set; }  // Matches 'categoryComments' in the payload
+
+    //     public ICollection<EvaluationOptionDto>? EvaluationOptions { get; set; } = new List<EvaluationOptionDto>();
+    // public ICollection<CategoryCommentDto>? CategoryComments { get; set; } = new List<CategoryCommentDto>();
     }
 
 
@@ -22,11 +25,7 @@ namespace spark.Models
         public int TopicId { get; set; }
         public string? Comment { get; set; }
         public int Score { get; set; }
-    }
-
-    public class TopicDto
-    {
-        public int CategoryId { get; set; }
+        public int form_id { get; set; }
     }
 
     public class CategoryCommentDto
