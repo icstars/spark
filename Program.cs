@@ -105,7 +105,6 @@ app.MapPost("/evaluate", async (EvaluationRequest formDto, SparkDb _context) =>
     // Шаг 2: Inserting data into the option_evaluation table
     foreach (var option in formDto.EvaluationOptions)
     {
-        
         var optionEvaluation = new EvaluationOption
         {
             topic_id = option.TopicId,
@@ -114,10 +113,7 @@ app.MapPost("/evaluate", async (EvaluationRequest formDto, SparkDb _context) =>
             form_id = formId
         };
         _context.option_evaluation.Add(optionEvaluation);
-    
-    }
-
-    
+    } 
 
     // Шаг 3: Inserting comments for categories
     foreach (var categoryComment in formDto.CategoryComments)
@@ -138,6 +134,11 @@ app.MapPost("/evaluate", async (EvaluationRequest formDto, SparkDb _context) =>
     return Results.Ok(new { message = "Evaluation form created successfully!" });
 });
 
+app.MapGet("/overview", async (SparkDb db) =>
+{
+
+
+});
 
 //////////////////////
 

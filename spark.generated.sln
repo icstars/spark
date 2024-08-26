@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "spark", "spark.csproj", "{0C61B4FF-D221-4223-B579-D4E1BA9C813B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "spark", "spark.csproj", "{15216872-1E07-468D-A128-D02D4F710AEB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0C61B4FF-D221-4223-B579-D4E1BA9C813B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0C61B4FF-D221-4223-B579-D4E1BA9C813B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0C61B4FF-D221-4223-B579-D4E1BA9C813B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0C61B4FF-D221-4223-B579-D4E1BA9C813B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15216872-1E07-468D-A128-D02D4F710AEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15216872-1E07-468D-A128-D02D4F710AEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15216872-1E07-468D-A128-D02D4F710AEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15216872-1E07-468D-A128-D02D4F710AEB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
