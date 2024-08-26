@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace spark
+namespace spark.Models
 {
     public class Department
     {

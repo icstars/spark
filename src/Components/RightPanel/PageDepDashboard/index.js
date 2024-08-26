@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import React from 'react';
+
 function pageDepDashboard() {
     return (
-
         <div>
             <div className="people-rand-list">
                 <p>People</p>
@@ -10,11 +10,10 @@ function pageDepDashboard() {
                 <Link to="/People"><button type="button">Open more</button></Link>
             </div>
             <div className="topic-scores">
-            <p>Topic scores</p>
-            <p>Topic name</p>
+                <p>Topic scores</p>
+                <p>Topic name</p>
             </div>
         </div>
-
     );
 }
 
