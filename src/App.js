@@ -16,6 +16,7 @@ import LineChart from './Components/Charts/LineChart';
 import EvaluationComponent from './Components/EvaluationComponent';
 import Eval from './Components/Eval';
 import PrivateRoute from './Components/PrivateRoute';
+import ViewComponent from './Components/ViewComponent';
 
 // Layout component defines the structure of the page with Header, Footer, and dynamic content based on routes.
 const Layout = () => {
@@ -78,6 +79,7 @@ const Layout = () => {
             <Route path="/People" element={<PrivateRoute allowedRoles={['admin', 'manager']} > <People /> </PrivateRoute>} />
             <Route path="/EvaluationComponent" element={<PrivateRoute allowedRoles={['admin', 'manager', 'employee']} > <EvaluationComponent /> </PrivateRoute>} />
             <Route path="/Eval/:id" element={<PrivateRoute allowedRoles={['admin', 'manager']} > <Eval /> </PrivateRoute>} />
+            <Route path="/View/:id" element={<PrivateRoute allowedRoles={['admin', 'manager','employee']} > <ViewComponent /> </PrivateRoute>} />
             {/* Редирект на страницу логина для несуществующих маршрутов */}
             <Route path="*" element={<Navigate to="/Login" />} />
           </Routes>
