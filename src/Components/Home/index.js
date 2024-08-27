@@ -4,19 +4,34 @@ import { Helmet } from 'react-helmet-async';
 import { useParams } from "react-router-dom";
 import axios from 'axios';
 import PageHome from '../RightPanel/PageHome';
+import Overview from '../Overview';
+
+const topics = [
+  { name: "Collaboration", score: 2 },
+  { name: "Conflict Resolution", score: 1 },
+  { name: "Task Management", score: 4 },
+  { name: "Delegration", score: 1 }
+];
+
+const categories = [
+  { name: "Teamwork", topics },
+  { name: "Code Aesthetics", topics },
+  { name: "Communication", topics }
+];
 
 function Home() {
   const { id } = useParams();
-  const [user, setUser] = useState(null); 
+  const [user, setUser] = useState(null);
   const [error, setError] = useState('');
 
- 
+
   useEffect(() => {
     if (!id) {
       setError('User ID is not provided in the URL');
       return;
     }
-  
+
+
     axios.get(`http://localhost:5212/users/${id}`)
       .then(response => {
         setUser(response.data);
@@ -41,7 +56,8 @@ function Home() {
           <p>Department: {user.department?.name}</p>
           <p>Email: {user.email}</p>
           <LineChart />
-          
+          <PageHome userId={id} />
+          <Overview categories={categories} />
         </div>
       ) : (
         <p>Loading...</p>
