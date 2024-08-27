@@ -50,6 +50,10 @@ app.MapPost("/login", async (spark.Models.User employee, SparkDb db) =>
     });
 });
 
+app.MapGet("/topic", async (SparkDb db) =>
+    await db.topic
+    .ToListAsync());
+
 // Get all employees
 app.MapGet("/employees", async (SparkDb db) =>
     await db.user
