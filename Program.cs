@@ -190,7 +190,79 @@ app.MapGet("/evaluate/user/{userId}", async (int userId, SparkDb _context) =>
     return Results.Ok(response);
 });
 
+app.MapPost("/employees-with-image", async (HttpRequest request, SparkDb db) =>
+{
+    var form = await request.ReadFormAsync();
+    var user = new User
+    {
+        firstname = form["firstname"],
+        lastname = form["lastname"],
+        email = form["email"],
+        username = form["username"],
+        password = form["password"],
+        company_role = form["company_role"],
+        is_admin = bool.TryParse(form["is_admin"], out bool isAdmin) ? isAdmin : false,
+        hired_date = DateTime.TryParse(form["hired_date"], out DateTime hiredDate) ? hiredDate : (DateTime?)null,
+        manager_id = int.TryParse(form["manager_id"], out int managerId) ? managerId : (int?)null,
+        department_id = int.TryParse(form["department_id"], out int departmentId) ? departmentId : (int?)null
+    };
 
+    // Validate department_id
+    if (user.department_id != null)
+    {
+        var department = await db.department.FindAsync(user.department_id);
+        if (department == null)
+        {
+            return Results.BadRequest("Invalid department ID.");
+        }
+    }
+
+    // Process the file upload
+    var file = form.Files["image"];
+    if (file != null && file.Length > 0)
+    {
+        using (var memoryStream = new MemoryStream())
+        {
+            await file.CopyToAsync(memoryStream);
+            user.img = memoryStream.ToArray();  // Convert image to byte array
+        }
+    }
+
+    db.user.Add(user);
+    await db.SaveChangesAsync();
+
+    return Results.Created($"/employees/{user.id}", user);
+});
+
+app.MapGet("/images/{id}", async (int id, SparkDb db) =>
+{
+    var user = await db.user.FindAsync(id);
+    if (user == null || user.img == null)
+    {
+        return Results.NotFound();
+    }
+    return Results.File(user.img, "image/jpeg");  // Adjust content type as needed
+});
+app.MapGet("/departments", async (SparkDb db) =>
+    await db.department.ToListAsync());
+
+
+app.MapPut("/employees/{id}", async (int id, spark.Models.User inputEmployee, SparkDb db) =>
+{
+    var employee = await db.user.FindAsync(id);
+
+    if (employee is null) return Results.NotFound();
+
+    employee.firstname = inputEmployee.firstname;
+    employee.lastname = inputEmployee.lastname;
+    employee.email = inputEmployee.email;
+    employee.company_role = inputEmployee.company_role;
+    employee.is_admin = inputEmployee.is_admin;
+
+    await db.SaveChangesAsync();
+
+    return Results.NoContent();
+});
 
 //////////////////////
 
@@ -211,21 +283,42 @@ app.MapPost("/employees", async (spark.Models.User employee, SparkDb db) =>
     return Results.Created($"/employees/{employee.id}", employee);
 });
 
-app.MapPut("/employees/{id}", async (int id, spark.Models.User inputEmployee, SparkDb db) =>
+app.MapPut("/users/{id}", async (int id, spark.Models.User editEmployee, SparkDb db) =>
 {
+    // Find the existing employee in the database
     var employee = await db.user.FindAsync(id);
 
+    // If employee not found, return 404 Not Found
     if (employee is null) return Results.NotFound();
 
-    employee.firstname = inputEmployee.firstname;
-    employee.lastname = inputEmployee.lastname;
-    employee.email = inputEmployee.email;
-    employee.company_role = inputEmployee.company_role;
-    employee.is_admin = inputEmployee.is_admin;
+    // Optional: Add validation for the incoming editEmployee data
+    if (editEmployee == null) return Results.BadRequest("Invalid data.");
 
+    // Update fields if they are provided
+    if (!string.IsNullOrEmpty(editEmployee.firstname))
+        employee.firstname = editEmployee.firstname;
+
+    if (!string.IsNullOrEmpty(editEmployee.lastname))
+        employee.lastname = editEmployee.lastname;
+
+    if (!string.IsNullOrEmpty(editEmployee.email))
+        employee.email = editEmployee.email;
+
+    if (!string.IsNullOrEmpty(editEmployee.company_role))
+        employee.company_role = editEmployee.company_role;
+
+
+        employee.department_id = editEmployee.department_id;
+        employee.hired_date = editEmployee.hired_date;
+
+    // Optional: Handle updating the image, password, or other fields if needed
+    // Example: if (editEmployee.ProfileImage != null) { ... }
+
+    // Save changes to the database
     await db.SaveChangesAsync();
 
-    return Results.NoContent();
+    // Optionally, return the updated resource
+    return Results.NoContent(); // or `Results.Ok(employee)` if you want to return the updated resource
 });
 
 app.MapDelete("/employees/{id}", async (int id, SparkDb db) =>

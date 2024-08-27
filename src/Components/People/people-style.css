@@ -69,6 +69,11 @@ td{
   padding: 0;
 }
 
+.ellipsis-container {
+  position: relative;
+  display: inline-block;
+}
+
 .dropdown-menu {
   position: absolute;
   bottom: 27px;
@@ -79,6 +84,7 @@ td{
   z-index: 1000;
   min-width: 100px;
   text-align: left;
+  
 }
 
 .dropdown-menu::after {
@@ -113,5 +119,20 @@ td{
 
 .dropdown-menu button:hover {
   background-color: #f0f0f0;
+}
+
+.img{
+  position: absolute;          /* Абсолютное позиционирование */
+    left: 0;                     /* Прижать к левому краю */
+    top: 50%;                    /* Сместить на 50% по высоте */
+    transform: translateY(-50%); /* Сместить на половину высоты картинки вверх для центрирования по вертикали */
+    width: 50px;                 /* Ширина картинки */
+    height: 50px;                /* Высота картинки */
+    border-radius: 50%;          /* Круглая форма изображения */
+}
+
+.img-box{
+  padding: 0;
+  position: relative; /* Для корректного отображения изображения внутри ячейки */
 }
 /*/////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
