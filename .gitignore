@@ -1,42 +1,39 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Ignore all bin and obj directories in any subfolder
+/bin/
+/obj/
 
-# dependencies
-/node_modules
+# Specifically ignore files in net8.0 folder
+bin/Debug/net8.0/
+obj/Debug/net8.0/
+
+# Ignore the generated files
+*.dll
+*.exe
+*.pdb
+*.cache
+*.json
+
+# Allow specific folders to be tracked (useful if you need certain files to be committed)
+# !permanent/bin/
+
+# General Node and environment files
+/node_modules/
 /.pnp
 .pnp.js
-bin 
-# testing
-/coverage
-/bin
-/obj
-bin/ 
-OBJ/
-# production
-!.gitignore 
-*.log 
-OBJ 
-bin 
-!permanent/bin
-# misc
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Production files and sensitive configuration
 .DS_Store
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 
-
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
+# Ignore appsettings files
 appsettings.json
-
-appsettings
-/obj/*
-/bin/*
-\obj\*
-\bin\*
-
-obj/Debug/net8.0/spark.AssemblyInfo.cs
-obj/Debug/net8.0/spark.AssemblyInfoInputs.cache
-obj/Debug/net8.0/spark.GeneratedMSBuildEditorConfig.editorconfig
+appsettings.*
