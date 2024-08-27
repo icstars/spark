@@ -21,17 +21,16 @@ const categories = [
 
 function Home() {
   const { id } = useParams();
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null); 
   const [error, setError] = useState('');
 
-
+ 
   useEffect(() => {
     if (!id) {
       setError('User ID is not provided in the URL');
       return;
     }
-
-
+  
     axios.get(`http://localhost:5212/users/${id}`)
       .then(response => {
         setUser(response.data);
@@ -56,7 +55,6 @@ function Home() {
           <p>Department: {user.department?.name}</p>
           <p>Email: {user.email}</p>
           <LineChart />
-          <PageHome userId={id} />
           <Overview categories={categories} />
         </div>
       ) : (

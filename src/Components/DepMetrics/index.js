@@ -15,7 +15,6 @@ const topics = [
     { name: "Code Aesthetics", topics },
     { name: "Communication", topics }
   ];
-  
 
 function DepMetrics() {
     return (
@@ -27,8 +26,7 @@ function DepMetrics() {
                 <h2>Department</h2>
                 <LineChart/>
             </div>
-          <Overview categories={categories} />
-
+            <Overview categories={categories} />
         </div>
 
     );

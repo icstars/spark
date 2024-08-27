@@ -69,7 +69,12 @@ td{
   padding: 0;
 }
 
-.dropdown-menu {
+.ellipsis-container {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-menu2 {
   position: absolute;
   bottom: 27px;
   right: -9px;
@@ -79,9 +84,10 @@ td{
   z-index: 1000;
   min-width: 100px;
   text-align: left;
+  
 }
 
-.dropdown-menu::after {
+.dropdown-menu2::after {
   content: "";
   position: absolute;
   bottom: -16px;
@@ -95,7 +101,7 @@ td{
   transform: rotate(0deg);
 }
 
-.dropdown-menu button {
+.dropdown-menu2 button {
   display: flex;
   align-items: center;
   width: 100%;
@@ -106,12 +112,27 @@ td{
   text-align: center;
 }
 
-.dropdown-menu img{
+.dropdown-menu2 img{
   width: 25px;
   padding-right: 5px;
 }
 
-.dropdown-menu button:hover {
+.dropdown-menu2 button:hover {
   background-color: #f0f0f0;
+}
+
+.img{
+  position: absolute;          /* Абсолютное позиционирование */
+    left: 0;                     /* Прижать к левому краю */
+    top: 50%;                    /* Сместить на 50% по высоте */
+    transform: translateY(-50%); /* Сместить на половину высоты картинки вверх для центрирования по вертикали */
+    width: 50px;                 /* Ширина картинки */
+    height: 50px;                /* Высота картинки */
+    border-radius: 50%;          /* Круглая форма изображения */
+}
+
+.img-box{
+  padding: 0;
+  position: relative; /* Для корректного отображения изображения внутри ячейки */
 }
 /*/////////////////////////////////////////////////////////////////////////////////////////////////////////////*/

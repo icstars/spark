@@ -1,3 +1,5 @@
+import React from 'react';
+
 function TopicScore({ name, score }) {
     return (
         <div className="row">
