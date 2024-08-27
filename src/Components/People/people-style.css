@@ -74,7 +74,7 @@ td{
   display: inline-block;
 }
 
-.dropdown-menu {
+.dropdown-menu2 {
   position: absolute;
   bottom: 27px;
   right: -9px;
@@ -87,7 +87,7 @@ td{
   
 }
 
-.dropdown-menu::after {
+.dropdown-menu2::after {
   content: "";
   position: absolute;
   bottom: -16px;
@@ -101,7 +101,7 @@ td{
   transform: rotate(0deg);
 }
 
-.dropdown-menu button {
+.dropdown-menu2 button {
   display: flex;
   align-items: center;
   width: 100%;
@@ -112,12 +112,12 @@ td{
   text-align: center;
 }
 
-.dropdown-menu img{
+.dropdown-menu2 img{
   width: 25px;
   padding-right: 5px;
 }
 
-.dropdown-menu button:hover {
+.dropdown-menu2 button:hover {
   background-color: #f0f0f0;
 }
 

@@ -4,6 +4,20 @@ import { Helmet } from 'react-helmet-async';
 import { useParams } from "react-router-dom";
 import axios from 'axios';
 import PageHome from '../RightPanel/PageHome';
+import Overview from '../Overview';
+
+const topics = [
+  { name: "Collaboration", score: 2 },
+  { name: "Conflict Resolution", score: 1 },
+  { name: "Task Management", score: 4 },
+  { name: "Delegration", score: 1 }
+];
+
+const categories = [
+  { name: "Teamwork", topics },
+  { name: "Code Aesthetics", topics },
+  { name: "Communication", topics }
+];
 
 function Home() {
   const { id } = useParams();
@@ -41,7 +55,7 @@ function Home() {
           <p>Department: {user.department?.name}</p>
           <p>Email: {user.email}</p>
           <LineChart />
-          
+          <Overview categories={categories} />
         </div>
       ) : (
         <p>Loading...</p>

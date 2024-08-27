@@ -65,6 +65,10 @@ app.MapGet("/users/{id}", async (int id, SparkDb db) =>
     return user is not null ? Results.Ok(user) : Results.NotFound();
 });
 
+app.MapGet("/topic", async (SparkDb db) =>
+    await db.topic
+    .ToListAsync());
+    
 app.MapGet("/categories", async (SparkDb db) =>
     await db.category
     // .Include(c => c.topic)
@@ -308,8 +312,8 @@ app.MapPut("/users/{id}", async (int id, spark.Models.User editEmployee, SparkDb
         employee.company_role = editEmployee.company_role;
 
 
-        employee.department_id = editEmployee.department_id;
-        employee.hired_date = editEmployee.hired_date;
+    employee.department_id = editEmployee.department_id;
+    employee.hired_date = editEmployee.hired_date;
 
     // Optional: Handle updating the image, password, or other fields if needed
     // Example: if (editEmployee.ProfileImage != null) { ... }

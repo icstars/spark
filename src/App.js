@@ -70,7 +70,7 @@ const Layout = () => {
             <NavMenuCheck />
           )}
           {/* Main content area that changes based on the active route */}
-          <div className={`container ${displayRightPanel ? '' : 'full-width'}`}>
+          <div className={`container2 ${displayRightPanel ? '' : 'full-width'}`}>
             <Routes>
               {/* Define routes and their corresponding components */}
               <Route path="/Login" element={<Login />} /> {/*Public Route*/}

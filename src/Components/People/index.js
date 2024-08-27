@@ -317,7 +317,7 @@ function People() {
                                             &#x2026; {/* This represents the three dots */}
                                         </button>
                                         {openMenuId === p.id && (
-                                            <div className="dropdown-menu">
+                                            <div className="dropdown-menu2">
                                                 <button onClick={() => alert('Evaluate')}>
                                                     <img src={checkmark_icon} alt="checkmark" /> Evaluate
                                                 </button>
