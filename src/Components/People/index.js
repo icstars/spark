@@ -12,6 +12,8 @@ function People() {
     const [sortField, setSortField] = useState(null);
     const [sortOrder, setSortOrder] = useState('asc');
     const [openMenuId, setOpenMenuId] = useState(null);
+    const [selectAll, setSelectAll] = useState(false);
+    const [selectedRows, setSelectedRows] = useState({});
 
     // Fetch data from API
     useEffect(() => {
@@ -29,6 +31,27 @@ function People() {
         fetchData();
     }, []);
 
+    // Handle the "select all" checkbox
+    const handleSelectAll = () => {
+        const newSelectAll = !selectAll;
+        setSelectAll(newSelectAll);
+
+        const newSelectedRows = {};
+        people.forEach(person => {
+            newSelectedRows[person.id] = newSelectAll;
+        });
+        setSelectedRows(newSelectedRows);
+    };
+
+    // Handle individual row checkbox change
+    const handleRowSelect = (id) => {
+        const newSelectedRows = { ...selectedRows, [id]: !selectedRows[id] };
+        setSelectedRows(newSelectedRows);
+
+        // Update "select all" checkbox based on row selections
+        const allSelected = people.every(person => newSelectedRows[person.id]);
+        setSelectAll(allSelected);
+    };
 
     // Sorting function
     const handleSort = (field) => {
@@ -37,19 +60,16 @@ function People() {
 
             switch (field) {
                 case 'name':
-                    // Combine firstname and lastname for sorting
                     aField = `${a.firstname} ${a.lastname}`.toLowerCase();
                     bField = `${b.firstname} ${b.lastname}`.toLowerCase();
                     break;
                 case 'department':
-                    // Access the department name for sorting
                     aField = a.department?.name?.toLowerCase() || '';
                     bField = b.department?.name?.toLowerCase() || '';
                     break;
                 case 'title':
-                    // Directly access the title for sorting
-                    aField = '${a.title}'.toLowerCase();
-                    bField = '${b.title}'.toLowerCase();
+                    aField = `${a.title}`.toLowerCase();
+                    bField = `${b.title}`.toLowerCase();
                     break;
                 default:
                     aField = '';
@@ -62,16 +82,15 @@ function People() {
         });
 
         setPeople(sortedPeople);
-        // Toggle sort order
         setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
     };
 
-    // Three dotes dropdown menu
+    // Three dots dropdown menu
     const handleMenuToggle = (id) => {
         if (openMenuId === id) {
-            setOpenMenuId(null); // Close the menu if it's already open
+            setOpenMenuId(null);
         } else {
-            setOpenMenuId(id); // Open the menu for the clicked item
+            setOpenMenuId(id);
         }
     };
 
@@ -85,15 +104,15 @@ function People() {
             <table>
                 <thead>
                     <tr>
-                        <th><input type="checkbox" /></th>
+                        <th><input type="checkbox" checked={selectAll} onChange={handleSelectAll} /></th>
                         <th>Image</th>
                         <th onClick={() => handleSort('name')}>
                             Full Name{sortField === 'name' && (sortOrder === 'asc' ? '▲' : '▼')}</th>
                         <th>Date</th>
                         <th onClick={() => handleSort('department')}>
-                            Department{sortField === 'name' && (sortOrder === 'asc' ? '▲' : '▼')}</th>
+                            Department{sortField === 'department' && (sortOrder === 'asc' ? '▲' : '▼')}</th>
                         <th onClick={() => handleSort('title')}>
-                            Title{sortField === 'name' && (sortOrder === 'asc' ? '▲' : '▼')}</th>
+                            Title{sortField === 'title' && (sortOrder === 'asc' ? '▲' : '▼')}</th>
                         <th className='th-email'>Email</th>
                         <th>Status</th>
                         <th className="th-action">Action</th>
@@ -102,17 +121,17 @@ function People() {
                 <tbody>
                     {people.map(p => (
                         <tr key={p.id}>
-                            <td><input type="checkbox" /></td>
+                            <td><input type="checkbox" checked={selectedRows[p.id] || false} onChange={() => handleRowSelect(p.id)} /></td>
                             <td className='img-box'>
                                 {p.img ? (
                                     <img className='img'
-                                        src={`http://localhost:5212/images/${p.id}`} // Fetch the image from your backend
+                                        src={`http://localhost:5212/images/${p.id}`}
                                         alt={`${p.firstname} ${p.lastname}`}
                                         style={{ width: '45px', height: '45px' }}
                                     />
                                 ) : (
                                     <img
-                                        src="/path/to/default-avatar.png" // Fallback image
+                                        src="/path/to/default-avatar.png"
                                         alt="Default Avatar"
                                         style={{ width: '50px', height: '50px', borderRadius: '50%' }}
                                     />
@@ -130,27 +149,29 @@ function People() {
                             <td>
                                 <button className="td-status-b">Status</button>{/*{p.status}*/}
                             </td>
-                            <td className="td-action-b"><div className="ellipsis-container">
-                                <button
-                                    className="ellipsis-button"
-                                    onClick={() => handleMenuToggle(p.id)}
-                                >
-                                    {openMenuId === p.id && (
-                                        <div className="dropdown-menu">
-                                            <button onClick={() => alert('Evaluate')}>
-                                                <img src={checkmark_icon} alt="checkmark" />Evaluate
-                                            </button>
-                                            <button onClick={() => alert('Edit action')}>
-                                                <img src={edit_icon} alt="edit" />Edit
-                                            </button>
-                                            <button onClick={() => alert('Delete action')}>
-                                                <img src={delete_icon} alt="delete" />Delete
-                                            </button>
-                                        </div>
-                                    )}
-                                    &#x2026; {/* This represents the three dots */}
-                                </button>
-                            </div></td>
+                            <td className="td-action-b">
+                                <div className="ellipsis-container">
+                                    <button
+                                        className="ellipsis-button"
+                                        onClick={() => handleMenuToggle(p.id)}
+                                    >
+                                        {openMenuId === p.id && (
+                                            <div className="dropdown-menu">
+                                                <button onClick={() => alert('Evaluate')}>
+                                                    <img src={checkmark_icon} alt="checkmark" />Evaluate
+                                                </button>
+                                                <button onClick={() => alert('Edit action')}>
+                                                    <img src={edit_icon} alt="edit" />Edit
+                                                </button>
+                                                <button onClick={() => alert('Delete action')}>
+                                                    <img src={delete_icon} alt="delete" />Delete
+                                                </button>
+                                            </div>
+                                        )}
+                                        &#x2026; {/* This represents the three dots */}
+                                    </button>
+                                </div>
+                            </td>
                         </tr>
                     ))}
                 </tbody>
