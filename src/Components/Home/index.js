@@ -24,14 +24,13 @@ function Home() {
   const [user, setUser] = useState(null);
   const [error, setError] = useState('');
 
-  console.log(user);
-
 
   useEffect(() => {
     if (!id) {
       setError('User ID is not provided in the URL');
       return;
     }
+
 
     axios.get(`http://localhost:5212/users/${id}`)
       .then(response => {

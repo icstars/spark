@@ -1,5 +1,3 @@
-import "../../css/bootstrap.css"
-
 function TopicScore({ name, score }) {
     return (
         <div className="row">
