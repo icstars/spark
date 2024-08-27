@@ -221,14 +221,11 @@ app.MapPost("/employees-with-image", async (HttpRequest request, SparkDb db) =>
     var file = form.Files["image"];
     if (file != null && file.Length > 0)
     {
-        var filePath = Path.Combine("Uploads", file.FileName);
-        using (var stream = System.IO.File.Create(filePath))
+        using (var memoryStream = new MemoryStream())
         {
-            await file.CopyToAsync(stream);
-            // user.img = stream.ToArray(); 
+            await file.CopyToAsync(memoryStream);
+            user.img = memoryStream.ToArray();  // Convert image to byte array
         }
-        // Optionally, save the file path to the database (assuming a `ProfileImagePath` property in User)
-        // user.ProfileImagePath = filePath;
     }
 
     db.user.Add(user);
@@ -237,7 +234,15 @@ app.MapPost("/employees-with-image", async (HttpRequest request, SparkDb db) =>
     return Results.Created($"/employees/{user.id}", user);
 });
 
-
+app.MapGet("/images/{id}", async (int id, SparkDb db) =>
+{
+    var user = await db.user.FindAsync(id);
+    if (user == null || user.img == null)
+    {
+        return Results.NotFound();
+    }
+    return Results.File(user.img, "image/jpeg");  // Adjust content type as needed
+});
 app.MapGet("/departments", async (SparkDb db) =>
     await db.department.ToListAsync());
 
