@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation, Navigate, useMatch } from 'react-router-dom';
 import { HelmetProvider, Helmet } from 'react-helmet-async'; //import HelmetProvider due to last updates as Helmet outdated
-import './css/style.css';
-import './css/reset.css';
+// import './css/style.css';
+// import './css/reset.css';
 import Home from './Components/Home';
 import Header from './Components/Header/';
 import Footer from './Components/Footer';

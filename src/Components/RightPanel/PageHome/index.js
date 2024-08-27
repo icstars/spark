@@ -1,11 +1,7 @@
 import { Link } from 'react-router-dom';
 import React from 'react';
-<<<<<<< HEAD
-function pageHome() {
-=======
 
 function PageHome({ userId }) {
->>>>>>> main
     return (
         <div>
             <div className="right-panel-view-evaluation-button">

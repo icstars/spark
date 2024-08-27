@@ -1,7 +1,6 @@
 import React from "react";
 // Import the Line component from react-chartjs-2, which is used to create line charts
 import { Line } from "react-chartjs-2";
-import './Line-Chart.css';
 
 // Import necessary modules from chart.js to create and configure the chart
 import {
