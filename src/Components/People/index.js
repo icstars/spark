@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import checkmark_icon from "./img/check.png";
 import edit_icon from "./img/edit.png";
 import delete_icon from "./img/delete.png";
@@ -28,13 +28,13 @@ function People() {
         };
         fetchData();
     }, []);
-    
+
 
     // Sorting function
     const handleSort = (field) => {
         const sortedPeople = [...people].sort((a, b) => {
             let aField, bField;
-    
+
             switch (field) {
                 case 'name':
                     // Combine firstname and lastname for sorting
@@ -55,17 +55,17 @@ function People() {
                     aField = '';
                     bField = '';
             }
-    
+
             if (aField < bField) return sortOrder === 'asc' ? -1 : 1;
             if (aField > bField) return sortOrder === 'asc' ? 1 : -1;
             return 0;
         });
-    
+
         setPeople(sortedPeople);
         // Toggle sort order
         setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
     };
-    
+
     // Three dotes dropdown menu
     const handleMenuToggle = (id) => {
         if (openMenuId === id) {
@@ -103,15 +103,29 @@ function People() {
                     {people.map(p => (
                         <tr key={p.id}>
                             <td><input type="checkbox" /></td>
-                            <td><img src="" alt="Avatar"/></td>
+                            <td className='img-box'>
+                                {p.img ? (
+                                    <img className='img'
+                                        src={`http://localhost:5212/images/${p.id}`} // Fetch the image from your backend
+                                        alt={`${p.firstname} ${p.lastname}`}
+                                        style={{ width: '45px', height: '45px' }}
+                                    />
+                                ) : (
+                                    <img
+                                        src="/path/to/default-avatar.png" // Fallback image
+                                        alt="Default Avatar"
+                                        style={{ width: '50px', height: '50px', borderRadius: '50%' }}
+                                    />
+                                )}
+                            </td>
                             <td>
                                 <Link to={`/home/${p.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                                     {p.firstname} {p.lastname}
                                 </Link>
                             </td>
-                            <td>September 9, 2024{/*{p.date}*/}</td>
+                            <td>{new Date(p.hired_date).toLocaleDateString('en-US')}</td>
                             <td>{p.department?.name}</td>
-                            <td>TitleTitle{/*{p.title}*/}</td> 
+                            <td>{p.company_role}</td>
                             <td className='td-email'>{p.email}</td>
                             <td>
                                 <button className="td-status-b">Status</button>{/*{p.status}*/}
@@ -124,13 +138,13 @@ function People() {
                                     {openMenuId === p.id && (
                                         <div className="dropdown-menu">
                                             <button onClick={() => alert('Evaluate')}>
-                                                <img src={checkmark_icon} alt="checkmark"/>Evaluate
+                                                <img src={checkmark_icon} alt="checkmark" />Evaluate
                                             </button>
                                             <button onClick={() => alert('Edit action')}>
-                                                <img src={edit_icon} alt="edit"/>Edit
+                                                <img src={edit_icon} alt="edit" />Edit
                                             </button>
                                             <button onClick={() => alert('Delete action')}>
-                                                <img src={delete_icon} alt="delete"/>Delete
+                                                <img src={delete_icon} alt="delete" />Delete
                                             </button>
                                         </div>
                                     )}
