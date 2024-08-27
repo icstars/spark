@@ -35,11 +35,12 @@ const Layout = () => {
     '/Footer': <Footer />
   };
   // Matching routes that have parameters
-  const matchEval = useMatch('/Eval/:id');
+  const matchEval = useMatch('/Eval/:id' );
+  const matchView = useMatch('/View/:id' );
   // Array of routes where the RightPanel should not be displayed.
-  const notApplyPages = ['/home/:id' ,'/People', '/Login', '/EvaluationComponent', matchEval?.pathname];
+  const notApplyPages = ['/People', '/Login', '/EvaluationComponent', matchEval?.pathname, matchView?.pathname];
   const notApplyHeaderAndFooter = ['/Login'];
-  const notApplyNavMenu = ['/EvaluationComponent', matchEval?.pathname, '/Login'];
+  const notApplyNavMenu = ['/EvaluationComponent', matchEval?.pathname, '/Login', matchView?.pathname];
   // Determine the RightPanel component to display based on the current route.
   // If no specific component is found, default to PageHome.
   const RightPanelComponent = rightPanelComponents[location.pathname];
