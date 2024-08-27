@@ -247,6 +247,23 @@ app.MapGet("/departments", async (SparkDb db) =>
     await db.department.ToListAsync());
 
 
+app.MapPut("/employees/{id}", async (int id, spark.Models.User inputEmployee, SparkDb db) =>
+{
+    var employee = await db.user.FindAsync(id);
+
+    if (employee is null) return Results.NotFound();
+
+    employee.firstname = inputEmployee.firstname;
+    employee.lastname = inputEmployee.lastname;
+    employee.email = inputEmployee.email;
+    employee.company_role = inputEmployee.company_role;
+    employee.is_admin = inputEmployee.is_admin;
+
+    await db.SaveChangesAsync();
+
+    return Results.NoContent();
+});
+
 //////////////////////
 
 app.MapGet("/employees/admins", async (SparkDb db) =>
@@ -266,21 +283,42 @@ app.MapPost("/employees", async (spark.Models.User employee, SparkDb db) =>
     return Results.Created($"/employees/{employee.id}", employee);
 });
 
-app.MapPut("/employees/{id}", async (int id, spark.Models.User inputEmployee, SparkDb db) =>
+app.MapPut("/users/{id}", async (int id, spark.Models.User editEmployee, SparkDb db) =>
 {
+    // Find the existing employee in the database
     var employee = await db.user.FindAsync(id);
 
+    // If employee not found, return 404 Not Found
     if (employee is null) return Results.NotFound();
 
-    employee.firstname = inputEmployee.firstname;
-    employee.lastname = inputEmployee.lastname;
-    employee.email = inputEmployee.email;
-    employee.company_role = inputEmployee.company_role;
-    employee.is_admin = inputEmployee.is_admin;
+    // Optional: Add validation for the incoming editEmployee data
+    if (editEmployee == null) return Results.BadRequest("Invalid data.");
 
+    // Update fields if they are provided
+    if (!string.IsNullOrEmpty(editEmployee.firstname))
+        employee.firstname = editEmployee.firstname;
+
+    if (!string.IsNullOrEmpty(editEmployee.lastname))
+        employee.lastname = editEmployee.lastname;
+
+    if (!string.IsNullOrEmpty(editEmployee.email))
+        employee.email = editEmployee.email;
+
+    if (!string.IsNullOrEmpty(editEmployee.company_role))
+        employee.company_role = editEmployee.company_role;
+
+
+        employee.department_id = editEmployee.department_id;
+        employee.hired_date = editEmployee.hired_date;
+
+    // Optional: Handle updating the image, password, or other fields if needed
+    // Example: if (editEmployee.ProfileImage != null) { ... }
+
+    // Save changes to the database
     await db.SaveChangesAsync();
 
-    return Results.NoContent();
+    // Optionally, return the updated resource
+    return Results.NoContent(); // or `Results.Ok(employee)` if you want to return the updated resource
 });
 
 app.MapDelete("/employees/{id}", async (int id, SparkDb db) =>
