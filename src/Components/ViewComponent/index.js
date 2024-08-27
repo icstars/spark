@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import './eval-overlook-style.css';
+import './view-style.css';
 
 // Используем `sections` для поиска текста по `score`
 const sections = [
@@ -356,7 +356,15 @@ const getSubSectionTitle = (topicId) => {
   }
   return `Unknown Topic (ID: ${topicId})`;
 };
-
+const getSubSectionOptions = (topicId) => {
+  for (const section of sections) {
+    const subSection = section.subSections.find(sub => sub.id === topicId);
+    if (subSection) {
+      return subSection.options;
+    }
+  }
+  return [];
+};
 
 function ViewComponent() {
   const { id } = useParams();  // Получаем ID формы из URL
@@ -399,23 +407,32 @@ function ViewComponent() {
       <p>Created: {new Date(evaluationData.created).toLocaleString()}</p>
       <p>Status: {evaluationData.is_ready ? "Ready" : "Not Ready"}</p>
 
-
-
       {evaluationData.categoryComments && evaluationData.categoryComments.length > 0 ? (
         evaluationData.categoryComments.map(comment => (
-          <div key={comment.id} className="category-comment">
-            <p><strong>Category ID:</strong> {getCategoryTitleById(comment.category_id)}</p>
-            <h2>Evaluation Options</h2>
+          <div key={comment.id} >
+            <h1 className='h1-evaluation-title'> {getCategoryTitleById(comment.category_id)}</h1>
+
             {evaluationData.evaluationOptions && evaluationData.evaluationOptions.length > 0 ? (
               evaluationData.evaluationOptions.filter(option => option.topic?.category_id === comment.category_id)
-              .map(option =>
-                (
-                <div key={option.id} >
-                  <h2 className="h2-evaluatoin-title">{getSubSectionTitle(option.topic.id)}</h2>
-                  <p>{getOptionTextByScore(option.topic.id, option.score)}</p>
-                  <p><strong>Comment:</strong> {option.comment || 'No comment provided'}</p>
-                </div>
-              ))
+                .map(option => (
+                  <div key={option.id} className="sub-section">
+                    <h2 className="h2-evaluation-title">{getSubSectionTitle(option.topic.id)}</h2>
+
+                    {/* Отображаем все опции */}
+                    <div className="option-wrapper">
+                      {getSubSectionOptions(option.topic.id).map(opt => (
+                        <div
+                          key={opt.id}
+                          className={`wrapper-element ${opt.id === option.score ? 'selected' : ''}`}
+                        >
+                          <p className="option">{opt.text}</p>
+                        </div>
+                      ))}
+                    </div>
+
+                    <p><strong>Comment:</strong> {option.comment || 'No comment provided'}</p>
+                  </div>
+                ))
             ) : (
               <p>No Evaluation Options available.</p>
             )}
