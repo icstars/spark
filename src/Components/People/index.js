@@ -123,9 +123,9 @@ function People() {
                                     {p.firstname} {p.lastname}
                                 </Link>
                             </td>
-                            <td>September 9, 2024{/*{p.date}*/}</td>
+                            <td>{new Date(p.hired_date).toLocaleDateString('en-US')}</td>
                             <td>{p.department?.name}</td>
-                            <td>TitleTitle{/*{p.title}*/}</td>
+                            <td>{p.company_role}</td>
                             <td className='td-email'>{p.email}</td>
                             <td>
                                 <button className="td-status-b">Status</button>{/*{p.status}*/}
