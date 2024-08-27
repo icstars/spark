@@ -1,6 +1,8 @@
 import { Link, useLocation } from 'react-router-dom';
 import React from 'react';
 
+import '../nav-menu-style.css';
+
 import profile_icon from "./img/profile_icon.svg";
 import metrics_icon from "./img/metrics_icon.svg";
 import people_icon from "./img/people_icon.svg";

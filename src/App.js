@@ -16,7 +16,6 @@ import LineChart from './Components/Charts/LineChart';
 import EvaluationComponent from './Components/EvaluationComponent';
 import Eval from './Components/Eval';
 import PrivateRoute from './Components/PrivateRoute';
-
 // Layout component defines the structure of the page with Header, Footer, and dynamic content based on routes.
 const Layout = () => {
 
@@ -65,6 +64,7 @@ const Layout = () => {
         {/* Navigation Menu */}
         {displayNavMenu && (
           <NavMenuCheck />
+          
         )}
         {/* Main content area that changes based on the active route */}
         <div className={`container ${displayRightPanel ? '' : 'full-width'}`}>

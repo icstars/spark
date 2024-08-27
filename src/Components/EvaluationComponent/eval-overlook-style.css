@@ -7,11 +7,10 @@
   /* Enable positioning of the button */
 }
 
-.return-button-container {
+/* .return-button-container {
   position: absolute;
   left: 10%;
-  /* Position button with 10% margin from the left */
-}
+} */
 
 .h1-evaluation-container {
   text-align: center;
@@ -19,9 +18,14 @@
   /* Allow the h1 container to take up remaining space */
 }
 
+.return-button{
+  display: flex;
+  align-items: center;
+}
+
 .return-button-icon {
   margin-right: 5px;
-  /* Optional: Add space between icon and text */
+  width: 20px;
 }
 
 .h1-evaluation-title {
@@ -39,12 +43,12 @@
 }
 
 .option-wrapper {
-  display: flex;
-  justify-content: space-around; /* Center elements horizontally */
-  align-items: center; /* Center elements vertically */
-  flex-direction: row; /* Align items vertically in a column */
-  width: 100%; /* Ensure full width for centering */
   margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: 1fr;
+  grid-column-gap: 5px;
+  grid-row-gap: 5px;
 }
 
 .title-wrapper {
@@ -62,7 +66,6 @@
 
 .wrapper-element {
  
-  flex: 1;
   position: relative;
   box-shadow: 2px 2px 5px gray;
   margin: 5px;
@@ -70,7 +73,6 @@
   padding: 20px; /* Уменьшил padding, чтобы текст не выглядел слишком далеко от границ */
   height: 200px; /* Задал фиксированную высоту для всех элементов */
   max-width: 300px; /* Можно задать максимальную ширину, чтобы избежать слишком широких элементов */
-  min-width: 300px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;

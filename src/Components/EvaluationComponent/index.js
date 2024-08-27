@@ -1,4 +1,4 @@
-import return_icon from '../img/union-1.svg';
+import return_icon from './img/return.png';
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -444,9 +444,11 @@ function EvaluationComponent() {
       <div>
         <h1>Bob's Rubrics</h1>
       </div>
-      <button onClick={() => navigate(-1)}>
-        <img className="return-button-icon" src={return_icon} alt="Return" /> Return
-      </button>
+      <div>
+        <button className="return-button" onClick={() => navigate(-1)}>
+          <img className="return-button-icon" src={return_icon} alt="Return"/>Return
+        </button>
+      </div>
 
       {/* Отображение всех категорий и подразделов */}
       {sections.map((section) => (
