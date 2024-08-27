@@ -15,7 +15,6 @@ function NavMenu() {
                 <div className={`nav-element ${location.pathname === `/home/${userId}` ? 'active' : ''}`}>
                     <Link className='nav-text' to={`/home/${userId}`}>
                         <li className='nav-element-link'>
-
                             <img className='nav-element-icon' src={profile_icon} alt="Home icon"></img>Home
 
                         </li>

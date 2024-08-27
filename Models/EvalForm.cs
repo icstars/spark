@@ -15,7 +15,7 @@ namespace spark.Models
         public int manager_id { get; set; }
         public bool is_ready { get; set; }
 
-        public ICollection<EvaluationOption>? EvaluationOptions { get; set; }  // One-to-many relationship
+        public ICollection<EvaluationOption> EvaluationOptions { get; set; } = new List<EvaluationOption>();  // One-to-many relationship
         public ICollection<CategoryComment>? CategoryComments { get; set; }
     }
 }

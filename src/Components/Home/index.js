@@ -33,6 +33,7 @@ function Home() {
   return (
     <div className="home">
       <Helmet>Home</Helmet>
+      <PageHome userId={id} />
       {user ? (
         <div>
           <h1>Welcome, {user.firstname} {user.lastname}</h1>
@@ -40,7 +41,7 @@ function Home() {
           <p>Department: {user.department?.name}</p>
           <p>Email: {user.email}</p>
           <LineChart />
-          <PageHome userId={id} />
+          
         </div>
       ) : (
         <p>Loading...</p>

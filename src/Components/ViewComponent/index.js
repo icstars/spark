@@ -407,11 +407,12 @@ function ViewComponent() {
             <p><strong>Category ID:</strong> {getCategoryTitleById(comment.category_id)}</p>
             <h2>Evaluation Options</h2>
             {evaluationData.evaluationOptions && evaluationData.evaluationOptions.length > 0 ? (
-              evaluationData.evaluationOptions.filter(option => option.category_id == comment.category_id)
-              .map(option => (
-                <div key={option.id} className="evaluation-option">
-                  <p>{getSubSectionTitle(option.topic_id)}</p>
-                  <p>{getOptionTextByScore(option.topic_id, option.score)}</p>
+              evaluationData.evaluationOptions.filter(option => option.topic?.category_id === comment.category_id)
+              .map(option =>
+                (
+                <div key={option.id} >
+                  <h2 className="h2-evaluatoin-title">{getSubSectionTitle(option.topic.id)}</h2>
+                  <p>{getOptionTextByScore(option.topic.id, option.score)}</p>
                   <p><strong>Comment:</strong> {option.comment || 'No comment provided'}</p>
                 </div>
               ))
