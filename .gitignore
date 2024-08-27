@@ -36,3 +36,7 @@ appsettings
 /bin/*
 \obj\*
 \bin\*
+
+obj/Debug/net8.0/spark.AssemblyInfo.cs
+obj/Debug/net8.0/spark.AssemblyInfoInputs.cache
+obj/Debug/net8.0/spark.GeneratedMSBuildEditorConfig.editorconfig
