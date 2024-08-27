@@ -1,26 +1,11 @@
-body{
-  width: 100%;
-}
-* {
-  box-sizing: border-box;
-}
-
-/* .title-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-} */
-
 .title-container {
   display: flex;
   align-items: center;
   justify-content: center;
+  /* Center items horizontally */
   position: relative;
-  max-width: 1200px; /* Ограничиваем максимальную ширину */
-  margin: 0 auto; /* Центрируем контейнер */
+  /* Enable positioning of the button */
 }
-
 
 .return-button-container {
   position: absolute;
@@ -61,45 +46,36 @@ body{
   width: 100%; /* Ensure full width for centering */
   margin-top: 30px;
 }
-.option-wrapper {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  flex-direction: row;
-  width: 100%;
-  max-width: 100%; /* Ограничиваем ширину */
-  margin-top: 30px;
-  overflow-x: auto; /* Добавляем прокрутку по горизонтали, если элементы не умещаются */
-}
 
 .title-wrapper {
   display: flex;
-  justify-content: center; /* Центрируем элементы */
+  justify-content: space-evenly;
   flex-direction: row;
+  /* Distributes space between items */
   align-items: center;
-  width: 100%; /* Устанавливаем полную ширину */
-  max-width: 1200px; /* Ограничиваем ширину */
-  margin: 0 auto; /* Центрируем контейнер */
+  /* margin-top: 20px; */
+  width: 99%;
   margin-top: 25px;
+
+ 
 }
 
 .wrapper-element {
+ 
   flex: 1;
   position: relative;
   box-shadow: 2px 2px 5px gray;
   margin: 5px;
   border-radius: 3%;
-  padding: 20px;
-  height: 200px;
-  width: 100%; /* Убираем фиксированные размеры */
-  max-width: 300px; /* Ограничиваем максимальную ширину */
-  min-width: 200px; /* Устанавливаем минимальную ширину */
+  padding: 20px; /* Уменьшил padding, чтобы текст не выглядел слишком далеко от границ */
+  height: 200px; /* Задал фиксированную высоту для всех элементов */
+  max-width: 300px; /* Можно задать максимальную ширину, чтобы избежать слишком широких элементов */
+  min-width: 300px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
 }
-
 
 .wrapper-element:hover {
   background-color: rgb(203, 203, 203);
@@ -140,10 +116,66 @@ form {
   justify-content: center;
 }
 
+.comment-topic {
+  margin: 0 auto;
+  width: 95%;
+  height: 150px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  font-size: 16px;
+  resize: none;
+}
+
+.evaluation-view {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.evaluation-view h1, .evaluation-view h2 {
+  text-align: center;
+}
+
+.evaluation-option, .category-comment {
+  box-shadow: 2px 2px 5px gray;
+  border-radius: 3%;
+  padding: 20px;
+  margin: 10px 0;
+}
+
+.evaluation-option p, .category-comment p {
+  font-size: 16px;
+  margin: 5px 0;
+}
+
+/* Используем стили для уже существующих элементов */
+.evaluation-option {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  background-color: rgb(240, 240, 240); /* Добавим светлый фон для читаемости */
+}
+
+.category-comment {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  background-color: rgb(245, 245, 245); /* Немного изменим фон для комментариев */
+}
+
+.evaluation-option.selected, .category-comment.selected {
+  border: 2px solid black;
+  background-color: rgb(231, 231, 231);
+  box-shadow: none;
+}
 
 .comment-topic {
-  width: 100%; /* Устанавливаем ширину в 100% от родителя */
-  max-width: 1000px; /* Ограничиваем ширину комментариев */
   margin: 0 auto;
-  
+  max-width: 800px;
+  width: 100%;
 }
