@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { useParams } from "react-router-dom";
 import axios from 'axios';
 import PageHome from '../RightPanel/PageHome';
-import CategoryOverview from '../Overview';
+import Overview from '../Overview';
 
 const topics = [
   { name: "Collaboration", score: 2 },
@@ -23,6 +23,8 @@ function Home() {
   const { id } = useParams();
   const [user, setUser] = useState(null);
   const [error, setError] = useState('');
+
+  console.log(user);
 
 
   useEffect(() => {
@@ -55,9 +57,7 @@ function Home() {
           <p>Email: {user.email}</p>
           <LineChart />
           <PageHome userId={id} />
-          <div className='row gx-5 gy-3'>
-            {categories.map(category => <CategoryOverview name={category.name} topics={category.topics} />)}
-          </div>
+          <Overview categories={categories} />
         </div>
       ) : (
         <p>Loading...</p>
