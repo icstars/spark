@@ -3,7 +3,11 @@ import {Link, useLocation} from 'react-router-dom';
 
 import './BurgerMenu.css';
 
-const BurgerMenu = () => {
+import profile_icon from "./img/profile_icon.svg";
+import metrics_icon from "./img/metrics_icon.svg";
+import people_icon from "./img/people_icon.svg";
+
+const BurgerMenu = ({userRole}) => {
   const [isOpen, setIsOpen] = useState(false);
   const userId = localStorage.getItem('userId');
   const location = useLocation();
@@ -24,13 +28,33 @@ const isAdmin = localStorage.getItem("isAdmin") === "true";
       </div>
       <nav className={`menu ${isOpen ? 'open' : ''}`}>
         <ul>
-          <div className={`nav-element ${location.pathname === `/home/${userId}` ? 'active' : ''}`}>
-            <Link to={`/home/${userId}`}>
-              <li><a href="#home">Home</a></li>
-            </Link>
+          <div className={`burger-element ${location.pathname === `/home/${userId}` ? 'active' : ''}`}>
+
+            <li>
+              <Link to={`/home/${userId}`}>
+                <img className="burger-menu-icon" src={profile_icon} />Home
+              </Link>
+            </li>
+
           </div>
-          <li><a href="#dept_metrics">Department metrics</a></li>
-          <li><a href="#services">People</a></li>
+          <div className={`burger-element ${location.pathname === `/DepMetrics` ? 'active' : ''}`}>
+
+            <li>
+              <Link to="/DepMetrics">
+                <img className="burger-menu-icon" src={metrics_icon} />Metrics
+              </Link>
+            </li>
+
+          </div>
+          <div className={`burger-element ${location.pathname === `/People` ? 'active' : ''}`}>
+
+            <li>
+              <Link to="/People">
+                <img className="burger-menu-icon" src={people_icon} />People
+              </Link>
+            </li>
+
+          </div>
         </ul>
       </nav>
     </div>

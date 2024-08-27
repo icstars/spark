@@ -30,7 +30,7 @@ function Header() {
             <div className="logo-wrapper">
                 {displayBurger && <BurgerMenu />}
                 <Link className='nav-text' to={`/home/${userId}`}>
-                    <img src={logo_icon} alt="logo-img"></img>
+                    <img className="logo-icon" src={logo_icon} alt="logo-img"></img>
                 </Link>
             </div>
             <input type="text" className="searchinput" placeholder="Search.." />
