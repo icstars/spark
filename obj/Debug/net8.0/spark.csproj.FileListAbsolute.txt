@@ -112,7 +112,6 @@ C:\Users\ValeriiKharchenko\Documents\icstars\spark\bin\Debug\net8.0\runtimes\win
 C:\Users\ValeriiKharchenko\Documents\icstars\spark\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
 C:\Users\ValeriiKharchenko\Documents\icstars\spark\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\ValeriiKharchenko\Documents\icstars\spark\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
-c:\Users\ValeriiKharchenko\Documents\icstars\spark\bin\Debug\net8.0\appsettings_sample.json
 C:\Users\ValeriiKharchenko\Documents\spark\bin\Debug\net8.0\appsettings.Development.json
 C:\Users\ValeriiKharchenko\Documents\spark\bin\Debug\net8.0\appsettings.json
 C:\Users\ValeriiKharchenko\Documents\spark\bin\Debug\net8.0\appsettings_sample.json
