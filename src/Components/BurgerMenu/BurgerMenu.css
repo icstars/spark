@@ -1,7 +1,7 @@
 /* BurgerMenu.css */
 .burger-menu {
     position: relative;
-    right: 27px;
+    right: 30px;
     bottom: -34px;
   }
   
@@ -67,7 +67,8 @@
   }
   
   .burger-menu-icon{
-    
+    width: 20px;
+    margin-right: 5px;
   }
   .menu a {
     display: flex;
