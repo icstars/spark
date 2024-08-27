@@ -101,44 +101,96 @@ app.MapPost("/evaluate", async (EvaluationRequest formDto, SparkDb _context) =>
 
     // Getting the ID of the new evaluation_form record for use in other tables ??
     int formId = evaluationForm.id;
-    
-    // Шаг 2: Inserting data into the option_evaluation table
-    foreach (var option in formDto.EvaluationOptions)
-    {
-        var optionEvaluation = new EvaluationOption
-        {
-            topic_id = option.TopicId,
-            comment = option.Comment,
-            score = option.Score,
-            form_id = formId
-        };
-        _context.option_evaluation.Add(optionEvaluation);
-    } 
 
-    // Шаг 3: Inserting comments for categories
-    foreach (var categoryComment in formDto.CategoryComments)
+    // Шаг 2: Inserting data into the option_evaluation table
+    if (formDto != null && formDto.EvaluationOptions != null)
     {
-        var categoryCommentEntity = new CategoryComment
+        foreach (var option in formDto.EvaluationOptions)
         {
-            category_id = categoryComment.CategoryId,
-            comment = categoryComment.Comment,
-            form_id = formId // We use the received formId
-        };
-        _context.category_comment.Add(categoryCommentEntity);
-       
+            var optionEvaluation = new EvaluationOption
+            {
+                topic_id = option.TopicId,
+                comment = option.Comment,
+                score = option.Score,
+                form_id = formId
+            };
+            _context.option_evaluation.Add(optionEvaluation);
+        }
     }
 
+    // Шаг 3: Inserting comments for categories
+
+    if (formDto != null && formDto.CategoryComments != null)
+    {
+        foreach (var categoryComment in formDto.CategoryComments)
+        {
+            var categoryCommentEntity = new CategoryComment
+            {
+                category_id = categoryComment.CategoryId,
+                comment = categoryComment.Comment,
+                form_id = formId // We use the received formId
+            };
+            _context.category_comment.Add(categoryCommentEntity);
+
+        }
+    }
     // We save all changes to the database
     await _context.SaveChangesAsync();
 
     return Results.Ok(new { message = "Evaluation form created successfully!" });
 });
 
-app.MapGet("/overview", async (SparkDb db) =>
+app.MapGet("/evaluate/user/{userId}", async (int userId, SparkDb _context) =>
 {
+    // Определяем текущую дату и дату год назад
+    var oneYearAgo = DateTime.Now.AddYears(-1);
 
+    // Находим форму оценки по userId и проверяем дату создания
+    var evaluationForm = await _context.evaluation_form
+        .Include(ef => ef.EvaluationOptions)
+            .ThenInclude(eo => eo.Topic)
+        .Include(ef => ef.CategoryComments)
+        .Where(ef => ef.user_id == userId && ef.created >= oneYearAgo)
+        .OrderByDescending(ef => ef.created) // На случай, если нужно выбрать самую последнюю форму
+        .FirstOrDefaultAsync();
 
+    if (evaluationForm == null)
+    {
+        return Results.NotFound(new { message = "Evaluation form not found or too old." });
+    }
+
+    // Подготовка ответа
+    var response = new
+    {
+        evaluationForm.id,
+        evaluationForm.user_id,
+        evaluationForm.department_id,
+        evaluationForm.manager_id,
+        evaluationForm.created,
+        evaluationForm.is_ready,
+        EvaluationOptions = evaluationForm.EvaluationOptions.Select(eo => new
+        {
+            eo.id,
+            Topic = eo.Topic == null ? null : new
+            {
+                eo.Topic.id,
+                eo.Topic.category_id,
+            },
+            eo.comment,
+            eo.score
+        }).ToList(),
+        CategoryComments = evaluationForm.CategoryComments.Select(cc => new
+        {
+            cc.id,
+            cc.category_id,
+            cc.comment
+        }).ToList()
+    };
+
+    return Results.Ok(response);
 });
+
+
 
 //////////////////////
 

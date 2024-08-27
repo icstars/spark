@@ -473,12 +473,12 @@ function EvaluationComponent() {
 
               {/* Поле для комментария к подразделу */}
               <div>
-                <p>Комментарий к {subSection.title}:</p>
+                <p>Comment to {subSection.title}:</p>
                 <textarea
                   className="comment-topic"
                   value={comments[`subSection-${subSection.id}`] || ''}
                   onChange={(e) => handleCommentChange(`subSection-${subSection.id}`, e.target.value)}
-                  placeholder="Напишите комментарий..."
+                  placeholder="Write a comment..."
                 />
               </div>
             </div>
@@ -486,12 +486,12 @@ function EvaluationComponent() {
 
           {/* Поле для комментария ко всему разделу */}
           <div>
-            <p>Комментарий к разделу {section.title}:</p>
+            <p>Comment to {section.title}:</p>
             <textarea
               className="comment-topic"
               value={comments[`section-${section.id}`] || ''}
               onChange={(e) => handleCommentChange(`section-${section.id}`, e.target.value)}
-              placeholder="Общий комментарий по разделу..."
+              placeholder="General comment on the section..."
             />
           </div>
         </div>
