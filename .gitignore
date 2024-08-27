@@ -32,7 +32,7 @@ yarn-error.log*
 appsettings.json
 
 appsettings
-/obj/*
-/bin/*
+/obj/
+/bin/
 \obj\*
 \bin\*
