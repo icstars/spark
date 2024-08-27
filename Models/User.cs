@@ -18,8 +18,8 @@ namespace spark.Models
         public bool is_admin { get; set; }
         public string? firstname { get; set; }
         public string? lastname { get; set; }
-        
 
+        public byte[]? img { get; set; }  // Storing image as byte array
         public int? department_id { get; set; } // Foreign Key
 
         [ForeignKey("department_id")]

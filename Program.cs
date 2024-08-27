@@ -190,6 +190,56 @@ app.MapGet("/evaluate/user/{userId}", async (int userId, SparkDb _context) =>
     return Results.Ok(response);
 });
 
+app.MapPost("/employees-with-image", async (HttpRequest request, SparkDb db) =>
+{
+    var form = await request.ReadFormAsync();
+    var user = new User
+    {
+        firstname = form["firstname"],
+        lastname = form["lastname"],
+        email = form["email"],
+        username = form["username"],
+        password = form["password"],
+        company_role = form["company_role"],
+        is_admin = bool.TryParse(form["is_admin"], out bool isAdmin) ? isAdmin : false,
+        hired_date = DateTime.TryParse(form["hired_date"], out DateTime hiredDate) ? hiredDate : (DateTime?)null,
+        manager_id = int.TryParse(form["manager_id"], out int managerId) ? managerId : (int?)null,
+        department_id = int.TryParse(form["department_id"], out int departmentId) ? departmentId : (int?)null
+    };
+
+    // Validate department_id
+    if (user.department_id != null)
+    {
+        var department = await db.department.FindAsync(user.department_id);
+        if (department == null)
+        {
+            return Results.BadRequest("Invalid department ID.");
+        }
+    }
+
+    // Process the file upload
+    var file = form.Files["image"];
+    if (file != null && file.Length > 0)
+    {
+        var filePath = Path.Combine("Uploads", file.FileName);
+        using (var stream = System.IO.File.Create(filePath))
+        {
+            await file.CopyToAsync(stream);
+            // user.img = stream.ToArray(); 
+        }
+        // Optionally, save the file path to the database (assuming a `ProfileImagePath` property in User)
+        // user.ProfileImagePath = filePath;
+    }
+
+    db.user.Add(user);
+    await db.SaveChangesAsync();
+
+    return Results.Created($"/employees/{user.id}", user);
+});
+
+
+app.MapGet("/departments", async (SparkDb db) =>
+    await db.department.ToListAsync());
 
 
 //////////////////////
