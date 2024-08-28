@@ -11,7 +11,8 @@ function Login() {
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
-    const handleLogin = async () => {
+    const handleLogin = async (e) => {
+        e.preventDefault();
         try {
             const response = await axios.post('http://localhost:5212/login', {
                 username,
@@ -59,22 +60,24 @@ function Login() {
                 <title>Login</title>
             </Helmet>
             <h1 className="login-title">Login</h1>
-            <input
-                name="input-login"
-                className='login-input-field'
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-            />
-            <input
-                name="input-login"
-                className='login-input-field'
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-            />
-            <button type="button" className="login-buttom" onClick={handleLogin}>Login</button>
+            <form className='form-row flex-column gy-5' onSubmit={handleLogin}>
+                <input
+                    name="input-login"
+                    className='form-control mb-2'
+                    placeholder="Username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                />
+                <input
+                    name="input-login"
+                    className='form-control  mb-2'
+                    type="password"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+                <button className="btn btn-primary col-12">Login</button>
+            </form>
             {error && <p style={{ color: 'red' }}>{error}</p>}
         </div>
     );
