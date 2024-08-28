@@ -6,6 +6,18 @@ body{
     margin: 0;
 }
 
+.title-list-people {
+
+    text-align: left;
+    font-weight: bold;
+}
+
+.category-scores {
+    text-align: left;
+    font-weight: bold;
+
+}
+
 .container2{
     width: 100%;
     display: flex;
