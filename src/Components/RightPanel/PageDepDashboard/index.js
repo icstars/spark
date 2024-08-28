@@ -7,15 +7,9 @@ function pageDepDashboard() {
     return (
         <div>
             <div className="people-rand-list">
-            <h2 className='title-list-people'>Employee</h2> 
-                <ul>
-                <li> Jim Jones 20 </li>
-                <li> Bob Gates 15 </li>
-                <li> Eva Ryan 29 </li>
-                <li> Tom Perez 40 </li>
-                <li> Rita Khan 25 </li>
-                </ul>
-                <Link to="/People"><button type="button">Open more</button></Link>
+                <p>People</p>
+                <p>Employee Name</p>
+                <Link to="/People"><button className='btn btn-dark' type="button">Open more</button></Link>
             </div>
             <div>
                 <h3 className="category-scores">Category Scores</h3>
