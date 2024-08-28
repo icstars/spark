@@ -1,6 +1,8 @@
 import { Link, useLocation } from 'react-router-dom';
 import React from 'react';
 
+import '../nav-menu-style.css';
+
 import profile_icon from "./img/profile_icon.svg";
 import metrics_icon from "./img/metrics_icon.svg";
 import people_icon from "./img/people_icon.svg";
@@ -15,7 +17,6 @@ function NavMenu() {
                 <div className={`nav-element ${location.pathname === `/home/${userId}` ? 'active' : ''}`}>
                     <Link className='nav-text' to={`/home/${userId}`}>
                         <li className='nav-element-link'>
-
                             <img className='nav-element-icon' src={profile_icon} alt="Home icon"></img>Home
 
                         </li>

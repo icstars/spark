@@ -1,4 +1,4 @@
-import return_icon from '../img/union-1.svg';
+import return_icon from './img/return.png';
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -16,8 +16,30 @@ function EvaluationComponent() {
   const [comments, setComments] = useState({});
   const [departmentId, setDepartmentId] = useState(null);
   const [error, setError] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
   useEffect(() => {
+
+    // Check if an evaluation already exists for the user
+    axios.get(`http://localhost:5212/evaluate/user/${id}`)
+      .then(response => {
+        if (response.data) {
+          // If a record is found, alert the user and navigate back
+          alert('Record was already applied');
+          navigate(-1); // Redirect to the previous page
+        }
+      })
+      .catch(error => {
+        // Handle the case where no record is found or other errors
+        if (error.response && error.response.status === 404) {
+          console.log("No recent evaluation found, proceeding with the evaluation form.");
+        } else {
+          setError('Failed to check existing evaluation record');
+          console.error(error);
+        }
+      });
+
     // Getting the user's department ID
     axios.get(`http://localhost:5212/users/${id}`)
       .then(response => {
@@ -49,6 +71,33 @@ function EvaluationComponent() {
 
   // Function for submitting a form to the server
   const handleSubmitForm = async () => {
+    setErrorMessage('');  // Очистка предыдущих ошибок
+    setSuccessMessage('');  // Очистка сообщения об успехе
+
+    let allFieldsFilled = true;
+
+    sections.forEach((section) => {
+      section.subSections.forEach((subSection) => {
+        if (!selectedIndexes[subSection.id]) {
+          allFieldsFilled = false;
+        }
+
+        if (!comments[`subSection-${subSection.id}`]) {
+          allFieldsFilled = false;
+        }
+      });
+
+      if (!comments[`section-${section.id}`]) {
+        allFieldsFilled = false;
+      }
+    });
+
+    if (!allFieldsFilled) {
+      setErrorMessage('All fields must be filled in');
+      return;
+    }
+
+
     const payload = {
       userId: parseInt(id),
       departmentId: departmentId,
@@ -100,14 +149,23 @@ function EvaluationComponent() {
         },
         body: JSON.stringify(payload),
       });
+
       console.log(response);
-      if (!response.ok) {
-        throw new Error('Failed to submit evaluation form');
-      }
+      const data = await response.json();
+
+     
+
+      // Если форма была успешно отправлена
+      setSuccessMessage('Form submitted successfully');
+      setTimeout(() => {
+        navigate(-1);  // Переход назад после успеха
+      }, 2000);
+
 
       console.log('Form submitted successfully');
     } catch (error) {
       console.error(error);
+      setErrorMessage('Failed to submit evaluation form');
     }
   };
 
@@ -437,16 +495,20 @@ function EvaluationComponent() {
   ];
 
   return (
-    <div>
+    <div >
       <Helmet>
         <title>Your evaluation</title>
       </Helmet>
       <div>
         <h1>Bob's Rubrics</h1>
       </div>
-      <button onClick={() => navigate(-1)}>
-        <img className="return-button-icon" src={return_icon} alt="Return" /> Return
-      </button>
+      <div>
+        <button className="return-button" onClick={() => navigate(-1)}>
+          <img className="return-button-icon" src={return_icon} alt="Return" />Return
+        </button>
+      </div>
+
+     
 
       {/* Отображение всех категорий и подразделов */}
       {sections.map((section) => (
@@ -498,6 +560,10 @@ function EvaluationComponent() {
       ))}
 
       <button type="button" onClick={handleSubmitForm}>Submit form</button>
+       {/* Вывод сообщения об ошибке */}
+       {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+      {/* Вывод сообщения об успешной отправке */}
+      {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
     </div>
   );
 }

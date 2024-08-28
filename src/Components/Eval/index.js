@@ -59,7 +59,7 @@ function Eval() {
     }
 
     return (
-        <div>
+        <div className="evaluation-view">
             <Helmet>
                 <title>Evaluation</title>
             </Helmet>
