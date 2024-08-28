@@ -582,7 +582,6 @@ C:\Users\DeantratriceRoss\Documents\icstars\spark\obj\Debug\net8.0\spark.genrunt
 C:\Users\DeantratriceRoss\Documents\icstars\spark\obj\Debug\net8.0\ref\spark.dll
 >>>>>>> ab5b5fe912077f621ae12e90879106de407ce9ba
 C:\Users\AngelCampos\Documents\ICstars\spark\bin\Debug\net8.0\appsettings.Development.json
-C:\Users\AngelCampos\Documents\ICstars\spark\bin\Debug\net8.0\appsettings_sample.json
 C:\Users\AngelCampos\Documents\ICstars\spark\bin\Debug\net8.0\public\manifest.json
 C:\Users\AngelCampos\Documents\ICstars\spark\bin\Debug\net8.0\package-lock.json
 C:\Users\AngelCampos\Documents\ICstars\spark\bin\Debug\net8.0\package.json
