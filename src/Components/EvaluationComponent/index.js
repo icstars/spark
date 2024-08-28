@@ -497,7 +497,7 @@ function EvaluationComponent() {
   return (
     <div >
       <Helmet>
-        <title>Your evaluation</title>
+        <title>Evaluation</title>
       </Helmet>
       <div>
         <h1>Bob's Rubrics</h1>

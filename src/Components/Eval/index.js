@@ -67,7 +67,7 @@ function Eval() {
             {/* Render CategoryComponent only if categories are available */}
             {categories.length > 0 ? (
                 // <CategoryComponent categories={categories} />
-                <EvalOverlook categories={categories}/>
+                <EvalOverlook categories={categories} />
             ) : (
                 <p>No categories available.</p>
             )}
