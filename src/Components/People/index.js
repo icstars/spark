@@ -19,6 +19,7 @@ function People() {
     const [selectedRows, setSelectedRows] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
     const [deleteUserId, setDeleteUserId] = useState(null); // State to hold the ID of the user to delete
+    const [statuses, setStatuses] = useState({});
 
     const currentUserId = localStorage.getItem('userId');
 
@@ -65,6 +66,22 @@ function People() {
                 const response = await fetch(`http://localhost:5212/employees`);
                 const data = await response.json();
                 setPeople(data);
+                setLoading(false);
+
+                const statusPromises = data.map(async (person) => {
+                    const statusResponse = await fetch(`http://localhost:5212/status/${person.id}`);
+                    const statusData = await statusResponse.json();
+                    return { id: person.id, status: statusData.status };
+                });
+
+                const statuses = await Promise.all(statusPromises);
+                const statusMap = {};
+                statuses.forEach((status) => {
+                    statusMap[status.id] = status.status;
+                });
+
+                setStatuses(statusMap);
+
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -272,7 +289,7 @@ function People() {
                         <th className='sort' onClick={() => handleSort('title')}>
                             Title{sortField === 'name' && (sortOrder === 'asc' ? '▲' : '▼')}</th>
                         <th className='th-email'>Email</th>
-                        <th>Status</th>
+                        <th className='th-status'>Status</th>
                         <th className="th-action">Action</th>
                     </tr>
                 </thead>
@@ -371,9 +388,14 @@ function People() {
                                     p.email
                                 )}
                             </td>
-                            <td>
-                                <button className="td-status-b">Status</button>{/*{p.status}*/}
+                            <td className='th-status'>
+                                {statuses[p.id] === 'Done' ? (
+                                    <button className="td-status-a">Done</button>
+                                ) : (
+                                    <button className="td-status-b">Not Done</button>
+                                )}
                             </td>
+
 
                             <td className="td-action-b">
                                 {editUserId === p.id ? (

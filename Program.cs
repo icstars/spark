@@ -84,12 +84,26 @@ app.MapGet("/eval/{id}", async (int id, SparkDb db) =>
     return user is not null ? Results.Ok(user) : Results.NotFound();
 });
 
-// app.MapGet("/evaluate", async (int id, SparkDb db) =>
-//      await db.user
-//       .Include(u => u.department).ToListAsync());
+app.MapGet("/status/{userId}", async (int userId, SparkDb _context) =>
+{
+    var oneYearAgo = DateTime.Now.AddYears(-1);
+
+    // Проверка на наличие формы оценки за последний год
+    var evaluationForm = await _context.evaluation_form
+        .Where(ef => ef.user_id == userId && ef.created >= oneYearAgo)
+        .FirstOrDefaultAsync();
+
+    if (evaluationForm != null)
+    {
+        return Results.Ok(new { status = "Done" });
+    }
+
+    return Results.Ok(new { status = "Not Done" });
+});
 
 app.MapPost("/evaluate", async (EvaluationRequest formDto, SparkDb _context) =>
 {
+    
     // Шаг 1: Create a record in the evaluation_form table
     var evaluationForm = new EvaluationForm
     {
