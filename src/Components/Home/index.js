@@ -46,7 +46,7 @@ function Home() {
 
   return (
     <div className="home">
-      <Helmet>Home</Helmet>
+      <Helmet> <title>Home</title></Helmet>
       <PageHome userId={id} />
       {user ? (
         <div>

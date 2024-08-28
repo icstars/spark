@@ -275,7 +275,7 @@ function People() {
     return (
         <div className="people-container">
             <h1>People</h1>
-            <Helmet>People</Helmet>
+            <Helmet><title>People</title></Helmet>
             <table>
                 <thead>
                     <tr>

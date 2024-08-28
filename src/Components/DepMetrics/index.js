@@ -48,7 +48,7 @@ console.log(id);
 
   return (
     <div className="home">
-      <Helmet>Manager Scores</Helmet>
+      <Helmet> <title>DepMetrics</title></Helmet>
       <PageHome managerId={id} />
       {managerId ? (
         <div>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import './view-style.css';
-
+import { Helmet } from 'react-helmet-async';
 // Используем `sections` для поиска текста по `score`
 const sections = [
   {
@@ -400,6 +400,9 @@ function ViewComponent() {
 
   return (
     <div className="evaluation-view">
+      <Helmet>
+        <title>Evaluation</title>
+      </Helmet>
       <h1>Evaluation Form #{evaluationData.id}</h1>
       <p>User ID: {evaluationData.user_id}</p>
       <p>Department ID: {evaluationData.department_id}</p>
