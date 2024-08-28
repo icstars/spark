@@ -78,16 +78,17 @@ function CategoryOverview({ categoryId, topics = [], totalScore }) {
     );
 }
 
+
 // Main Overview component to render all categories
 export default function Overview({ categories = [] }) {
     return (
         <div className="row gx-5 gy-3">
             {categories.map(category => (
                 <CategoryOverview
-                    key={category.categoryId}
-                    categoryId={category.categoryId} 
-                    topics={category.topics || []}
-                    totalScore={category.totalScore || 0} 
+                    key={category.category_id} // Use category_id from the API response
+                    categoryId={category.category_id} // Pass category_id correctly
+                    topics={category.topics || []} // Pass topics array correctly
+                    totalScore={category.total_score || 0} // Pass the total_score correctly
                 />
             ))}
         </div>
