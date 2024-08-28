@@ -22,7 +22,33 @@ ChartJS.register(
   Legend
 );
 
+
+
 export default function LineChart({ scores }) {
+  const topicNameMap = {
+    1: "Collaboration",
+    2: "Conflict Resolution",
+    3: "Task Manager",
+    4: "Adapting to Change",
+    5: "Mentoring",
+    6: "Documentation",
+    7: "Formatting Standards",
+    8: "Naming",
+    9: "Syntax and Organization",
+    10: "Engagement",
+    11: "Verbal Communication",
+    12: "Written Communication",
+    13: "Providing Feedback",
+    14: "Receiving Feedback",
+    15: "Testing",
+    16: "Refactoring/Readability",
+    17: "Defensive Programming",
+    18: "Performance",
+    19: "Security",
+    20: "Strategy and Critical Thinking Comments",
+    21: "Debugging Techniques",
+    22: "Tool Selection and Usage"
+};
   // Gradient background
   const createGradient = (ctx, area) => {
     const gradient = ctx.createLinearGradient(0, area.bottom, 0, area.top);
