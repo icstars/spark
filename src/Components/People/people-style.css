@@ -47,12 +47,27 @@ td {
   color: black;
 }
 
+.th-status{
+  text-align: center;
+}
+
+.td-status-a {
+  color: white;
+  background-color: #5cc058;
+  padding: 5px 10px 5px 10px;
+  border-radius: 12px;
+  border-width: 0;
+  min-width: 90px;
+  max-width: 90px;
+}
 .td-status-b {
   color: white;
   background-color: #DC3545;
   padding: 5px 10px 5px 10px;
   border-radius: 12px;
   border-width: 0;
+  min-width: 90px;
+  max-width: 90px;
 }
 
 .sort {
