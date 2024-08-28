@@ -72,7 +72,7 @@ app.MapGet("/users/{id}", async (int id, SparkDb db) =>
 app.MapGet("/topic", async (SparkDb db) =>
     await db.topic
     .ToListAsync());
-    
+
 app.MapGet("/categories", async (SparkDb db) =>
     await db.category
     // .Include(c => c.topic)
@@ -272,6 +272,46 @@ app.MapPut("/employees/{id}", async (int id, spark.Models.User inputEmployee, Sp
     return Results.NoContent();
 });
 
+app.MapDelete("/employees/{id}", async (int id, SparkDb db) =>
+{
+    // Retrieve the user from the database
+    var employee = await db.user.FindAsync(id);
+    if (employee == null)
+    {
+        return Results.NotFound(new { message = "User not found." });
+    }
+
+    // Check for dependent records (example: direct reports)
+    var hasDependents = await db.user.AnyAsync(u => u.manager_id == id);
+    if (hasDependents)
+    {
+        return Results.BadRequest(new { message = "Cannot delete user because they have dependent records." });
+    }
+
+    // Use a transaction for safe deletion
+    using (var transaction = await db.Database.BeginTransactionAsync())
+    {
+        try
+        {
+            db.user.Remove(employee);
+            await db.SaveChangesAsync();
+
+            // Commit the transaction if successful
+            await transaction.CommitAsync();
+
+            return Results.Ok(new { message = "User deleted successfully." });
+        }
+        catch (Exception ex)
+        {
+            // Log the error or handle it appropriately here
+            var errorResponse = new { message = "An error occurred while deleting the user.", error = ex.Message };
+
+            return Results.Json(errorResponse, statusCode: 500);
+        }
+    }
+});
+
+
 //////////////////////
 
 app.MapGet("/employees/admins", async (SparkDb db) =>
@@ -329,16 +369,6 @@ app.MapPut("/users/{id}", async (int id, spark.Models.User editEmployee, SparkDb
     return Results.NoContent(); // or `Results.Ok(employee)` if you want to return the updated resource
 });
 
-app.MapDelete("/employees/{id}", async (int id, SparkDb db) =>
-{
-    if (await db.user.FindAsync(id) is spark.Models.User employee)
-    {
-        db.user.Remove(employee);
-        await db.SaveChangesAsync();
-        return Results.NoContent();
-    }
 
-    return Results.NotFound();
-});
 
 app.Run();

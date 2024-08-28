@@ -6,6 +6,7 @@ import edit_icon from "./img/edit.png";
 import delete_icon from "./img/delete.png";
 import profile_icon from "./img/profile.png"
 import './people-style.css';
+import ConfirmationModal from '../ConfirmationModal';
 
 function People() {
     const [people, setPeople] = useState([]);
@@ -14,6 +15,49 @@ function People() {
     const [sortOrder, setSortOrder] = useState('asc');
     const [openMenuId, setOpenMenuId] = useState(null);
     const [department, setDepartments] = useState([]); // Fetch department list
+    const [selectAll, setSelectAll] = useState(false);
+    const [selectedRows, setSelectedRows] = useState({});
+    const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
+    const [deleteUserId, setDeleteUserId] = useState(null); // State to hold the ID of the user to delete
+
+    const currentUserId = localStorage.getItem('userId');
+
+    const handleDeleteClick = (id) => {
+        if (id == currentUserId) {
+            alert("You cannot delete your own account.");
+            return;
+        }
+        setDeleteUserId(id); // Set the ID of the user to delete
+        setIsModalOpen(true); // Open the confirmation modal
+    };
+
+    // Confirm delete action
+    const handleConfirmDelete = async () => {
+        try {
+            const response = await fetch(`http://localhost:5212/employees/${deleteUserId}`, {
+                method: 'DELETE',
+            });
+
+            if (response.ok) {
+                setPeople(prevPeople => prevPeople.filter(person => person.id !== deleteUserId));
+                alert('User deleted successfully.');
+            } else {
+                const errorData = await response.json();
+                alert(`Error deleting user: ${errorData.message}`);
+            }
+        } catch (error) {
+            console.error('Error deleting user:', error);
+            alert('An error occurred while deleting the user.');
+        } finally {
+            setIsModalOpen(false); // Close the modal after action
+        }
+    };
+
+    // Cancel delete action
+    const handleCancelDelete = () => {
+        setIsModalOpen(false); // Simply close the modal
+    };
+
     // Fetch data from API
     useEffect(() => {
         const fetchData = async () => {
@@ -40,6 +84,27 @@ function People() {
         department_id: '',
         hired_date: ''
     });
+
+    const handleSelectAll = () => {
+        const newSelectAll = !selectAll;
+        setSelectAll(newSelectAll);
+
+        const newSelectedRows = {};
+        people.forEach(person => {
+            newSelectedRows[person.id] = newSelectAll;
+        });
+        setSelectedRows(newSelectedRows);
+    };
+
+    // Handle individual row checkbox change
+    const handleRowSelect = (id) => {
+        const newSelectedRows = { ...selectedRows, [id]: !selectedRows[id] };
+        setSelectedRows(newSelectedRows);
+
+        // Update "select all" checkbox based on row selections
+        const allSelected = people.every(person => newSelectedRows[person.id]);
+        setSelectAll(allSelected);
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -197,14 +262,14 @@ function People() {
             <table>
                 <thead>
                     <tr>
-                        <th><input type="checkbox" /></th>
+                        <th><input type="checkbox" checked={selectAll} onChange={handleSelectAll} /></th>
                         <th>Image</th>
-                        <th onClick={() => handleSort('name')}>
+                        <th className='sort' onClick={() => handleSort('name')}>
                             Full Name{sortField === 'name' && (sortOrder === 'asc' ? '▲' : '▼')}</th>
                         <th>Date</th>
-                        <th onClick={() => handleSort('department')}>
+                        <th className='sort' onClick={() => handleSort('department')}>
                             Department{sortField === 'name' && (sortOrder === 'asc' ? '▲' : '▼')}</th>
-                        <th onClick={() => handleSort('title')}>
+                        <th className='sort' onClick={() => handleSort('title')}>
                             Title{sortField === 'name' && (sortOrder === 'asc' ? '▲' : '▼')}</th>
                         <th className='th-email'>Email</th>
                         <th>Status</th>
@@ -214,13 +279,13 @@ function People() {
                 <tbody>
                     {people.map(p => (
                         <tr key={p.id}>
-                            <td><input type="checkbox" /></td>
+                            <td><input type="checkbox" checked={selectedRows[p.id] || false} onChange={() => handleRowSelect(p.id)} /></td>
                             <td className='img-box'>
                                 {p.img ? (
                                     <img className='img'
                                         src={`http://localhost:5212/images/${p.id}`} // Fetch the image from your backend
                                         alt={`${p.firstname} ${p.lastname}`}
-                                        style={{ width: '45px', height: '45px' }}
+                                        style={{ width: '45px', height: '45px', borderRadius: '50%' }}
                                     />
                                 ) : (
                                     <img className='img'
@@ -232,12 +297,20 @@ function People() {
                             </td>
                             <td>
                                 {editUserId === p.id ? (
-                                    <input
-                                        type="text"
-                                        name="firstname"
-                                        value={editFormValues.firstname}
-                                        onChange={handleInputChange}
-                                    />
+                                    <>
+                                        <input
+                                            type="text"
+                                            name="firstname"
+                                            value={editFormValues.firstname}
+                                            onChange={handleInputChange}
+                                        />
+                                        <input
+                                            type="text"
+                                            name="lastname" // <-- Added lastname input
+                                            value={editFormValues.lastname}
+                                            onChange={handleInputChange}
+                                        />
+                                    </>
                                 ) : (
                                     <Link to={`/home/${p.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                                         {p.firstname} {p.lastname}
@@ -318,13 +391,13 @@ function People() {
                                         </button>
                                         {openMenuId === p.id && (
                                             <div className="dropdown-menu2">
-                                                <button onClick={() => alert('Evaluate')}>
+                                                <button onClick={() => window.location.href = `/Eval/${p.id}`}>
                                                     <img src={checkmark_icon} alt="checkmark" /> Evaluate
                                                 </button>
                                                 <button onClick={() => handleEditClick(p)}>
                                                     <img src={edit_icon} alt="edit" /> Edit
                                                 </button>
-                                                <button onClick={() => alert('Delete action')}>
+                                                <button onClick={() => handleDeleteClick(p.id)}>
                                                     <img src={delete_icon} alt="delete" /> Delete
                                                 </button>
                                             </div>
@@ -336,6 +409,13 @@ function People() {
                     ))}
                 </tbody>
             </table>
+            {/* Confirmation Modal */}
+            <ConfirmationModal
+                isOpen={isModalOpen}
+                onConfirm={handleConfirmDelete}
+                onCancel={handleCancelDelete}
+                message="Are you sure you want to delete this user? This action cannot be undone."
+            />
         </div>
     );
 }
