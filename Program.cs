@@ -69,10 +69,6 @@ app.MapGet("/users/{id}", async (int id, SparkDb db) =>
     return user is not null ? Results.Ok(user) : Results.NotFound();
 });
 
-app.MapGet("/topic", async (SparkDb db) =>
-    await db.topic
-    .ToListAsync());
-
 app.MapGet("/categories", async (SparkDb db) =>
     await db.category
     // .Include(c => c.topic)
@@ -147,6 +143,49 @@ app.MapPost("/evaluate", async (EvaluationRequest formDto, SparkDb _context) =>
 
     return Results.Ok(new { message = "Evaluation form created successfully!" });
 });
+
+app.MapGet("/rating/{userId}", async (int userId, SparkDb _context) =>
+{
+    var oneYearAgo = DateTime.Now.AddYears(-1);
+
+    var evaluationForm = await _context.evaluation_form
+        .Include(ef => ef.EvaluationOptions)
+            .ThenInclude(eo => eo.Topic)
+        .Include(ef => ef.CategoryComments)
+        .Where(ef => ef.user_id == userId && ef.created >= oneYearAgo)
+        .OrderByDescending(ef => ef.created)
+        .FirstOrDefaultAsync();
+
+    if (evaluationForm == null)
+    {
+        return Results.NotFound(new { message = "Evaluation form not found or too old." });
+    }
+
+    var categories = evaluationForm.EvaluationOptions
+    .GroupBy(eo => eo.Topic.category_id)
+    .Select(group => new
+    {
+        category_id = group.Key, // Используем `category_id` вместо `CategoryId`
+        topics = group.Select(eo => new
+        {
+            eo.Topic.id,
+            eo.score
+        }).ToList(),
+        total_score = group.Sum(eo => eo.score) // Тоже следите за единообразием
+    }).ToList();
+
+
+    var response = new
+    {
+        evaluationForm.id,
+        evaluationForm.user_id,
+        evaluationForm.created,
+        Categories = categories
+    };
+
+    return Results.Ok(response);
+});
+
 
 app.MapGet("/evaluate/user/{userId}", async (int userId, SparkDb _context) =>
 {
