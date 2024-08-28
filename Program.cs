@@ -158,6 +158,47 @@ app.MapPost("/evaluate", async (EvaluationRequest formDto, SparkDb _context) =>
     return Results.Ok(new { message = "Evaluation form created successfully!" });
 });
 
+// Get evaluations and scores for all users in a department
+app.MapGet("/dep-rating/{departmentId}", async (int departmentId, SparkDb _context) =>
+{
+    // Query all evaluation forms within the department
+    var evaluations = await _context.evaluation_form
+        .Include(ef => ef.EvaluationOptions)
+            .ThenInclude(eo => eo.Topic)
+        .Where(ef => ef.department_id == departmentId)
+        .ToListAsync();
+
+    if (evaluations == null || !evaluations.Any())
+    {
+        return Results.NotFound(new { message = "No evaluations found for the department." });
+    }
+
+    // Group the data by category and topic
+    var categoryScores = evaluations
+        .SelectMany(ef => ef.EvaluationOptions)
+        .GroupBy(eo => eo.Topic.category_id)
+        .Select(group => new
+        {
+            category_id = group.Key,
+            topics = group.GroupBy(eo => eo.Topic.id)
+                          .Select(topicGroup => new
+                          {
+                              topic_id = topicGroup.Key,
+                              average_score = topicGroup.Average(eo => eo.score)
+                          }).ToList(),
+            total_score = group.Sum(eo => eo.score)
+        }).ToList();
+
+    var response = new
+    {
+        departmentId = departmentId,
+        categories = categoryScores
+    };
+
+    return Results.Ok(response);
+});
+
+
 app.MapGet("/rating/{userId}", async (int userId, SparkDb _context) =>
 {
     var oneYearAgo = DateTime.Now.AddYears(-1);
@@ -250,6 +291,8 @@ app.MapGet("/evaluate/user/{userId}", async (int userId, SparkDb _context) =>
 
     return Results.Ok(response);
 });
+
+
 
 app.MapPost("/employees-with-image", async (HttpRequest request, SparkDb db) =>
 {
@@ -361,6 +404,70 @@ app.MapDelete("/employees/{id}", async (int id, SparkDb db) =>
 
             return Results.Json(errorResponse, statusCode: 500);
         }
+    }
+});
+
+app.MapGet("/manager-scores/{managerId}", async (int managerId, SparkDb _context) =>
+{
+    try
+    {
+        // Fetch all users under the specified manager
+        var users = await _context.user
+            .Where(u => u.manager_id == managerId)
+            .ToListAsync();
+
+        // If no users are found, return a 404 Not Found
+        if (users == null || !users.Any())
+        {
+            return Results.NotFound(new { message = "No users found for the manager." });
+        }
+
+        // Extract user IDs
+        var userIds = users.Select(u => u.id).ToList();
+
+        // Retrieve evaluation forms for the found users
+        var evaluations = await _context.evaluation_form
+            .Include(ef => ef.EvaluationOptions)
+                .ThenInclude(eo => eo.Topic)
+            .Where(ef => userIds.Contains(ef.user_id))
+            .ToListAsync();
+
+        // If no evaluations are found, return a 404 Not Found
+        if (evaluations == null || !evaluations.Any())
+        {
+            return Results.NotFound(new { message = "No evaluations found for the manager's users." });
+        }
+
+        // Group the evaluation options by category and then by topic
+        var categoryScores = evaluations
+            .SelectMany(ef => ef.EvaluationOptions)
+            .GroupBy(eo => eo.Topic.category_id)
+            .Select(categoryGroup => new
+            {
+                category_id = categoryGroup.Key,
+                topics = categoryGroup.GroupBy(eo => eo.Topic.id)
+                                      .Select(topicGroup => new
+                                      {
+                                          topic_id = topicGroup.Key,
+                                          average_score = topicGroup.Average(eo => eo.score)
+                                      }).ToList(),
+                total_score = categoryGroup.Sum(eo => eo.score)
+            }).ToList();
+
+        // Construct response object
+        var response = new
+        {
+            managerId = managerId,
+            categories = categoryScores
+        };
+
+        return Results.Ok(response);
+    }
+    catch (Exception ex)
+    {
+        // Log the exception and return a 500 Internal Server Error
+        Console.WriteLine($"Error fetching manager scores: {ex.Message}");
+        return Results.Problem("An error occurred while processing the request.");
     }
 });
 
