@@ -60,23 +60,23 @@ function Login() {
                 <title>Login</title>
             </Helmet>
             <h1 className="login-title">Login</h1>
-            <form className='row' onSubmit={handleLogin}>
+            <form className='form-row flex-column gy-5' onSubmit={handleLogin}>
                 <input
                     name="input-login"
-                    className='form-control'
+                    className='form-control mb-2'
                     placeholder="Username"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                 />
                 <input
                     name="input-login"
-                    className='form-control'
+                    className='form-control  mb-2'
                     type="password"
                     placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
-                <button className="login-buttom">Login</button>
+                <button className="btn btn-primary col-12">Login</button>
             </form>
             {error && <p style={{ color: 'red' }}>{error}</p>}
         </div>

@@ -4,19 +4,13 @@
 /node_modules
 /.pnp
 .pnp.js
-bin 
+
 # testing
 /coverage
-/bin
-/obj
-bin/ 
-OBJ/
+
 # production
-!.gitignore 
-*.log 
-OBJ 
-bin 
-!permanent/bin
+
+
 # misc
 .DS_Store
 .env.local
