@@ -1,48 +1,113 @@
 import React from "react";
-// Import the Line component from react-chartjs-2, which is used to create line charts
 import { Line } from "react-chartjs-2";
-
-// Import necessary modules from chart.js to create and configure the chart
 import {
-  Chart as ChartJS,       // Core chart module
-  CategoryScale,          // x-axis scale for categorical data
-  LinearScale,            // y-axis scale for numerical data
-  PointElement,           // Points on the line chart
-  LineElement             // Line element connecting the points
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Tooltip,           // For customizing tooltips
+  Filler,            // For filling the area under the line
+  Legend             // For customizing the legend
 } from "chart.js";
 
-// Register the imported chart components with ChartJS
+// Register required components for the chart
 ChartJS.register(
   CategoryScale,
   LinearScale,
   PointElement,
-  LineElement
+  LineElement,
+  Tooltip,
+  Filler,
+  Legend
 );
 
-// Define the data for the LineChart
-const data = {
-  // Labels for the x-axis
-  labels: ["1", "2", "3", "4", "5", "6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22"],
-  
-  // Data sets to be plotted on the chart
-  datasets: [
-    {
-      label: "First dataset",  // Label for the dataset
-      data: [0, 2, 3, 4, 0, 2, 3, 4, 0, 2, 3, 4, 0, 2, 3, 4, 0, 2, 3, 4, 1, 2],  // Data points for the line chart
-      fill: true,  // Fill the area under the line
-      backgroundColor: "rgba(47,124,250,1)",  // Background color of the filled area
-      borderColor: "rgba(75,192,192,1)"  // Color of the line
-    }
-  ]
-};
+export default function LineChart({ scores }) {
+  // Gradient background
+  const createGradient = (ctx, area) => {
+    const gradient = ctx.createLinearGradient(0, area.bottom, 0, area.top);
+    gradient.addColorStop(0, "rgba(47,124,250,0.3)"); // Start with a transparent color
+    gradient.addColorStop(1, "rgba(47,124,250,0.7)"); // End with a more opaque color
+    return gradient;
+  };
 
-// Functional component that renders the LineChart
-export default function LineChart() {
+  // Data for the chart
+  const data = {
+    labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22"],
+    datasets: [
+      {
+        label: "Points",
+        data: scores,  // Use the scores prop for the data points
+        fill: true,
+        backgroundColor: (context) => {
+          const { chart } = context;
+          const { ctx, chartArea } = chart;
+          if (!chartArea) {
+            return null;
+          }
+          return createGradient(ctx, chartArea);
+        },
+        borderColor: "rgba(47,124,250,1)",  // Line color
+        borderWidth: 2,  // Thickness of the line
+        pointBackgroundColor: "rgba(47,124,250,1)",  // Color of the points
+        tension: 0.4,  // Curve of the line (0 for straight lines)
+        pointRadius: 5,  // Size of the points
+      }
+    ]
+  };
+
+  // Chart options for styling
+  const options = {
+    scales: {
+      y: {
+        beginAtZero: true,
+        max: 5,  // Adjust this to match your chart
+        ticks: {
+          stepSize: 1,  // Interval of the ticks on y-axis
+          callback: function (value) {
+            return value;  // Display the value directly
+          }
+        },
+        grid: {
+          display: true,  // Show grid lines
+          drawBorder: false,  // Hide the axis line
+          color: "rgba(200,200,200,0.3)",  // Light grid lines
+        }
+      },
+      x: {
+        grid: {
+          display: false,  // Hide grid lines for x-axis
+        }
+      }
+    },
+    plugins: {
+      tooltip: {
+        enabled: true,
+        backgroundColor: "rgba(255,255,255,0.9)",  // Light background for tooltip
+        titleColor: "#333",  // Dark text for tooltip title
+        bodyColor: "#333",  // Dark text for tooltip body
+        borderColor: "rgba(47,124,250,1)",  // Border color around tooltip
+        borderWidth: 1,  // Thickness of the border
+        callbacks: {
+          label: function (tooltipItem) {
+            return `Points: ${tooltipItem.raw}`;  // Custom label format
+          },
+          title: function (tooltipItems) {
+            return `Topic: ${tooltipItems[0].label}`;  // Custom title format
+          }
+        }
+      },
+      legend: {
+        display: false,  // Hide the legend
+      }
+    },
+    maintainAspectRatio: false,  // Allows the chart to be responsive
+    responsive: true,  // Make the chart responsive
+  };
+
   return (
-    // The container div with a className for styling
-    <div className="LineChart">
-      {/* Render the Line component, passing the data as a prop */}
-      <Line data={data} />
+    <div className="LineChart" style={{ height: "400px" }}>  {/* Adjust the height */}
+      <Line data={data} options={options} />
     </div>
   );
 }
