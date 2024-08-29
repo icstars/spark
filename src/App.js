@@ -6,7 +6,7 @@ import './css/style.css';
 import Home from './Components/Home';
 import Header from './Components/Header/';
 import Footer from './Components/Footer';
-import NavMenuCheck from './Components/NavMenu/NavMenuCheck';
+import NavMenu from './Components/NavMenu';
 import PageDepDashboard from './Components/RightPanel/PageDepDashboard';
 import DepMetrics from './Components/DepMetrics';
 import People from './Components/People';
@@ -36,8 +36,8 @@ const Layout = () => {
     '/Footer': <Footer />
   };
   // Matching routes that have parameters
-  const matchEval = useMatch('/Eval/:id' );
-  const matchView = useMatch('/View/:id' );
+  const matchEval = useMatch('/Eval/:id');
+  const matchView = useMatch('/View/:id');
   // Array of routes where the RightPanel should not be displayed.
   const notApplyPages = ['/People', '/Login', '/EvaluationComponent', matchEval?.pathname, matchView?.pathname];
   const notApplyHeaderAndFooter = ['/Login'];
@@ -54,51 +54,54 @@ const Layout = () => {
 
   return (
     <>
-        {/* Header section */}
-        {HeaderComponent && displayHeaderFooter && (
-          <div className="header">
-            <Header />
-            {/* Helmet is used for managing the document head, like setting the page title dynamically */}
-            <Helmet className="helmet">
-            </Helmet>
+      {/* Header section */}
+      {HeaderComponent && displayHeaderFooter && (
+        <div className="header">
+          <Header />
+          {/* Helmet is used for managing the document head, like setting the page title dynamically */}
+          <Helmet className="helmet">
+          </Helmet>
+        </div>
+      )}
+      {/* Main wrapper for the content and navigation */}
+      <main className="row container-fluid">
+        {/* Navigation Menu */}
+        {displayNavMenu && (
+          <NavMenu />
+        )}
+        {/* Main content area that changes based on the active route */}
+        <div className='col row'>
+        <Routes>
+          {/* Define routes and their corresponding components */}
+          <Route path="/Login" element={<Login />} /> {/*Public Route*/}
+          {/* Private */}
+          <Route path='/Charts/LineChart' element={<LineChart />} />
+          <Route path="/home/:id" element={<PrivateRoute allowedRoles={['admin', 'manager', 'employee']}> <Home /> </PrivateRoute>} />
+          <Route path="/DepMetrics" element={<PrivateRoute allowedRoles={['admin', 'manager']} > <DepMetrics /> </PrivateRoute>} />
+          <Route path="/People" element={<PrivateRoute allowedRoles={['admin', 'manager']} > <People /> </PrivateRoute>} />
+          <Route path="/EvaluationComponent" element={<PrivateRoute allowedRoles={['admin', 'manager', 'employee']} > <EvaluationComponent /> </PrivateRoute>} />
+          <Route path="/Eval/:id" element={<PrivateRoute allowedRoles={['admin', 'manager']} > <Eval /> </PrivateRoute>} />
+          <Route path="/View/:id" element={<PrivateRoute allowedRoles={['admin', 'manager', 'employee']} > <ViewComponent /> </PrivateRoute>} />
+          <Route path="/Add" element={<PrivateRoute allowedRoles={['admin', 'manager', 'employee']} > <AddUser /> </PrivateRoute>} />
+          {/* Редирект на страницу логина для несуществующих маршрутов */}
+          <Route path="*" element={<Navigate to="/Login" />} />
+        </Routes>
+        </div>
+        {/* Conditionally render the RightPanel if it should be displayed */}
+        {displayRightPanel && RightPanelComponent && (
+          <div className="col-auto right-panel">
+            {RightPanelComponent}
           </div>
         )}
-        {/* Main wrapper for the content and navigation */}
-        <main className="wrapper">
-          {/* Navigation Menu */}
-          {displayNavMenu && (
-            <NavMenuCheck />
-          )}
-          {/* Main content area that changes based on the active route */}
-          <div className={`container2 ${displayRightPanel ? '' : 'full-width'}`}>
-            <Routes>
-              {/* Define routes and their corresponding components */}
-              <Route path="/Login" element={<Login />} /> {/*Public Route*/}
-              {/* Private */}
-              <Route path='/Charts/LineChart' element={<LineChart />} />
-              <Route path="/home/:id" element={<PrivateRoute allowedRoles={['admin', 'manager', 'employee']}> <Home /> </PrivateRoute>} />
-              <Route path="/DepMetrics" element={<PrivateRoute allowedRoles={['admin', 'manager']} > <DepMetrics /> </PrivateRoute>} />
-              <Route path="/People" element={<PrivateRoute allowedRoles={['admin', 'manager']} > <People /> </PrivateRoute>} />
-              <Route path="/EvaluationComponent" element={<PrivateRoute allowedRoles={['admin', 'manager', 'employee']} > <EvaluationComponent /> </PrivateRoute>} />
-              <Route path="/Eval/:id" element={<PrivateRoute allowedRoles={['admin', 'manager']} > <Eval /> </PrivateRoute>} />
-              <Route path="/View/:id" element={<PrivateRoute allowedRoles={['admin', 'manager', 'employee']} > <ViewComponent /> </PrivateRoute>} />
-              <Route path="/Add" element={<PrivateRoute allowedRoles={['admin', 'manager', 'employee']} > <AddUser /> </PrivateRoute>} />
-              {/* Редирект на страницу логина для несуществующих маршрутов */}
-              <Route path="*" element={<Navigate to="/Login" />} />
-            </Routes>
-          </div>
-          {/* Conditionally render the RightPanel if it should be displayed */}
-          {displayRightPanel && RightPanelComponent && (
-            <div className="right-panel">
-              {RightPanelComponent}
-            </div>
-          )}
-        </main>
+      </main>
 
-        {/* Footer section */}
-        {displayHeaderFooter && FooterComponent && (
+      {/* Footer section */}
+      {displayHeaderFooter && FooterComponent && (
+        <>
+          <div className='py-5' />
           <Footer />
-        )}
+        </>
+      )}
     </>
   );
 };

@@ -5,7 +5,7 @@ import '../right-panel-style.css';
 
 function PageHome({ userId }) {
     return (
-        <div>
+        <div className='col-auto'>
             <div className="row flex-column gy-3 right-panel-view-evaluation-button">
                 <Link to={`/View/${userId}`} className='col-12 py-1 btn btn-dark'>
                     View evaluation

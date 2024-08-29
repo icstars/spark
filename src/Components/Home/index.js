@@ -46,22 +46,23 @@ function Home() {
   }, [id]);
 
   return (
-    <div className="home">
+    <>
       <Helmet> <title>Home</title></Helmet>
-      <PageHome userId={id} />
       {user ? (
-        <div>
+        <>
+        <div className='col'>
           <h1>Welcome, User {user.user_id}</h1>
           <p>Evaluation created on: {new Date(user.created).toLocaleDateString()}</p>
           <LineChart scores={scores}/> {/* Pass scores as a prop */}
           <BarChart categories={categories} />
           <Overview categories={categories} />
-          
         </div>
+      <PageHome userId={id} />
+        </>
       ) : (
         <p>Loading...</p>
       )}
-    </div>
+    </>
   );
 }
 
