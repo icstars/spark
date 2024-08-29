@@ -5,6 +5,7 @@ import axios from 'axios';
 import PageHome from '../RightPanel/PageHome';
 import DepMetricsOverview from '../DepMetricsOverview';
 import LineChart from '../Charts/LineChart';
+import BarChart from '../Charts/BarChart';
 
 function DepMetrics() {
 const id = localStorage.getItem('userId');
@@ -49,11 +50,11 @@ console.log(id);
   return (
     <div className="home">
       <Helmet> <title>DepMetrics</title></Helmet>
-      <PageHome managerId={id} />
       {managerId ? (
         <div>
           <h1>Manager ID: {managerId}</h1>
           <LineChart scores={scores}/> {/* Pass scores as a prop */}
+          <BarChart categories={categories}/>
           <DepMetricsOverview categories={categories} />
         </div>
       ) : (

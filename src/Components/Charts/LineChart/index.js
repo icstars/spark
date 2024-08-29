@@ -21,7 +21,12 @@ ChartJS.register(
   Filler,
   Legend
 );
-
+const createGradient = (ctx, area) => {
+  const gradient = ctx.createLinearGradient(0, area.bottom, 0, area.top);
+  gradient.addColorStop(0, "rgba(47,124,250,0.3)"); // Start with a transparent color
+  gradient.addColorStop(1, "rgba(47,124,250,0.7)"); // End with a more opaque color
+  return gradient;
+};
 
 
 export default function LineChart({ scores }) {
@@ -50,16 +55,11 @@ export default function LineChart({ scores }) {
     22: "Tool Selection and Usage"
 };
   // Gradient background
-  const createGradient = (ctx, area) => {
-    const gradient = ctx.createLinearGradient(0, area.bottom, 0, area.top);
-    gradient.addColorStop(0, "rgba(47,124,250,0.3)"); // Start with a transparent color
-    gradient.addColorStop(1, "rgba(47,124,250,0.7)"); // End with a more opaque color
-    return gradient;
-  };
+  
 
   // Data for the chart
   const data = {
-    labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22"],
+    labels: Object.keys(topicNameMap),
     datasets: [
       {
         label: "Points",
@@ -114,12 +114,13 @@ export default function LineChart({ scores }) {
         bodyColor: "#333",  // Dark text for tooltip body
         borderColor: "rgba(47,124,250,1)",  // Border color around tooltip
         borderWidth: 1,  // Thickness of the border
-        callbacks: {
+       callbacks: {
           label: function (tooltipItem) {
             return `Points: ${tooltipItem.raw}`;  // Custom label format
           },
           title: function (tooltipItems) {
-            return `Topic: ${tooltipItems[0].label}`;  // Custom title format
+            const labelIndex = tooltipItems[0].label;  // Get the label index
+            return `Topic: ${topicNameMap[labelIndex]}`;  // Map numeric label to topic name
           }
         }
       },
