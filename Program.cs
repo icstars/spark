@@ -511,6 +511,71 @@ app.MapGet("/manager-scores/{managerId}", async (int managerId, SparkDb _context
     }
 });
 
+app.MapGet("/manager-user-scores/{managerId}", async (int managerId, SparkDb _context) =>
+{
+    try
+    {
+        // Fetch all users under the specified manager
+        var users = await _context.user
+            .Where(u => u.manager_id == managerId)
+            .ToListAsync();
+
+        // If no users are found, return a 404 Not Found
+        if (users == null || !users.Any())
+        {
+            return Results.NotFound(new { message = "No users found for the manager." });
+        }
+
+        // Extract user IDs
+        var userIds = users.Select(u => u.id).ToList();
+
+        // Retrieve evaluation forms for the found users
+        var evaluations = await _context.evaluation_form
+            .Include(ef => ef.EvaluationOptions)
+                .ThenInclude(eo => eo.Topic)
+            .Where(ef => userIds.Contains(ef.user_id))
+            .ToListAsync();
+
+        // If no evaluations are found, return a 404 Not Found
+        if (evaluations == null || !evaluations.Any())
+        {
+            return Results.NotFound(new { message = "No evaluations found for the manager's users." });
+        }
+
+        // Create a response with user names and scores by topic
+        var userScores = evaluations
+            .SelectMany(ef => ef.EvaluationOptions, (ef, eo) => new 
+            {
+                UserId = ef.user_id,
+                UserName = users.First(u => u.id == ef.user_id).firstname,
+                UserLastName = users.First(u => u.id == ef.user_id).lastname,
+                TopicId = eo.Topic.id,
+                Score = eo.score
+            })
+            .GroupBy(us => new { us.UserId, us.UserName, us.UserLastName })
+            .Select(userGroup => new
+            {
+                UserId = userGroup.Key.UserId,
+                UserName = userGroup.Key.UserName,
+                UserLastName = userGroup.Key.UserLastName,
+                Topics = userGroup.Select(ug => new 
+                {
+                    TopicId = ug.TopicId,
+                    Score = ug.Score
+                }).ToList()
+            })
+            .ToList();
+
+        return Results.Ok(userScores);
+    }
+    catch (Exception ex)
+    {
+        // Log the exception and return a 500 Internal Server Error
+        Console.WriteLine($"Error fetching user scores: {ex.Message}");
+        return Results.Problem("An error occurred while processing the request.");
+    }
+});
+
 
 //////////////////////
 
