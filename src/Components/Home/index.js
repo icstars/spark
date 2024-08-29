@@ -69,27 +69,27 @@ function Home() {
   return (
     <div className="home">
       <Helmet> <title>Home</title></Helmet>
+      <div><Link to={`/EditUser/${user ? user.user_id : id}`} className='col-12 py-1 btn btn-dark'>
+        Edit User
+      </Link></div>
       <PageHome userId={id} isEvaluationExists={isEvaluationExists} />
       {user ? (
         <div>
           <h1>Welcome, User {user.user_id}</h1>
           <div>{user.img ? (
-            
-        <img className='img'
-          src={`http://localhost:5212/images/${user.user_id}`} // Fetch the image from your backend
-          alt={`${user.firstname} ${user.lastname}`}
-          style={{ width: '45px', height: '45px', borderRadius: '50%' }}
-        />
-      ) : (
-        <img className='img'
-          src={profile_icon} // Fallback image
-          alt="Default Avatar"
-          style={{ width: '45px', height: '45px', borderRadius: '50%' }}
-        />
-      )}</div>
-      <div><Link to={`/EditUser/${user.user_id}`} className='col-12 py-1 btn btn-dark'>
-                    Edit User
-                </Link></div>
+
+            <img className='img'
+              src={`http://localhost:5212/images/${user.user_id}`} // Fetch the image from your backend
+              alt={`${user.firstname} ${user.lastname}`}
+              style={{ width: '45px', height: '45px', borderRadius: '50%' }}
+            />
+          ) : (
+            <img className='img'
+              src={profile_icon} // Fallback image
+              alt="Default Avatar"
+              style={{ width: '45px', height: '45px', borderRadius: '50%' }}
+            />
+          )}</div>
           <p>Evaluation created on: {new Date(user.created).toLocaleDateString()}</p>
           <LineChart scores={scores} /> {/* Pass scores as a prop */}
           <BarChart categories={categories} />
@@ -97,7 +97,7 @@ function Home() {
 
         </div>
       ) : (
-        <p>Loading...</p>
+        <p>Data in not available right now</p>
       )}
     </div>
   );

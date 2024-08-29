@@ -1,6 +1,7 @@
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using spark.Models;
+using BCrypt.Net; // Correct reference to BCrypt
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +11,10 @@ builder.Services.AddDbContext<SparkDb>(options =>
         builder.Configuration.GetConnectionString("sparkdb"),
         ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("sparkdb"))
     ).LogTo(Console.WriteLine, LogLevel.Information));
-builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options => options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
+builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
+    options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
 var myPolicy = "mypolicy";
 
 builder.Services.AddCors(options =>
@@ -25,29 +29,49 @@ var app = builder.Build();
 
 app.UseCors(myPolicy);
 
-app.MapPost("/login", async (spark.Models.User employee, SparkDb db) =>
+app.MapPost("/login", async (User employee, SparkDb db) =>
 {
-    var user = await db.user
-        .FirstOrDefaultAsync(u => u.username == employee.username && u.password == employee.password);
+    var user = await db.user.FirstOrDefaultAsync(u => u.username == employee.username);
 
     if (user == null)
     {
         return Results.Json(new { success = false, message = "Invalid username or password" });
     }
 
-    bool isAdmin = user.is_admin;
-    // Check if user has dependent users
-    bool isManager = await db.user.AnyAsync(u => u.manager_id == user.id);
-
-    // Optionally, you can generate a JWT token here for authentication
-    return Results.Json(new
+    try
     {
-        success = true,
-        id = user.id,
-        username = user.username,
-        isAdmin = isAdmin,
-        isManager = isManager
-    });
+        // Attempt to verify the password
+        bool isPasswordValid = BCrypt.Net.BCrypt.Verify(employee.password ?? "", user.password ?? "");
+
+        if (!isPasswordValid)
+        {
+            return Results.Json(new { success = false, message = "Invalid username or password" });
+        }
+
+        // Check if password needs rehashing due to older or weaker format
+        if (!user.password.StartsWith("$2"))
+        {
+            // Optionally prompt user to change their password
+            return Results.Json(new { success = false, message = "Your password needs to be updated for security." });
+        }
+
+        bool isAdmin = user.is_admin;
+        bool isManager = await db.user.AnyAsync(u => u.manager_id == user.id);
+
+        return Results.Json(new
+        {
+            success = true,
+            id = user.id,
+            username = user.username,
+            isAdmin = isAdmin,
+            isManager = isManager
+        });
+    }
+    catch (SaltParseException)
+    {
+        // Handle invalid salt error, prompt to rehash
+        return Results.Json(new { success = false, message = "Invalid password format. Please reset your password." });
+    }
 });
 
 app.MapGet("/topic", async (SparkDb db) =>
@@ -303,7 +327,6 @@ app.MapPost("/employees-with-image", async (HttpRequest request, SparkDb db) =>
         lastname = form["lastname"],
         email = form["email"],
         username = form["username"],
-        password = form["password"],
         company_role = form["company_role"],
         is_admin = bool.TryParse(form["is_admin"], out bool isAdmin) ? isAdmin : false,
         hired_date = DateTime.TryParse(form["hired_date"], out DateTime hiredDate) ? hiredDate : (DateTime?)null,
@@ -321,6 +344,16 @@ app.MapPost("/employees-with-image", async (HttpRequest request, SparkDb db) =>
         }
     }
 
+    // Hash the password using BCrypt
+    if (!string.IsNullOrWhiteSpace(form["password"]))
+    {
+        user.password = BCrypt.Net.BCrypt.HashPassword(form["password"]);
+    }
+    else
+    {
+        return Results.BadRequest("Password is required.");
+    }
+
     // Process the file upload
     var file = form.Files["image"];
     if (file != null && file.Length > 0)
@@ -335,8 +368,15 @@ app.MapPost("/employees-with-image", async (HttpRequest request, SparkDb db) =>
     db.user.Add(user);
     await db.SaveChangesAsync();
 
-    return Results.Created($"/employees/{user.id}", user);
+    return Results.Created($"/employees/{user.id}", new 
+    { 
+        id = user.id, 
+        username = user.username, 
+        firstname = user.firstname, 
+        lastname = user.lastname 
+    });
 });
+
 
 app.MapGet("/images/{id}", async (int id, SparkDb db) =>
 {
@@ -551,7 +591,11 @@ app.MapPut("/edit/{id}", async (HttpRequest request, int id, SparkDb db) =>
         employee.username = form["username"];
 
     if (form.ContainsKey("password") && !string.IsNullOrEmpty(form["password"]))
-        employee.password = form["password"]; // Consider hashing the password before saving
+        employee.password = BCrypt.Net.BCrypt.HashPassword(form["password"]); // Consider hashing the password before saving
+    else
+    {
+        return Results.BadRequest("Password is required.");
+    }
 
     if (form.ContainsKey("company_role") && !string.IsNullOrEmpty(form["company_role"]))
         employee.company_role = form["company_role"];
