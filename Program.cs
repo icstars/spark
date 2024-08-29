@@ -275,6 +275,7 @@ app.MapGet("/evaluate/user/{userId}", async (int userId, SparkDb _context) =>
     var evaluationForm = await _context.evaluation_form
         .Include(ef => ef.EvaluationOptions)
             .ThenInclude(eo => eo.Topic)
+        .Include(ef => ef.User)
         .Include(ef => ef.CategoryComments)
         .Where(ef => ef.user_id == userId && ef.created >= oneYearAgo)
         .OrderByDescending(ef => ef.created) // На случай, если нужно выбрать самую последнюю форму
