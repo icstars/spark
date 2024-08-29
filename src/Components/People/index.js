@@ -7,6 +7,7 @@ import delete_icon from "./img/delete.png";
 import profile_icon from "./img/profile.png"
 import './people-style.css';
 import ConfirmationModal from '../ConfirmationModal';
+import SearchBar from '../SearchBar';
 
 function People() {
     const [people, setPeople] = useState([]);
@@ -20,7 +21,9 @@ function People() {
     const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
     const [deleteUserId, setDeleteUserId] = useState(null); // State to hold the ID of the user to delete
     const [statuses, setStatuses] = useState({});
-
+    const [searchQuery, setSearchQuery] = useState(''); // Состояние для поиска
+    const [filteredPeople, setFilteredPeople] = useState([]); // Состояние для отфильтрованных данных
+    
     const currentUserId = localStorage.getItem('userId');
 
     const handleDeleteClick = (id) => {
@@ -90,6 +93,13 @@ function People() {
         };
         fetchData();
     }, []);
+
+    useEffect(() => {
+        const filtered = people.filter(person => 
+            `${person.firstname} ${person.lastname}`.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+        setFilteredPeople(filtered);
+    }, [searchQuery, people]); // Пересчитываем, если изменяются запрос или список людей
 
     // Track the currently edited user and their form values
     const [editUserId, setEditUserId] = useState(null); // ID of user being edited
@@ -274,8 +284,11 @@ function People() {
 
     return (
         <div className="people-container">
+            <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
             <h1>People</h1>
             <Helmet><title>People</title></Helmet>
+            {/* Компонент поиска */}
+            
             <table>
                 <thead>
                     <tr>
@@ -294,7 +307,7 @@ function People() {
                     </tr>
                 </thead>
                 <tbody>
-                    {people.map(p => (
+                    {filteredPeople.map(p => (
                         <tr key={p.id}>
                             <td><input type="checkbox" checked={selectedRows[p.id] || false} onChange={() => handleRowSelect(p.id)} /></td>
                             <td className='img-box'>

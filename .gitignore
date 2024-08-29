@@ -2,16 +2,25 @@
 /bin/
 /obj/
 
-# Ignore files in Debug/net8.0 folder
+# Specifically ignore files in net8.0 folder
 bin/Debug/net8.0/*
 obj/Debug/net8.0/*
 
-# Ignore common build artifacts
+# Ignore generated files commonly found in obj directory
 *.dll
 *.exe
 *.pdb
 *.cache
 *.json
+
+# Ignore specific build artifacts
+obj/*.nuget.*
+obj/*.dgspec.json
+obj/*.g.props
+obj/*.g.targets
+obj/project.assets.json
+obj/project.nuget.cache
+obj/*.csproj.nuget.*
 
 # General Node and environment files
 /node_modules/

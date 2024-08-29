@@ -10,7 +10,7 @@ import people_icon from "./img/people_icon.svg";
 function NavMenu() {
     const userId = localStorage.getItem('userId');
     const location = useLocation();
-    
+
     return (
         <div>
             <ul className='nav-menu'>
