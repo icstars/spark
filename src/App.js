@@ -17,6 +17,7 @@ import Eval from './Components/Eval';
 import PrivateRoute from './Components/PrivateRoute';
 import ViewComponent from './Components/ViewComponent';
 import AddUser from './Components/AddUser';
+import EditUser from './Components/EditUser';
 // import PageHome from './Components/RightPanel/PageHome';
 
 // Layout component defines the structure of the page with Header, Footer, and dynamic content based on routes.
@@ -82,7 +83,8 @@ const Layout = () => {
               <Route path="/EvaluationComponent" element={<PrivateRoute allowedRoles={['admin', 'manager', 'employee']} > <EvaluationComponent /> </PrivateRoute>} />
               <Route path="/Eval/:id" element={<PrivateRoute allowedRoles={['admin', 'manager']} > <Eval /> </PrivateRoute>} />
               <Route path="/View/:id" element={<PrivateRoute allowedRoles={['admin', 'manager', 'employee']} > <ViewComponent /> </PrivateRoute>} />
-              <Route path="/Add" element={<PrivateRoute allowedRoles={['admin', 'manager', 'employee']} > <AddUser /> </PrivateRoute>} />
+              <Route path="/Add" element={<PrivateRoute allowedRoles={['admin', 'manager']} > <AddUser /> </PrivateRoute>} />
+              <Route path="/EditUser/:id" element={<PrivateRoute allowedRoles={['admin', 'manager']} > <EditUser /> </PrivateRoute>} />
               {/* Редирект на страницу логина для несуществующих маршрутов */}
               <Route path="*" element={<Navigate to="/Login" />} />
             </Routes>
