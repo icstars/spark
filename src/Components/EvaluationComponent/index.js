@@ -21,6 +21,16 @@ function EvaluationComponent() {
 
   useEffect(() => {
 
+     // Get the logged-in user's ID
+     const loggedInUserId = parseInt(localStorage.getItem('userId'));
+
+     // Check if the logged-in user is trying to evaluate themselves
+     if (loggedInUserId === parseInt(id)) {
+       alert("User can't evaluate himself");
+       navigate(-1);
+       return;
+     }
+
     // Check if an evaluation already exists for the user
     axios.get(`http://localhost:5212/evaluate/user/${id}`)
       .then(response => {
@@ -535,12 +545,12 @@ function EvaluationComponent() {
 
               {/* Поле для комментария к подразделу */}
               <div>
-                <p>Комментарий к {subSection.title}:</p>
+                <p>Comment to {subSection.title}:</p>
                 <textarea
                   className="comment-topic"
                   value={comments[`subSection-${subSection.id}`] || ''}
                   onChange={(e) => handleCommentChange(`subSection-${subSection.id}`, e.target.value)}
-                  placeholder="Напишите комментарий..."
+                  placeholder="Write a comment..."
                 />
               </div>
             </div>
@@ -548,12 +558,12 @@ function EvaluationComponent() {
 
           {/* Поле для комментария ко всему разделу */}
           <div>
-            <p>Комментарий к разделу {section.title}:</p>
+            <p>Comment to the section {section.title}:</p>
             <textarea
               className="comment-topic"
               value={comments[`section-${section.id}`] || ''}
               onChange={(e) => handleCommentChange(`section-${section.id}`, e.target.value)}
-              placeholder="Общий комментарий по разделу..."
+              placeholder="General comment on the section..."
             />
           </div>
         </div>

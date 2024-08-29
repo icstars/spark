@@ -15,12 +15,38 @@ console.log(id);
   const [error, setError] = useState('');
   const [managerId, setManagerId] = useState(null);
   const [scores, setScores] = useState(new Array(22).fill(0)); // Initialize an array of 22 zeros
-
+  const [userScoresByTopic, setUserScoresByTopic] = useState({});
   useEffect(() => {
     if (!id) {
       setError('Manager ID is not provided in the URL');
       return;
     }
+    axios.get(`http://localhost:5212/manager-user-scores/${id}`)
+    .then(response => {
+        const userScores = response.data; // Получаем данные с endpoint
+        const scoresByTopic = {};
+
+        // Проходимся по пользователям и их оценкам, чтобы сгруппировать данные по теме
+        userScores.forEach(user => {
+            user.topics.forEach(topic => {
+                if (!scoresByTopic[topic.topicId]) {
+                    scoresByTopic[topic.topicId] = [];
+                }
+                scoresByTopic[topic.topicId].push({
+                    userName: user.userName,
+                    userLastName: user.userLastName,
+                    score: topic.score
+                });
+            });
+        });
+
+        setUserScoresByTopic(scoresByTopic); // Сохраняем данные в состоянии
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error);
+        setError('Failed to get manager scores data');
+    });
+
 
     axios.get(`http://localhost:5212/manager-scores/${id}`)
       .then(response => {
@@ -55,7 +81,7 @@ console.log(id);
           <h1>Manager ID: {managerId}</h1>
           <LineChart scores={scores}/> {/* Pass scores as a prop */}
           <BarChart categories={categories}/>
-          <DepMetricsOverview categories={categories} />
+          <DepMetricsOverview categories={categories} userScoresByTopic={userScoresByTopic}/>
         </div>
       ) : (
         <p>Loading...</p>

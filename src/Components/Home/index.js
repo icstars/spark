@@ -7,7 +7,6 @@ import Overview from '../Overview';
 import LineChart from '../Charts/LineChart';
 import BarChart from '../Charts/BarChart';
 import profile_icon from '../People/img/profile.png'
-import EditUser from '../EditUser';
 
 function Home() {
   const { id } = useParams();
