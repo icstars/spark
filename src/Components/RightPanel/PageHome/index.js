@@ -6,12 +6,12 @@ import '../right-panel-style.css';
 function PageHome({ userId }) {
     return (
         <div>
-            <div className="right-panel-view-evaluation-button">
-                <Link className="evaluation-button" to={`/View/${userId}`}>
-                    <button type="button">View evaluation</button>
+            <div className="row flex-column gy-3 right-panel-view-evaluation-button">
+                <Link to={`/View/${userId}`} className='col-12 py-1 btn btn-dark'>
+                    View evaluation
                 </Link>
-                <Link className="evaluation-button" to={`/Eval/${userId}`}>
-                    <button type="button">Evaluation</button>
+                <Link to={`/Eval/${userId}`} className='col-12 py-1 btn btn-dark'>
+                    Evaluation
                 </Link>
             </div>
         </div>

@@ -33,9 +33,8 @@ function Header() {
                     <img className="logo-icon" src={logo_icon} alt="logo-img"></img>
                 </Link>
             </div>
-            <input type="text" className="searchinput" placeholder="Search.." />
             <div className="header-login-element">
-                <button onClick={handleLogout}>Logout</button>
+                <button className='btn btn-dark' onClick={handleLogout}>Logout</button>
                 <img src={profile_icon} alt="profile-img"></img>
             </div>
             <nav className="main-nav">

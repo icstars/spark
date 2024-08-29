@@ -5,6 +5,7 @@ import axios from 'axios';
 import PageHome from '../RightPanel/PageHome';
 import Overview from '../Overview';
 import LineChart from '../Charts/LineChart';
+import BarChart from '../Charts/BarChart';
 
 function Home() {
   const { id } = useParams();
@@ -46,14 +47,16 @@ function Home() {
 
   return (
     <div className="home">
-      <Helmet>Home</Helmet>
+      <Helmet> <title>Home</title></Helmet>
       <PageHome userId={id} />
       {user ? (
         <div>
           <h1>Welcome, User {user.user_id}</h1>
           <p>Evaluation created on: {new Date(user.created).toLocaleDateString()}</p>
           <LineChart scores={scores}/> {/* Pass scores as a prop */}
+          <BarChart categories={categories} />
           <Overview categories={categories} />
+          
         </div>
       ) : (
         <p>Loading...</p>
