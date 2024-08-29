@@ -3,10 +3,13 @@ import React from 'react';
 
 import '../right-panel-style.css';
 
-function PageHome({ userId, isEvaluationExists }) {
+function PageHome({ user, userId, isEvaluationExists }) {
     return (
-        <div>
+        <div className='col-auto'>
             <div className="row flex-column gy-3 right-panel-view-evaluation-button">
+            <Link to={`/EditUser/${userId}`} className='col-12 py-1 btn btn-dark'>
+            Edit User
+          </Link>
                 <Link to={`/View/${userId}`} className='col-12 py-1 btn btn-dark'>
                     View evaluation
                 </Link>

@@ -6,7 +6,7 @@ import './css/style.css';
 import Home from './Components/Home';
 import Header from './Components/Header/';
 import Footer from './Components/Footer';
-import NavMenuCheck from './Components/NavMenu/NavMenuCheck';
+import NavMenu from './Components/NavMenu';
 import PageDepDashboard from './Components/RightPanel/PageDepDashboard';
 import DepMetrics from './Components/DepMetrics';
 import People from './Components/People';
@@ -37,8 +37,8 @@ const Layout = () => {
     '/Footer': <Footer />
   };
   // Matching routes that have parameters
-  const matchEval = useMatch('/Eval/:id' );
-  const matchView = useMatch('/View/:id' );
+  const matchEval = useMatch('/Eval/:id');
+  const matchView = useMatch('/View/:id');
   // Array of routes where the RightPanel should not be displayed.
   const notApplyPages = ['/People', '/Login', '/EvaluationComponent', matchEval?.pathname, matchView?.pathname];
   const notApplyHeaderAndFooter = ['/Login'];
@@ -55,24 +55,24 @@ const Layout = () => {
 
   return (
     <>
-        {/* Header section */}
-        {HeaderComponent && displayHeaderFooter && (
-          <div className="header">
-            <Header />
-            {/* Helmet is used for managing the document head, like setting the page title dynamically */}
-            <Helmet className="helmet">
-            </Helmet>
-          </div>
+      {/* Header section */}
+      {HeaderComponent && displayHeaderFooter && (
+        <div className="header">
+          <Header />
+          {/* Helmet is used for managing the document head, like setting the page title dynamically */}
+          <Helmet className="helmet">
+          </Helmet>
+        </div>
+      )}
+      {/* Main wrapper for the content and navigation */}
+      <main className="row container-fluid">
+        {/* Navigation Menu */}
+        {displayNavMenu && (
+          <NavMenu />
         )}
-        {/* Main wrapper for the content and navigation */}
-        <main className="wrapper">
-          {/* Navigation Menu */}
-          {displayNavMenu && (
-            <NavMenuCheck />
-          )}
-          {/* Main content area that changes based on the active route */}
-          <div className={`container2 ${displayRightPanel ? '' : 'full-width'}`}>
-            <Routes>
+        {/* Main content area that changes based on the active route */}
+        <div className='col row'>
+        <Routes>
               {/* Define routes and their corresponding components */}
               <Route path="/Login" element={<Login />} /> {/*Public Route*/}
               {/* Private */}
@@ -88,19 +88,22 @@ const Layout = () => {
               {/* Редирект на страницу логина для несуществующих маршрутов */}
               <Route path="*" element={<Navigate to="/Login" />} />
             </Routes>
+        </div>
+        {/* Conditionally render the RightPanel if it should be displayed */}
+        {displayRightPanel && RightPanelComponent && (
+          <div className="col-auto right-panel">
+            {RightPanelComponent}
           </div>
-          {/* Conditionally render the RightPanel if it should be displayed */}
-          {displayRightPanel && RightPanelComponent && (
-            <div className="right-panel">
-              {RightPanelComponent}
-            </div>
-          )}
-        </main>
-
-        {/* Footer section */}
-        {displayHeaderFooter && FooterComponent && (
-          <Footer />
         )}
+      </main>
+
+      {/* Footer section */}
+      {displayHeaderFooter && FooterComponent && (
+        <>
+          <div className='py-5' />
+          <Footer />
+        </>
+      )}
     </>
   );
 };
