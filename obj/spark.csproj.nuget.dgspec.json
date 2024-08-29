@@ -1,28 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\AngelCampos\\Documents\\ICstars\\spark\\spark.csproj": {}
+    "C:\\Users\\DeantratriceRoss\\Desktop\\New folder\\spark\\spark.csproj": {}
   },
   "projects": {
-    "C:\\Users\\AngelCampos\\Documents\\ICstars\\spark\\spark.csproj": {
+    "C:\\Users\\DeantratriceRoss\\Desktop\\New folder\\spark\\spark.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\AngelCampos\\Documents\\ICstars\\spark\\spark.csproj",
+        "projectUniqueName": "C:\\Users\\DeantratriceRoss\\Desktop\\New folder\\spark\\spark.csproj",
         "projectName": "spark",
-        "projectPath": "C:\\Users\\AngelCampos\\Documents\\ICstars\\spark\\spark.csproj",
-        "packagesPath": "C:\\Users\\AngelCampos\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\AngelCampos\\Documents\\ICstars\\spark\\obj\\",
+        "projectPath": "C:\\Users\\DeantratriceRoss\\Desktop\\New folder\\spark\\spark.csproj",
+        "packagesPath": "C:\\Users\\DeantratriceRoss\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\DeantratriceRoss\\Desktop\\New folder\\spark\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\AngelCampos\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\DeantratriceRoss\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -98,7 +95,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
