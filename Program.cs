@@ -220,13 +220,13 @@ app.MapGet("/rating/{userId}", async (int userId, SparkDb _context) =>
     .GroupBy(eo => eo.Topic.category_id)
     .Select(group => new
     {
-        category_id = group.Key, // Используем `category_id` вместо `CategoryId`
+        category_id = group.Key,
         topics = group.Select(eo => new
         {
             eo.Topic.id,
             eo.score
         }).ToList(),
-        total_score = group.Sum(eo => eo.score) // Тоже следите за единообразием
+        total_score = group.Sum(eo => eo.score) 
     }).ToList();
 
 
@@ -483,13 +483,7 @@ app.MapGet("/employees/{id}", async (int id, SparkDb db) =>
             ? Results.Ok(employee)
             : Results.NotFound());
 
-app.MapPost("/employees", async (spark.Models.User employee, SparkDb db) =>
-{
-    db.user.Add(employee);
-    await db.SaveChangesAsync();
 
-    return Results.Created($"/employees/{employee.id}", employee);
-});
 
 app.MapPut("/users/{id}", async (int id, spark.Models.User editEmployee, SparkDb db) =>
 {
@@ -526,9 +520,78 @@ app.MapPut("/users/{id}", async (int id, spark.Models.User editEmployee, SparkDb
     await db.SaveChangesAsync();
 
     // Optionally, return the updated resource
-    return Results.NoContent(); // or `Results.Ok(employee)` if you want to return the updated resource
+    return Results.NoContent(); // or Results.Ok(employee) if you want to return the updated resource
 });
 
+app.MapPut("/edit/{id}", async (HttpRequest request, int id, SparkDb db) =>
+{
+    // Find the existing employee in the database
+    var employee = await db.user.FindAsync(id);
 
+    // If employee not found, return 404 Not Found
+    if (employee is null) return Results.NotFound();
+
+    // Read the form data
+    var form = await request.ReadFormAsync();
+
+    // Optional: Validate form data
+    if (form == null) return Results.BadRequest("Invalid data.");
+
+    // Update fields if they are provided
+    if (form.ContainsKey("firstname") && !string.IsNullOrEmpty(form["firstname"]))
+        employee.firstname = form["firstname"];
+
+    if (form.ContainsKey("lastname") && !string.IsNullOrEmpty(form["lastname"]))
+        employee.lastname = form["lastname"];
+
+    if (form.ContainsKey("email") && !string.IsNullOrEmpty(form["email"]))
+        employee.email = form["email"];
+
+    if (form.ContainsKey("username") && !string.IsNullOrEmpty(form["username"]))
+        employee.username = form["username"];
+
+    if (form.ContainsKey("password") && !string.IsNullOrEmpty(form["password"]))
+        employee.password = form["password"]; // Consider hashing the password before saving
+
+    if (form.ContainsKey("company_role") && !string.IsNullOrEmpty(form["company_role"]))
+        employee.company_role = form["company_role"];
+
+    if (form.ContainsKey("is_admin") && bool.TryParse(form["is_admin"], out bool isAdmin))
+        employee.is_admin = isAdmin;
+
+    if (form.ContainsKey("hired_date") && DateTime.TryParse(form["hired_date"], out DateTime hiredDate))
+        employee.hired_date = hiredDate;
+
+    if (form.ContainsKey("manager_id") && int.TryParse(form["manager_id"], out int managerId))
+        employee.manager_id = managerId;
+
+    if (form.ContainsKey("department_id") && int.TryParse(form["department_id"], out int departmentId))
+    {
+        // Validate department_id
+        var department = await db.department.FindAsync(departmentId);
+        if (department == null)
+        {
+            return Results.BadRequest("Invalid department ID.");
+        }
+        employee.department_id = departmentId;
+    }
+
+    // Process the file upload if provided
+    var file = form.Files["image"];
+    if (file != null && file.Length > 0)
+    {
+        using (var memoryStream = new MemoryStream())
+        {
+            await file.CopyToAsync(memoryStream);
+            employee.img = memoryStream.ToArray(); // Convert image to byte array
+        }
+    }
+
+    // Save changes to the database
+    await db.SaveChangesAsync();
+
+    // Optionally, return the updated resource
+    return Results.NoContent(); // or Results.Ok(employee) if you want to return the updated resource
+});
 
 app.Run();
