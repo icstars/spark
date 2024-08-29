@@ -23,8 +23,8 @@ function People() {
     const [statuses, setStatuses] = useState({});
     const [searchQuery, setSearchQuery] = useState(''); // Состояние для поиска
     const [filteredPeople, setFilteredPeople] = useState([]); // Состояние для отфильтрованных данных
-    
-    const currentUserId = localStorage.getItem('userId');
+
+    const currentUserId = parseInt(localStorage.getItem('userId')); // Fetch the current user ID as an integer
 
     const handleDeleteClick = (id) => {
         if (id == currentUserId) {
@@ -63,39 +63,41 @@ function People() {
     };
 
     // Fetch data from API
+     useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`http://localhost:5212/employees`);
+        const data = await response.json();
+
+        // Filter people based on manager_id matching currentUserId
+        const filteredData = data.filter(person => person.manager_id === currentUserId);
+
+        setPeople(filteredData);
+        setLoading(false);
+
+        const statusPromises = filteredData.map(async (person) => {
+          const statusResponse = await fetch(`http://localhost:5212/status/${person.id}`);
+          const statusData = await statusResponse.json();
+          return { id: person.id, status: statusData.status };
+        });
+
+        const statuses = await Promise.all(statusPromises);
+        const statusMap = {};
+        statuses.forEach((status) => {
+          statusMap[status.id] = status.status;
+        });
+
+        setStatuses(statusMap);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [currentUserId]); 
+
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch(`http://localhost:5212/employees`);
-                const data = await response.json();
-                setPeople(data);
-                setLoading(false);
-
-                const statusPromises = data.map(async (person) => {
-                    const statusResponse = await fetch(`http://localhost:5212/status/${person.id}`);
-                    const statusData = await statusResponse.json();
-                    return { id: person.id, status: statusData.status };
-                });
-
-                const statuses = await Promise.all(statusPromises);
-                const statusMap = {};
-                statuses.forEach((status) => {
-                    statusMap[status.id] = status.status;
-                });
-
-                setStatuses(statusMap);
-
-                setLoading(false);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-                setLoading(false);
-            }
-        };
-        fetchData();
-    }, []);
-
-    useEffect(() => {
-        const filtered = people.filter(person => 
+        const filtered = people.filter(person =>
             `${person.firstname} ${person.lastname}`.toLowerCase().includes(searchQuery.toLowerCase())
         );
         setFilteredPeople(filtered);
@@ -133,24 +135,24 @@ function People() {
         setSelectAll(allSelected);
     };
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch(`http://localhost:5212/employees`);
-                const data = await response.json();
-                setPeople(data);
-                setLoading(false);
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         try {
+    //             const response = await fetch(`http://localhost:5212/employees`);
+    //             const data = await response.json();
+    //             setPeople(data);
+    //             setLoading(false);
 
-                const departmentResponse = await fetch(`http://localhost:5212/departments`);
-                const departmentData = await departmentResponse.json();
-                setDepartments(departmentData);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-                setLoading(false);
-            }
-        };
-        fetchData();
-    }, []);
+    //             const departmentResponse = await fetch(`http://localhost:5212/departments`);
+    //             const departmentData = await departmentResponse.json();
+    //             setDepartments(departmentData);
+    //         } catch (error) {
+    //             console.error('Error fetching data:', error);
+    //             setLoading(false);
+    //         }
+    //     };
+    //     fetchData();
+    // }, []);
 
     // Handle input changes in the inline form
     const handleInputChange = (e) => {
@@ -288,7 +290,7 @@ function People() {
             <h1>People</h1>
             <Helmet><title>People</title></Helmet>
             {/* Компонент поиска */}
-            
+
             <table>
                 <thead>
                     <tr>
