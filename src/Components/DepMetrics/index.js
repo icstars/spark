@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 // import { useParams } from "react-router-dom";
 import axios from 'axios';
-import PageHome from '../RightPanel/PageHome';
 import DepMetricsOverview from '../DepMetricsOverview';
 import LineChart from '../Charts/LineChart';
 import BarChart from '../Charts/BarChart';
