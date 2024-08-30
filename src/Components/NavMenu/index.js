@@ -12,7 +12,7 @@ function NavMenu() {
   const isManager = localStorage.getItem('isManager') === 'true';
 
   return (isAdmin || isManager ?
-    <ul className='col-auto'>
+    <ul className='col-auto m-0 p-0'>
       <div className={`nav-element ${location.pathname === `/home/${userId}` ? 'active' : ''}`}>
         <Link className='nav-text' to={`/home/${userId}`}>
           <li className='nav-element-link'>

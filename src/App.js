@@ -65,13 +65,13 @@ const Layout = () => {
         </div>
       )}
       {/* Main wrapper for the content and navigation */}
-      <main className="row container-fluid">
+      <main className="row container-fluid m-0 p-0">
         {/* Navigation Menu */}
         {displayNavMenu && (
           <NavMenu />
         )}
         {/* Main content area that changes based on the active route */}
-        <div className='col row'>
+        <div className='col row m-0 p-0'>
         <Routes>
               {/* Define routes and their corresponding components */}
               <Route path="/Login" element={<Login />} /> {/*Public Route*/}
