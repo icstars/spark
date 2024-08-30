@@ -39,8 +39,9 @@ const Layout = () => {
   // Matching routes that have parameters
   const matchEval = useMatch('/Eval/:id');
   const matchView = useMatch('/View/:id');
+  const matchEdit = useMatch('/EditUser/:id');
   // Array of routes where the RightPanel should not be displayed.
-  const notApplyPages = ['/People', '/Login', '/EvaluationComponent', matchEval?.pathname, matchView?.pathname];
+  const notApplyPages = ['/People', '/Login', '/EvaluationComponent', matchEval?.pathname, matchView?.pathname, matchEdit?.pathname];
   const notApplyHeaderAndFooter = ['/Login'];
   const notApplyNavMenu = ['/EvaluationComponent', matchEval?.pathname, '/Login', matchView?.pathname];
   // Determine the RightPanel component to display based on the current route.
