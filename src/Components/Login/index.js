@@ -55,7 +55,7 @@ function Login() {
     };
 
     return (
-        <div className="login-wrapper">
+        <div className="login-wrapper min-vh-100">
             <Helmet>
                 <title>Login</title>
             </Helmet>
