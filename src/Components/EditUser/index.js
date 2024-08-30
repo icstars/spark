@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios'; // You can use axios or fetch, just for consistency
+import axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const EditUser = () => {
-    const { id } = useParams(); // Extract the employeeId from the URL
+    const { id } = useParams();
     const [employee, setEmployee] = useState({
         firstname: '',
         lastname: '',
@@ -22,21 +23,15 @@ const EditUser = () => {
     const [departments, setDepartments] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    // Fetch the employee data on load
     useEffect(() => {
         const fetchEmployee = async () => {
             try {
-                const response = await axios.get(`http://localhost:5212/users/${id}`); // Use id from useParams
-                console.log('Employee data:', response.data);
-
+                const response = await axios.get(`http://localhost:5212/users/${id}`);
                 const data = response.data;
-
-                // Format the hired_date to "yyyy-MM-dd"
                 if (data.hired_date) {
-                    data.hired_date = data.hired_date.split('T')[0]; // Extract only the date part
+                    data.hired_date = data.hired_date.split('T')[0];
                 }
-                setEmployee(response.data);
-
+                setEmployee(data);
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching employee:', error);
@@ -54,7 +49,7 @@ const EditUser = () => {
 
         fetchEmployee();
         fetchDepartments();
-    }, [id]); // Include id in the dependency array to refetch when id changes
+    }, [id]);
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -81,7 +76,7 @@ const EditUser = () => {
         }
 
         try {
-            const response = await axios.put(`http://localhost:5212/edit/${id}`, formData); // Use the id from useParams
+            const response = await axios.put(`http://localhost:5212/edit/${id}`, formData);
 
             if (response.status === 204) {
                 alert('Employee updated successfully!');
@@ -96,125 +91,152 @@ const EditUser = () => {
     if (loading) {
         return <div>Loading...</div>;
     }
+
     return (
-        <div>
-            <h2>Edit Employee</h2>
+        <div className="container mt-5">
+           
             <form onSubmit={handleSubmit} encType="multipart/form-data">
-                <div>
-                    <label>First Name:</label>
-                    <input
-                        type="text"
-                        name="firstname"
-                        value={employee.firstname}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
+            
+                <ul className="list-group">
+                <h2 className="mb-4">Edit Employee</h2>
+                    <li className="list-group-item">
+                        <label className="form-label">First Name:</label>
+                        <input
+                            type="text"
+                            name="firstname"
+                            className="form-control"
+                            value={employee.firstname}
+                            onChange={handleChange}
+                            required
+                        />
+                    </li>
 
-                <div>
-                    <label>Last Name:</label>
-                    <input
-                        type="text"
-                        name="lastname"
-                        value={employee.lastname}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
+                    <li className="list-group-item">
+                        <label className="form-label">Last Name:</label>
+                        <input
+                            type="text"
+                            name="lastname"
+                            className="form-control"
+                            value={employee.lastname}
+                            onChange={handleChange}
+                            required
+                        />
+                    </li>
 
-                <div>
-                    <label>Email:</label>
-                    <input
-                        type="email"
-                        name="email"
-                        value={employee.email}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
+                    <li className="list-group-item">
+                        <label className="form-label">Email:</label>
+                        <input
+                            type="email"
+                            name="email"
+                            className="form-control"
+                            value={employee.email}
+                            onChange={handleChange}
+                            required
+                        />
+                    </li>
 
-                <div>
-                    <label>Username:</label>
-                    <input
-                        type="text"
-                        name="username"
-                        value={employee.username}
-                        onChange={handleChange}
-                    />
-                </div>
+                    <li className="list-group-item">
+                        <label className="form-label">Username:</label>
+                        <input
+                            type="text"
+                            name="username"
+                            className="form-control"
+                            value={employee.username}
+                            onChange={handleChange}
+                        />
+                    </li>
 
-                <div>
-                    <label>Password:</label>
-                    <input
-                        type="password"
-                        name="password"
-                        value={employee.password}
-                        onChange={handleChange}
-                    />
-                </div>
+                    <li className="list-group-item">
+                        <label className="form-label">Password:</label>
+                        <input
+                            type="password"
+                            name="password"
+                            className="form-control"
+                            value={employee.password}
+                            onChange={handleChange}
+                        />
+                    </li>
 
-                <div>
-                    <label>Company Role:</label>
-                    <input
-                        type="text"
-                        name="company_role"
-                        value={employee.company_role}
-                        onChange={handleChange}
-                    />
-                </div>
+                    <li className="list-group-item">
+                        <label className="form-label">Company Role:</label>
+                        <input
+                            type="text"
+                            name="company_role"
+                            className="form-control"
+                            value={employee.company_role}
+                            onChange={handleChange}
+                        />
+                    </li>
 
-                <div>
-                    <label>Is Admin:</label>
-                    <input
-                        type="checkbox"
-                        name="is_admin"
-                        checked={employee.is_admin}
-                        onChange={handleChange}
-                    />
-                </div>
+                    <li className="list-group-item">
+                        <label className="form-label">Is Admin:</label>
+                        <div className="form-check">
+                            <input
+                                type="checkbox"
+                                name="is_admin"
+                                className="form-check-input"
+                                id="isAdmin"
+                                checked={employee.is_admin}
+                                onChange={handleChange}
+                            />
+                            <label className="form-check-label" htmlFor="isAdmin">
+                                Is Admin
+                            </label>
+                        </div>
+                    </li>
 
-                <div>
-                    <label>Hired Date:</label>
-                    <input
-                        type="date"
-                        name="hired_date"
-                        value={employee.hired_date}
-                        onChange={handleChange}
-                    />
-                </div>
+                    <li className="list-group-item">
+                        <label className="form-label">Hired Date:</label>
+                        <input
+                            type="date"
+                            name="hired_date"
+                            className="form-control"
+                            value={employee.hired_date}
+                            onChange={handleChange}
+                        />
+                    </li>
 
-                <div>
-                    <label>Manager ID:</label>
-                    <input
-                        type="number"
-                        name="manager_id"
-                        value={employee.manager_id}
-                        onChange={handleChange}
-                    />
-                </div>
+                    <li className="list-group-item">
+                        <label className="form-label">Manager ID:</label>
+                        <input
+                            type="number"
+                            name="manager_id"
+                            className="form-control"
+                            value={employee.manager_id}
+                            onChange={handleChange}
+                        />
+                    </li>
 
-                <div>
-                    <label>Department:</label>
-                    <select
-                        name="department_id"
-                        value={employee.department_id}
-                        onChange={handleChange}
-                    >
-                        <option value="">Select Department</option>
-                        {departments.map((dep) => (
-                            <option key={dep.id} value={dep.id}>
-                                {dep.name}
-                            </option>
-                        ))}
-                    </select>
-                </div>
+                    <li className="list-group-item">
+                        <label className="form-label">Department:</label>
+                        <select
+                            name="department_id"
+                            className="form-select"
+                            value={employee.department_id}
+                            onChange={handleChange}
+                        >
+                            <option value="">Select Department</option>
+                            {departments.map((dep) => (
+                                <option key={dep.id} value={dep.id}>
+                                    {dep.name}
+                                </option>
+                            ))}
+                        </select>
+                    </li>
 
-                <div>
-                    <label>Upload Image:</label>
-                    <input type="file" name="image" onChange={handleFileChange} />
-                </div>
+                    <li className="list-group-item">
+                        <label className="form-label">Upload Image:</label>
+                        <input
+                            type="file"
+                            name="image"
+                            className="form-control"
+                            onChange={handleFileChange}
+                        />
+                    </li>
+                    <button type="submit" className="btn btn-primary mt-3">Update Employee</button>
+                </ul>
 
-                <button type="submit">Update Employee</button>
+               
             </form>
         </div>
     );
