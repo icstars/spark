@@ -84,8 +84,8 @@ const Layout = () => {
               <Route path="/EvaluationComponent" element={<PrivateRoute allowedRoles={['admin', 'manager', 'employee']} > <EvaluationComponent /> </PrivateRoute>} />
               <Route path="/Eval/:id" element={<PrivateRoute allowedRoles={['admin', 'manager']} > <Eval /> </PrivateRoute>} />
               <Route path="/View/:id" element={<PrivateRoute allowedRoles={['admin', 'manager', 'employee']} > <ViewComponent /> </PrivateRoute>} />
-              <Route path="/Add" element={<PrivateRoute allowedRoles={['admin', 'manager']} > <AddUser /> </PrivateRoute>} />
-              <Route path="/EditUser/:id" element={<PrivateRoute allowedRoles={['admin', 'manager']} > <EditUser /> </PrivateRoute>} />
+              <Route path="/Add" element={<PrivateRoute allowedRoles={['admin']} > <AddUser /> </PrivateRoute>} />
+              <Route path="/EditUser/:id" element={<PrivateRoute allowedRoles={['admin']} > <EditUser /> </PrivateRoute>} />
               {/* Редирект на страницу логина для несуществующих маршрутов */}
               <Route path="*" element={<Navigate to="/Login" />} />
             </Routes>
