@@ -58,6 +58,20 @@ app.MapPost("/login", async (User employee, SparkDb db) =>
         bool isAdmin = user.is_admin;
         bool isManager = await db.user.AnyAsync(u => u.manager_id == user.id);
 
+        if (isAdmin)
+        {
+            isManager = false;  // Set isManager to false
+
+            // Return the appropriate JSON response
+            return Results.Json(new
+            {
+                success = true,
+                id = user.id,
+                username = user.username,
+                isAdmin = isAdmin,
+                isManager = isManager
+            });
+        }
         return Results.Json(new
         {
             success = true,
