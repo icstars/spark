@@ -20,12 +20,13 @@ function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [isTheSamePerson, setIsTheSamePerson] = useState(false); // Обратите внимание на изменение: используем правильный синтаксис для обновления состояния
 
+  const userId = localStorage.getItem('userId');
+
   useEffect(() => {
     if (!id) {
       setError('User ID is not provided in the URL');
       return;
     }
-    const userId = localStorage.getItem('userId');
     // Проверка существования оценки
     axios.get(`http://localhost:5212/evaluate/user/${id}`)
       .then(response => {
@@ -40,13 +41,14 @@ function Home() {
         setIsLoading(false); // Устанавливаем загрузку в false после завершения проверки
       });
 
+    const isTheSame = id == userId; // Проверяем совпадение ID пользователя
+    setIsTheSamePerson(isTheSame);
     // Получение данных об оценке и информации о пользователе
     axios.get(`http://localhost:5212/rating/${id}`)
       .then(response => {
         const { categories, user_id, created } = response.data;
 
-        const isTheSame = user_id == userId; // Проверяем совпадение ID пользователя
-        setIsTheSamePerson(isTheSame); // Правильно обновляем состояние
+        // Правильно обновляем состояние
 
         console.log('API response:', response.data);
         setCategories(categories || []); // Убедитесь, что categories правильно установлено
@@ -64,6 +66,7 @@ function Home() {
       })
       .catch(error => {
         console.error('Error fetching data:', error);
+
         setError('Failed to get evaluation data');
       });
   }, [id]);
