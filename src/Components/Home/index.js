@@ -7,7 +7,8 @@ import Overview from '../Overview';
 import LineChart from '../Charts/LineChart';
 import BarChart from '../Charts/BarChart';
 import ProfileInfo from '../ProfileInfo';
-import profile_icon from '../People/img/profile.png'
+import profile_icon from '../People/img/profile.png';
+import './Home.css'; // Import your custom CSS file for additional styling
 
 function Home() {
   const { id } = useParams();
@@ -66,30 +67,39 @@ function Home() {
     <>
       <Helmet> <title>Home</title></Helmet>
 
-      <div className='col'>
-        <h1>Dashboard</h1>
+      <div className='container'>
+        <div className="row">
+          {/* Left Section: Takes up 85% */}
+          <div className="col-10">
+            <h1>Dashboard</h1>
+            <ProfileInfo 
+              userId={id} 
+              altText={user ? `${user.firstname} ${user.lastname}` : (
+                <img
+                  src={profile_icon} // Fallback image
+                  alt="Default Avatar"
+                  style={{ width: '45px', height: '45px', borderRadius: '50%' }}
+                />
+              )} 
+            />
 
-        {/* Profile image always loads */}
-        <ProfileInfo userId={id} altText={user ? `${user.firstname} ${user.lastname}` : (<img
-          src={profile_icon} // Fallback image
-          alt="Default Avatar"
-          style={{ width: '45px', height: '45px', borderRadius: '50%' }}
-        />)} />
+            {user ? (
+              <>
+                <p>Evaluation created on: {new Date(user.created).toLocaleDateString()}</p>
+                <LineChart scores={scores} /> {/* Pass scores as a prop */}
+                <BarChart categories={categories} />
+                <Overview categories={categories} />
+              </>
+            ) : (
+              <p>Data is not available right now</p>
+            )}
+          </div>
 
-        {/* Render PageHome component regardless of user data */}
-        <PageHome user={user} userId={id} isEvaluationExists={isEvaluationExists} />
-
-        {/* Conditionally render charts and overview only if user data is available */}
-        {user ? (
-          <>
-            <p>Evaluation created on: {new Date(user.created).toLocaleDateString()}</p>
-            <LineChart scores={scores} /> {/* Pass scores as a prop */}
-            <BarChart categories={categories} />
-            <Overview categories={categories} />
-          </>
-        ) : (
-          <p>Data is not available right now</p>
-        )}
+          {/* Right Section: Takes up 15% */}
+          <div className="col-2">
+            <PageHome user={user} userId={id} isEvaluationExists={isEvaluationExists} />
+          </div>
+        </div>
       </div>
     </>
   );

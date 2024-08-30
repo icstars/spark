@@ -5,8 +5,8 @@ import '../right-panel-style.css';
 
 function pageDepDashboard() {
     return (
-        <div>
-            <div className="people-rand-list">
+        <div className='col-auto'>
+            <div className="row flex-column gy-3 people-rand-list">
                 <p>People</p>
                 <p>Employee Name</p>
                 <Link to="/People" className='btn btn-dark'>
