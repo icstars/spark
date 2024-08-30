@@ -28,7 +28,7 @@ function AddUser() {
                 console.error('Error fetching departments:', error);
             });
     }, []);
-    
+
 
     const handleInputChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -71,112 +71,132 @@ function AddUser() {
     };
 
     return (
-        <div>
-            <h2>Add User</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>First Name:</label>
-                    <input 
-                        type="text" 
-                        name="firstname" 
-                        value={user.firstname} 
-                        onChange={handleInputChange} 
-                    />
-                </div>
-                <div>
-                    <label>Last Name:</label>
-                    <input 
-                        type="text" 
-                        name="lastname" 
-                        value={user.lastname} 
-                        onChange={handleInputChange} 
-                    />
-                </div>
-                <div>
-                    <label>Email:</label>
-                    <input 
-                        type="email" 
-                        name="email" 
-                        value={user.email} 
-                        onChange={handleInputChange} 
-                    />
-                </div>
-                <div>
-                    <label>Username:</label>
-                    <input 
-                        type="text" 
-                        name="username" 
-                        value={user.username} 
-                        onChange={handleInputChange} 
-                    />
-                </div>
-                <div>
-                    <label>Password:</label>
-                    <input 
-                        type="password" 
-                        name="password" 
-                        value={user.password} 
-                        onChange={handleInputChange} 
-                    />
-                </div>
-                <div>
-                    <label>Company Role:</label>
-                    <input 
-                        type="text" 
-                        name="company_role" 
-                        value={user.company_role} 
-                        onChange={handleInputChange} 
-                    />
-                </div>
-                <div>
-                    <label>Hired Date:</label>
-                    <input 
-                        type="date" 
-                        name="hired_date" 
-                        value={user.hired_date} 
-                        onChange={handleInputChange} 
-                    />
-                </div>
-                <div>
-                    <label>Manager ID:</label>
-                    <input 
-                        type="number" 
-                        name="manager_id" 
-                        value={user.manager_id} 
-                        onChange={handleInputChange} 
-                    />
-                </div>
-                <div>
-                    <label>Department:</label>
-                    <select
-                        name="department_id"
-                        value={user.department_id}
-                        onChange={handleInputChange}
-                    >
-                        <option value="">Select Department</option>
-                        {department.map(department => (
-                            <option key={department.id} value={department.id}>
-                                {department.name}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-                <div>
-                    <label>Is Admin:</label>
-                    <input 
-                        type="checkbox" 
-                        name="is_admin" 
-                        checked={user.is_admin} 
-                        onChange={handleInputChange} 
-                    />
-                </div>
-                <div>
-                    <label>Profile Image:</label>
-                    <input type="file" onChange={handleImageChange} />
-                </div>
-                <button type="submit">Add User</button>
+        <div className="container mt-5 " >
+
+            <form onSubmit={handleSubmit} encType="multipart/form-data">
+                <ul className="list-group">
+                    <h2>Add User Form</h2>
+                    <li className="list-group-item">
+                        <label className="form-label">First Name:</label>
+                        <input
+                            type="text"
+                            name="firstname"
+                            className="form-control"
+                            value={user.firstname}
+                            onChange={handleInputChange}
+                        />
+                    </li>
+                    <li className="list-group-item">
+                        <label className="form-label">Last Name:</label>
+                        <input
+                            type="text"
+                            name="lastname"
+                            className="form-control"
+                            value={user.lastname}
+                            onChange={handleInputChange}
+                        />
+                    </li>
+                    <li className="list-group-item">
+                        <label className="form-label">Email:</label>
+                        <input
+                            type="email"
+                            name="email"
+                            className="form-control"
+                            value={user.email}
+                            onChange={handleInputChange}
+                        />
+                    </li>
+                    <li className="list-group-item">
+                        <label className="form-label">Username:</label>
+                        <input
+                            type="text"
+                            name="username"
+                            className="form-control"
+                            value={user.username}
+                            onChange={handleInputChange}
+                        />
+                    </li>
+                    <li className="list-group-item">
+                        <label className="form-label">Password:</label>
+                        <input
+                            type="password"
+                            name="password"
+                            className="form-control"
+                            value={user.password}
+                            onChange={handleInputChange}
+                        />
+                    </li>
+                    <li className="list-group-item">
+                        <label className="form-label">Company Role:</label>
+                        <input
+                            type="text"
+                            name="company_role"
+                            className="form-control"
+                            value={user.company_role}
+                            onChange={handleInputChange}
+                        />
+                    </li>
+                    <li className="list-group-item">
+                        <label className="form-label">Hired Date:</label>
+                        <input
+                            type="date"
+                            name="hired_date"
+                            className="form-control"
+                            value={user.hired_date}
+                            onChange={handleInputChange}
+                        />
+                    </li>
+                    <li className="list-group-item">
+                        <label className="form-label">Manager ID:</label>
+                        <input
+                            type="number"
+                            name="manager_id"
+                            className="form-control"
+                            value={user.manager_id}
+                            onChange={handleInputChange}
+                        />
+                    </li>
+                    <li className="list-group-item">
+                        <label className="form-label">Department:</label>
+                        <select
+                            name="department_id"
+                            className="form-control"
+                            value={user.department_id}
+                            onChange={handleInputChange}
+                        >
+                            <option value="">Select Department</option>
+                            {department.map(department => (
+                                <option key={department.id} value={department.id}>
+                                    {department.name}
+                                </option>
+                            ))}
+                        </select>
+                    </li>
+                    <li className="list-group-item">
+                        <label className="form-label">Is Admin:</label>
+
+                        <div className="form-check">
+                            <input
+                                type="checkbox"
+                                name="is_admin"
+                                className="form-check-input"
+                                checked={user.is_admin}
+                                onChange={handleInputChange}
+                            />
+                            <label className="form-check-label" htmlFor="isAdmin">
+                                Is Admin
+                            </label>
+                        </div>
+                    </li>
+                    <li className="list-group-item">
+                        <label className="form-label">Profile Image:</label>
+                        <input type="file" className="form-control" onChange={handleImageChange} />
+                    </li>
+
+                    <button type="submit" className="btn btn-primary mt-3"FormData>Add User</button>
+                </ul>
             </form>
-        </div>
+        </div >
     );
 }
 

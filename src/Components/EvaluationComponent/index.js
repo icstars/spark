@@ -1,4 +1,4 @@
-import return_icon from './img/return.png';
+import return_icon from '../img/return-icon.svg';
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -18,18 +18,19 @@ function EvaluationComponent() {
   const [error, setError] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [userFirstName, setUserFirstName] = useState('');
 
   useEffect(() => {
 
-     // Get the logged-in user's ID
-     const loggedInUserId = parseInt(localStorage.getItem('userId'));
+    // Get the logged-in user's ID
+    const loggedInUserId = parseInt(localStorage.getItem('userId'));
 
-     // Check if the logged-in user is trying to evaluate themselves
-     if (loggedInUserId === parseInt(id)) {
-       alert("User can't evaluate himself");
-       navigate(-1);
-       return;
-     }
+    // Check if the logged-in user is trying to evaluate themselves
+    if (loggedInUserId === parseInt(id)) {
+      alert("User can't evaluate himself");
+      navigate(-1);
+      return;
+    }
 
     // Check if an evaluation already exists for the user
     axios.get(`http://localhost:5212/evaluate/user/${id}`)
@@ -55,7 +56,8 @@ function EvaluationComponent() {
       .then(response => {
         if (response.data && response.data.department) {
           setDepartmentId(response.data.department.id); // Сохранение ID отдела
-        }
+          setUserFirstName(response.data.username);
+        }   
       })
       .catch(error => {
         setError('Failed to fetch user department');
@@ -163,7 +165,7 @@ function EvaluationComponent() {
       console.log(response);
       const data = await response.json();
 
-     
+
 
       // Если форма была успешно отправлена
       setSuccessMessage('Form submitted successfully');
@@ -510,15 +512,15 @@ function EvaluationComponent() {
         <title>Evaluation</title>
       </Helmet>
       <div>
-        <h1>Bob's Rubrics</h1>
+        <h1>{userFirstName}'s rubrics</h1>
       </div>
       <div>
-        <button className="return-button" onClick={() => navigate(-1)}>
+        <button className="return-button btn btn-dark" onClick={() => navigate(-1)}>
           <img className="return-button-icon" src={return_icon} alt="Return" />Return
         </button>
       </div>
 
-     
+
 
       {/* Отображение всех категорий и подразделов */}
       {sections.map((section) => (
@@ -545,7 +547,7 @@ function EvaluationComponent() {
 
               {/* Поле для комментария к подразделу */}
               <div>
-                <p>Comment to {subSection.title}:</p>
+                <p className='comment-description'>Comment to {subSection.title}:</p>
                 <textarea
                   className="comment-topic"
                   value={comments[`subSection-${subSection.id}`] || ''}
@@ -558,7 +560,7 @@ function EvaluationComponent() {
 
           {/* Поле для комментария ко всему разделу */}
           <div>
-            <p>Comment to the section {section.title}:</p>
+            <p className='comment-description'>Comment to the section {section.title}:</p>
             <textarea
               className="comment-topic"
               value={comments[`section-${section.id}`] || ''}
@@ -570,8 +572,8 @@ function EvaluationComponent() {
       ))}
 
       <button type="button" onClick={handleSubmitForm}>Submit form</button>
-       {/* Вывод сообщения об ошибке */}
-       {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+      {/* Вывод сообщения об ошибке */}
+      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
       {/* Вывод сообщения об успешной отправке */}
       {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
     </div>

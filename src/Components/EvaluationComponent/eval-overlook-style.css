@@ -89,6 +89,28 @@
   background-color: rgb(231, 231, 231);
   border: 2px solid black;
   box-shadow: none;
+  box-shadow: inset 0px 6px 17px 0px rgba(0, 0, 0, 25%);
+}
+.wrapper-option {
+ 
+  position: relative;
+  box-shadow: 2px 2px 5px gray;
+  margin: 5px;
+  border-radius: 3%;
+  padding: 20px; /* Уменьшил padding, чтобы текст не выглядел слишком далеко от границ */
+  height: 200px; /* Задал фиксированную высоту для всех элементов */
+  max-width: 300px; /* Можно задать максимальную ширину, чтобы избежать слишком широких элементов */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.wrapper-option.choosen {
+  background-color: rgb(231, 231, 231);
+  border: 2px solid black;
+  box-shadow: none;
+  box-shadow: inset 0px 6px 17px 0px rgba(0, 0, 0, 25%);
 }
 
 .hover-explanation {
@@ -120,9 +142,13 @@ form {
   justify-content: center;
 }
 
+.comment-description{
+  margin-top: 3%;
+}
+
 .comment-topic {
   margin: 0 auto;
-  width: 95%;
+  width: 100%;
   height: 150px;
   padding: 12px 20px;
   box-sizing: border-box;
