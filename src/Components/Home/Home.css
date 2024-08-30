@@ -11,6 +11,11 @@
   h1 {
     margin-bottom: 20px; /* Add some space below the title */
   }
+
+  .custom-margin{
+    margin-top: 5%;
+  }
+
   .container {
     display: flex;
     flex-direction: column;

@@ -8,54 +8,59 @@ import LineChart from '../Charts/LineChart';
 import BarChart from '../Charts/BarChart';
 import ProfileInfo from '../ProfileInfo';
 import profile_icon from '../People/img/profile.png';
-import './Home.css'; // Import your custom CSS file for additional styling
+import './Home.css';
 
 function Home() {
-  const { id } = useParams();
+  const { id } = useParams(); // ID из URL
   const [categories, setCategories] = useState([]);
   const [error, setError] = useState('');
   const [user, setUser] = useState(null);
-  const [scores, setScores] = useState(new Array(22).fill(0)); // Initialize an array of 22 zeros
-  const [isEvaluationExists, setIsEvaluationExists] = useState(false); // Track if evaluation exists
+  const [scores, setScores] = useState(new Array(22).fill(0)); // Инициализация массива из 22 нулей
+  const [isEvaluationExists, setIsEvaluationExists] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isTheSamePerson, setIsTheSamePerson] = useState(false); // Обратите внимание на изменение: используем правильный синтаксис для обновления состояния
 
   useEffect(() => {
     if (!id) {
       setError('User ID is not provided in the URL');
       return;
     }
-
-    // Check if the evaluation exists
+    const userId = localStorage.getItem('userId');
+    // Проверка существования оценки
     axios.get(`http://localhost:5212/evaluate/user/${id}`)
       .then(response => {
         if (response.data) {
-          setIsEvaluationExists(true); // Evaluation exists
+          setIsEvaluationExists(true);
         }
       })
       .catch(error => {
         console.error('Error checking evaluation existence:', error);
       })
       .finally(() => {
-        setIsLoading(false); // Set loading to false once check is done
+        setIsLoading(false); // Устанавливаем загрузку в false после завершения проверки
       });
 
-    // Fetch evaluation data and user info
+    // Получение данных об оценке и информации о пользователе
     axios.get(`http://localhost:5212/rating/${id}`)
       .then(response => {
         const { categories, user_id, created } = response.data;
-        console.log('API response:', response.data);
-        setCategories(categories || []); // Make sure categories is set properly
-        setUser({ user_id, created }); // Store user info
 
-        // Extract scores from categories and topics
-        const extractedScores = new Array(22).fill(0); // Initialize an array of 22 zeros
+        const isTheSame = user_id == userId; // Проверяем совпадение ID пользователя
+        setIsTheSamePerson(isTheSame); // Правильно обновляем состояние
+
+        console.log('API response:', response.data);
+        setCategories(categories || []); // Убедитесь, что categories правильно установлено
+        setUser({ user_id, created }); // Сохраняем информацию о пользователе
+
+        // Извлечение оценок из категорий и тем
+        const extractedScores = new Array(22).fill(0);
         categories.forEach(category => {
           category.topics.forEach(topic => {
-            const topicIndex = topic.id - 1; // Adjust for zero-based index
+            const topicIndex = topic.id - 1;
             extractedScores[topicIndex] = topic.score;
           });
         });
-        setScores(extractedScores); // Set the extracted scores into state
+        setScores(extractedScores); // Устанавливаем извлеченные оценки в состояние
       })
       .catch(error => {
         console.error('Error fetching data:', error);
@@ -69,24 +74,19 @@ function Home() {
 
       <div className='container'>
         <div className="row">
-          {/* Left Section: Takes up 85% */}
+          {/* Левая секция: занимает 85% */}
           <div className="col-10">
             <h1>Dashboard</h1>
-            <ProfileInfo 
-              userId={id} 
-              altText={user ? `${user.firstname} ${user.lastname}` : (
-                <img
-                  src={profile_icon} // Fallback image
-                  alt="Default Avatar"
-                  style={{ width: '45px', height: '45px', borderRadius: '50%' }}
-                />
-              )} 
-            />
-
+            {!isTheSamePerson && ( // Проверка перед рендерингом ProfileInfo
+              <ProfileInfo
+                userId={id}
+                altText={user ? `${user.firstname} ${user.lastname}` : "Default Avatar"}
+              />
+            )}
             {user ? (
               <>
                 <p>Evaluation created on: {new Date(user.created).toLocaleDateString()}</p>
-                <LineChart scores={scores} /> {/* Pass scores as a prop */}
+                <LineChart scores={scores} /> {/* Передаем оценки как проп */}
                 <BarChart categories={categories} />
                 <Overview categories={categories} />
               </>
@@ -95,8 +95,8 @@ function Home() {
             )}
           </div>
 
-          {/* Right Section: Takes up 15% */}
-          <div className="col-2">
+          {/* Правая секция: занимает 15% */}
+          <div className="col-2 custom-margin">
             <PageHome user={user} userId={id} isEvaluationExists={isEvaluationExists} />
           </div>
         </div>

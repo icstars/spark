@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import './edit.css'
 
 const EditUser = () => {
     const { id } = useParams();
@@ -21,6 +22,13 @@ const EditUser = () => {
     const [file, setFile] = useState(null);
     const [departments, setDepartments] = useState([]);
     const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const element = document.querySelector('.custom-row-height');
+        if (element) {
+          element.classList.remove('custom-row-height');
+        }
+      }, []);
 
     useEffect(() => {
         const fetchEmployee = async () => {
@@ -92,7 +100,7 @@ const EditUser = () => {
     }
 
     return (
-        <div className="container mt-5">
+        <div className="container mt-5 " >
            
             <form onSubmit={handleSubmit} encType="multipart/form-data">
             
