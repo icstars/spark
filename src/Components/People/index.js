@@ -23,6 +23,7 @@ function People() {
     const [statuses, setStatuses] = useState({});
     const [searchQuery, setSearchQuery] = useState(''); // Состояние для поиска
     const [filteredPeople, setFilteredPeople] = useState([]); // Состояние для отфильтрованных данных
+    const [deleteSelected, setDeleteSelected] = useState([]); // State for storing selected users for deletion
 
     const currentUserId = parseInt(localStorage.getItem('userId')); // Fetch the current user ID as an integer
 
@@ -36,30 +37,41 @@ function People() {
     };
 
     // Confirm delete action
+    // Confirm delete action for single user
     const handleConfirmDelete = async () => {
         try {
-            const response = await fetch(`http://localhost:5212/employees/${deleteUserId}`, {
-                method: 'DELETE',
-            });
+            const idsToDelete = deleteUserId ? [deleteUserId] : deleteSelected;
 
-            if (response.ok) {
-                setPeople(prevPeople => prevPeople.filter(person => person.id !== deleteUserId));
-                alert('User deleted successfully.');
+            const deletePromises = idsToDelete.map(id =>
+                fetch(`http://localhost:5212/employees/${id}`, {
+                    method: 'DELETE',
+                })
+            );
+
+            const responses = await Promise.all(deletePromises);
+
+            const failedDeletes = responses.filter(response => !response.ok);
+
+            if (failedDeletes.length === 0) {
+                setPeople(prevPeople => prevPeople.filter(person => !idsToDelete.includes(person.id)));
+                alert('Users deleted successfully.');
             } else {
-                const errorData = await response.json();
-                alert(`Error deleting user: ${errorData.message}`);
+                alert('Some users could not be deleted.');
             }
         } catch (error) {
-            console.error('Error deleting user:', error);
-            alert('An error occurred while deleting the user.');
+            console.error('Error deleting users:', error);
+            alert('An error occurred while deleting the users.');
         } finally {
-            setIsModalOpen(false); // Close the modal after action
+            setIsModalOpen(false);
+            setDeleteUserId(null);
+            setDeleteSelected([]);
         }
     };
 
     // Cancel delete action
     const handleCancelDelete = () => {
         setIsModalOpen(false); // Simply close the modal
+        setDeleteUserId(null);
     };
 
     // Fetch data from API
@@ -123,6 +135,8 @@ function People() {
             newSelectedRows[person.id] = newSelectAll;
         });
         setSelectedRows(newSelectedRows);
+
+        setDeleteSelected(newSelectAll ? people.map(person => person.id) : []);
     };
 
     // Handle individual row checkbox change
@@ -130,11 +144,12 @@ function People() {
         const newSelectedRows = { ...selectedRows, [id]: !selectedRows[id] };
         setSelectedRows(newSelectedRows);
 
-        // Update "select all" checkbox based on row selections
+        const selectedIds = Object.keys(newSelectedRows).filter(key => newSelectedRows[key]).map(Number);
+        setDeleteSelected(selectedIds);
+
         const allSelected = people.every(person => newSelectedRows[person.id]);
         setSelectAll(allSelected);
     };
-
     // useEffect(() => {
     //     const fetchData = async () => {
     //         try {
@@ -280,6 +295,14 @@ function People() {
         }
     };
 
+    const handleDeleteSelectedClick = () => {
+        if (deleteSelected.length === 0) {
+            alert("No users selected for deletion.");
+            return;
+        }
+        setIsModalOpen(true);
+    };
+
     if (loading) {
         return <p>Loading...</p>;
     }
@@ -291,6 +314,18 @@ function People() {
             <Helmet><title>People</title></Helmet>
             {/* Компонент поиска */}
             <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+            <div className='button-wrapper'>
+                <Link to="/Add" className='btn btn-dark'>
+                    Add User
+                </Link>
+                <button
+                    onClick={handleDeleteSelectedClick}
+                    className='btn btn-danger'
+                    disabled={deleteSelected.length === 0} // Disable button if no users selected
+                >
+                    Delete Selected
+                </button>
+            </div>
             <table className="people-container">
                 <thead>
                     <tr>
