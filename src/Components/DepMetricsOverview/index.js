@@ -48,15 +48,21 @@ function TopicScore({ topicId, score, userScores }) {
     const topicName = topicNameMap[topicId] || `Topic ${topicId}`;
     const [isDropdownVisible, setDropdownVisible] = useState(false);
     const dropdownRef = useRef(null);
-
+    const triggerRef = useRef(null); // Reference to the element triggering the dropdown
+    const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
+    // Toggle dropdown visibility
     // Toggle dropdown visibility
     const toggleDropdown = () => {
         setDropdownVisible((prev) => !prev);
+        if (!isDropdownVisible && triggerRef.current) {
+            const rect = triggerRef.current.getBoundingClientRect();
+            setDropdownPosition({ top: rect.bottom + window.scrollY, left: rect.left + window.scrollX });
+        }
     };
 
     // Close the dropdown when clicking outside
     const handleClickOutside = (event) => {
-        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        if (dropdownRef.current && !dropdownRef.current.contains(event.target) && triggerRef.current !== event.target) {
             setDropdownVisible(false);
         }
     };
@@ -77,6 +83,7 @@ function TopicScore({ topicId, score, userScores }) {
     return (
         <div className="row">
             <p
+                ref={triggerRef} // Attach ref to the trigger element
                 className="col-auto text-secondary"
                 onClick={toggleDropdown}
                 style={{ cursor: 'pointer' }}
@@ -91,9 +98,8 @@ function TopicScore({ topicId, score, userScores }) {
                     className="dropdown-menu show"
                     style={{
                         position: 'absolute',
-                        left: '20%',          // Positioning the dropdown to the right
-                        top: '50%',            // Center vertically relative to the trigger
-                        transform: 'translate(5px, -50%)', // 5px to the right and centered vertically
+                        top: `${dropdownPosition.top}px`,
+                        left: `${dropdownPosition.left}px`,
                         zIndex: 1000,
                         width: '150px',
                     }}
