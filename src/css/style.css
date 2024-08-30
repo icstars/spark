@@ -4,6 +4,9 @@ body, */
     min-height: 100%;
 }
 
+.custom-row-height{
+    min-height: 800px;
+}
 
 .helmet {
     transition: width 2s, height 4s;
