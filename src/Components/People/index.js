@@ -26,6 +26,7 @@ function People() {
     const [deleteSelected, setDeleteSelected] = useState([]); // State for storing selected users for deletion
 
     const currentUserId = parseInt(localStorage.getItem('userId')); // Fetch the current user ID as an integer
+    const isAdmin = localStorage.getItem('isAdmin');
 
     const handleDeleteClick = (id) => {
         if (id == currentUserId) {
@@ -87,11 +88,23 @@ function People() {
                 setPeople(filteredData);
                 setLoading(false);
 
-                const statusPromises = filteredData.map(async (person) => {
-                    const statusResponse = await fetch(`http://localhost:5212/status/${person.id}`);
-                    const statusData = await statusResponse.json();
-                    return { id: person.id, status: statusData.status };
-                });
+                // Declare statusPromises outside the if-else block
+                let statusPromises;
+                console.log("is admin", isAdmin)
+                if (isAdmin === "true") {
+                    setPeople(data);
+                    statusPromises = data.map(async (person) => {
+                        const statusResponse = await fetch(`http://localhost:5212/status/${person.id}`);
+                        const statusData = await statusResponse.json();
+                        return { id: person.id, status: statusData.status };
+                    });
+                } else {
+                    statusPromises = filteredData.map(async (person) => {
+                        const statusResponse = await fetch(`http://localhost:5212/status/${person.id}`);
+                        const statusData = await statusResponse.json();
+                        return { id: person.id, status: statusData.status };
+                    });
+                }
 
                 const statuses = await Promise.all(statusPromises);
                 const statusMap = {};
@@ -100,6 +113,7 @@ function People() {
                 });
 
                 setStatuses(statusMap);
+
             } catch (error) {
                 console.error('Error fetching data:', error);
                 setLoading(false);
@@ -150,24 +164,6 @@ function People() {
         const allSelected = people.every(person => newSelectedRows[person.id]);
         setSelectAll(allSelected);
     };
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try {
-    //             const response = await fetch(`http://localhost:5212/employees`);
-    //             const data = await response.json();
-    //             setPeople(data);
-    //             setLoading(false);
-
-    //             const departmentResponse = await fetch(`http://localhost:5212/departments`);
-    //             const departmentData = await departmentResponse.json();
-    //             setDepartments(departmentData);
-    //         } catch (error) {
-    //             console.error('Error fetching data:', error);
-    //             setLoading(false);
-    //         }
-    //     };
-    //     fetchData();
-    // }, []);
 
     // Handle input changes in the inline form
     const handleInputChange = (e) => {
