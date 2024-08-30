@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './view-style.css';
 import { Helmet } from 'react-helmet-async';
+import return_icon from '../img/return-icon.svg';
 // Используем `sections` для поиска текста по `score`
 const sections = [
   {
@@ -367,16 +368,36 @@ const getSubSectionOptions = (topicId) => {
 };
 
 function ViewComponent() {
+
+  const navigate = useNavigate();
+
   const { id } = useParams();  // Получаем ID формы из URL
   const [evaluationData, setEvaluationData] = useState(null);  // Данные формы
   const [loading, setLoading] = useState(true);  // Статус загрузки
   const [error, setError] = useState('');  // Статус ошибки
+  const [person, setPerson] = useState('');
+  const [manager, setManager] = useState('');
 
   useEffect(() => {
     // Запрос на получение данных формы
     axios.get(`http://localhost:5212/evaluate/user/${id}`)
       .then(response => {
         setEvaluationData(response.data);
+        setLoading(false);
+        const managerId = response.data.manager_id;
+        if (managerId) {
+          axios.get(`http://localhost:5212/users/${managerId}`)
+            .then(response => {
+              setManager(response.data);
+            })
+            .catch(error => {
+              console.error("Failed to fetch manager data", error);
+            });
+        }
+      })
+    axios.get(`http://localhost:5212/users/${id}`)
+      .then(response => {
+        setPerson(response.data);
         setLoading(false);
       })
       .catch(error => {
@@ -398,18 +419,23 @@ function ViewComponent() {
     return <div>No data found</div>;
   }
 
+
+
   return (
     <div className="evaluation-view">
       <Helmet>
         <title>Evaluation</title>
       </Helmet>
-      <h1>Evaluation Form #{evaluationData.id}</h1>
-      <p>User ID: {evaluationData.user_id}</p>
-      <p>Department ID: {evaluationData.department_id}</p>
-      <p>Manager ID: {evaluationData.manager_id}</p>
-      <p>Created: {new Date(evaluationData.created).toLocaleString()}</p>
-      <p>Status: {evaluationData.is_ready ? "Ready" : "Not Ready"}</p>
-
+      <h1>This is {person.firstname}'s rubrics</h1>
+      <div>
+        <button className="return-button btn btn-dark" onClick={() => navigate(-1)}>
+          <img className="return-button-icon" src={return_icon} alt="Return" />Return
+        </button>
+      </div>
+      <div key={evaluationData.manager_id}>
+        <p>Manager ID: {manager.firstname} {manager.lastname}</p>
+        <p>Created: {new Date(evaluationData.created).toLocaleString()}</p>
+      </div>
       {evaluationData.categoryComments && evaluationData.categoryComments.length > 0 ? (
         evaluationData.categoryComments.map(comment => (
           <div key={comment.id} >
@@ -419,21 +445,21 @@ function ViewComponent() {
               evaluationData.evaluationOptions.filter(option => option.topic?.category_id === comment.category_id)
                 .map(option => (
                   <div key={option.id} className="sub-section">
-                    <h2 className="h2-evaluation-title">{getSubSectionTitle(option.topic.id)}</h2>
+                    <h2 className="h2-evaluatoin-title">{getSubSectionTitle(option.topic.id)}</h2>
 
                     {/* Отображаем все опции */}
                     <div className="option-wrapper">
                       {getSubSectionOptions(option.topic.id).map(opt => (
                         <div
                           key={opt.id}
-                          className={`wrapper-element ${opt.id === option.score ? 'selected' : ''}`}
+                          className={`wrapper-option ${opt.id === option.score ? 'choosen' : ''}`}
                         >
                           <p className="option">{opt.text}</p>
                         </div>
                       ))}
                     </div>
 
-                    <p><strong>Comment:</strong> {option.comment || 'No comment provided'}</p>
+                    <p className='comment-review'><strong>Comment:</strong> {option.comment || 'No comment provided'}</p>
                   </div>
                 ))
             ) : (

@@ -87,10 +87,24 @@
   background-color: rgb(203, 203, 203);
 }
 
+.comment-review {
+  margin: 0 auto;
+  margin-top: 2%;
+  width: 95%;
+  height: 150px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  font-size: 16px;
+  resize: none;
+}
+
 .wrapper-element.selected {
-  background-color: rgb(231, 231, 231);
+  background-color: #F5F5F5;
   border: 2px solid black;
-  box-shadow: none;
+  box-shadow: inset 0px 6px 17px 0px rgba(0, 0, 0, 25%);
 }
 
 .hover-explanation {
@@ -120,17 +134,4 @@ form {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.comment-topic {
-  margin: 0 auto;
-  width: 95%;
-  height: 150px;
-  padding: 12px 20px;
-  box-sizing: border-box;
-  border: 2px solid #ccc;
-  border-radius: 4px;
-  background-color: #f8f8f8;
-  font-size: 16px;
-  resize: none;
 }
