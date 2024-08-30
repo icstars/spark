@@ -63,7 +63,6 @@ function Eval() {
             <Helmet>
                 <title>Evaluation</title>
             </Helmet>
-            <h1>Evaluation Page</h1>
             {/* Render CategoryComponent only if categories are available */}
             {categories.length > 0 ? (
                 // <CategoryComponent categories={categories} />
