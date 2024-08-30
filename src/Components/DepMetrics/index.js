@@ -44,7 +44,7 @@ function DepMetrics() {
         setError('Failed to get manager scores data');
       });
 
-    axios.get(`http://localhost:5212/manager-scores/${id}`)
+    axios.get(`http://localhost:5212/department-scores/${id}`)
       .then(response => {
         const { categories, managerId } = response.data;
         setCategories(categories || []);

@@ -127,7 +127,7 @@ app.MapGet("/status/{userId}", async (int userId, SparkDb _context) =>
 
 app.MapPost("/evaluate", async (EvaluationRequest formDto, SparkDb _context) =>
 {
-    
+
     // Шаг 1: Create a record in the evaluation_form table
     var evaluationForm = new EvaluationForm
     {
@@ -250,7 +250,7 @@ app.MapGet("/rating/{userId}", async (int userId, SparkDb _context) =>
             eo.Topic.id,
             eo.score
         }).ToList(),
-        total_score = group.Sum(eo => eo.score) 
+        total_score = group.Sum(eo => eo.score)
     }).ToList();
 
 
@@ -369,12 +369,12 @@ app.MapPost("/employees-with-image", async (HttpRequest request, SparkDb db) =>
     db.user.Add(user);
     await db.SaveChangesAsync();
 
-    return Results.Created($"/employees/{user.id}", new 
-    { 
-        id = user.id, 
-        username = user.username, 
-        firstname = user.firstname, 
-        lastname = user.lastname 
+    return Results.Created($"/employees/{user.id}", new
+    {
+        id = user.id,
+        username = user.username,
+        firstname = user.firstname,
+        lastname = user.lastname
     });
 });
 
@@ -448,13 +448,13 @@ app.MapDelete("/employees/{id}", async (int id, SparkDb db) =>
     }
 });
 
-app.MapGet("/manager-scores/{managerId}", async (int managerId, SparkDb _context) =>
+app.MapGet("/department-scores/{managerId}", async (int managerId, SparkDb _context) =>
 {
     try
     {
         // Fetch all users under the specified manager
         var users = await _context.user
-            .Where(u => u.manager_id == managerId)
+          .Where(u => u.manager_id == managerId && u.id != 1)
             .ToListAsync();
 
         // If no users are found, return a 404 Not Found
@@ -545,7 +545,7 @@ app.MapGet("/manager-user-scores/{managerId}", async (int managerId, SparkDb _co
 
         // Create a response with user names and scores by topic
         var userScores = evaluations
-            .SelectMany(ef => ef.EvaluationOptions, (ef, eo) => new 
+            .SelectMany(ef => ef.EvaluationOptions, (ef, eo) => new
             {
                 UserId = ef.user_id,
                 UserName = users.First(u => u.id == ef.user_id).firstname,
@@ -559,7 +559,7 @@ app.MapGet("/manager-user-scores/{managerId}", async (int managerId, SparkDb _co
                 UserId = userGroup.Key.UserId,
                 UserName = userGroup.Key.UserName,
                 UserLastName = userGroup.Key.UserLastName,
-                Topics = userGroup.Select(ug => new 
+                Topics = userGroup.Select(ug => new
                 {
                     TopicId = ug.TopicId,
                     Score = ug.Score
