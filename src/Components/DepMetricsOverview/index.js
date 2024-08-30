@@ -75,7 +75,7 @@ function TopicScore({ topicId, score, userScores }) {
     }, []);
 
     return (
-        <div className="row position-relative">
+        <div className="row">
             <p
                 className="col-auto text-secondary"
                 onClick={toggleDropdown}

@@ -72,7 +72,7 @@ const Layout = () => {
           <NavMenu />
         )}
         {/* Main content area that changes based on the active route */}
-        <div className='col row'>
+        <div className='col row custom-row-height'>
         <Routes>
               {/* Define routes and their corresponding components */}
               <Route path="/Login" element={<Login />} /> {/*Public Route*/}
@@ -92,7 +92,7 @@ const Layout = () => {
         </div>
         {/* Conditionally render the RightPanel if it should be displayed */}
         {displayRightPanel && RightPanelComponent && (
-          <div className="col-auto right-panel">
+          <div className="col-2">
             {RightPanelComponent}
           </div>
         )}

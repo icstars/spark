@@ -5,7 +5,7 @@ import '../right-panel-style.css';
 
 function PageHome({ user, userId, isEvaluationExists }) {
     return (
-        <div className='col-auto'>
+        <div className='col-auto right-panel-width'>
             <div className="row flex-column gy-3 right-panel-view-evaluation-button">
                 <Link to={`/EditUser/${userId}`} className='col-12 py-1 btn btn-dark'>
                     Edit User
