@@ -23,6 +23,7 @@
     border-radius: 0px 4px 4px 0px;
 }
 
+
 .nav-element:hover li {
     font-weight: bold;
     /* Background color on hover */
@@ -62,3 +63,10 @@
 .nav-text{
     text-decoration: none;
 }
+
+.custom-col-width {
+    width: 10%;
+    min-width: 150px; /* Optional: Add a min-width if needed */
+    margin-top: 4%;
+    padding: 0;
+  }

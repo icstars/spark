@@ -63,38 +63,38 @@ function People() {
     };
 
     // Fetch data from API
-     useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`http://localhost:5212/employees`);
-        const data = await response.json();
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch(`http://localhost:5212/employees`);
+                const data = await response.json();
 
-        // Filter people based on manager_id matching currentUserId
-        const filteredData = data.filter(person => person.manager_id === currentUserId);
+                // Filter people based on manager_id matching currentUserId
+                const filteredData = data.filter(person => person.manager_id === currentUserId);
 
-        setPeople(filteredData);
-        setLoading(false);
+                setPeople(filteredData);
+                setLoading(false);
 
-        const statusPromises = filteredData.map(async (person) => {
-          const statusResponse = await fetch(`http://localhost:5212/status/${person.id}`);
-          const statusData = await statusResponse.json();
-          return { id: person.id, status: statusData.status };
-        });
+                const statusPromises = filteredData.map(async (person) => {
+                    const statusResponse = await fetch(`http://localhost:5212/status/${person.id}`);
+                    const statusData = await statusResponse.json();
+                    return { id: person.id, status: statusData.status };
+                });
 
-        const statuses = await Promise.all(statusPromises);
-        const statusMap = {};
-        statuses.forEach((status) => {
-          statusMap[status.id] = status.status;
-        });
+                const statuses = await Promise.all(statusPromises);
+                const statusMap = {};
+                statuses.forEach((status) => {
+                    statusMap[status.id] = status.status;
+                });
 
-        setStatuses(statusMap);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, [currentUserId]); 
+                setStatuses(statusMap);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                setLoading(false);
+            }
+        };
+        fetchData();
+    }, [currentUserId]);
 
     useEffect(() => {
         const filtered = people.filter(person =>
@@ -285,13 +285,13 @@ function People() {
     }
 
     return (
-        <div className="people-container">
-            <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-            <h1>People</h1>
+        <div >
+
+
             <Helmet><title>People</title></Helmet>
             {/* Компонент поиска */}
-
-            <table>
+            <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+            <table className="people-container">
                 <thead>
                     <tr>
                         <th><input type="checkbox" checked={selectAll} onChange={handleSelectAll} /></th>

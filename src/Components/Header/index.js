@@ -4,7 +4,7 @@ import profile_icon from "./img/profile_icon.svg";
 import logo_icon from "./img/spark_logo_icon.png";
 import { useNavigate } from 'react-router-dom'; // for redirecting to other pages after logout
 import BurgerMenu from '../BurgerMenu';
-
+import HeaderInfo from '../HeaderInfo';
 import './header-style.css';
 
 function Header() {
@@ -33,9 +33,11 @@ function Header() {
                     <img className="logo-icon" src={logo_icon} alt="logo-img"></img>
                 </Link>
             </div>
-            <div className="header-login-element">
+            <div className="header-logout-element">
+                <div className='header-block'>
+                    <HeaderInfo userId={userId} />
+                </div>
                 <button className='btn btn-dark' onClick={handleLogout}>Logout</button>
-                <img src={profile_icon} alt="profile-img"></img>
             </div>
             <nav className="main-nav">
             </nav>

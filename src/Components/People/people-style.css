@@ -5,7 +5,12 @@ h1 {
 }
 
 .people-container {
+  margin-top: 1%;
   width: 100%;
+}
+
+.search{
+  display: none;
 }
 
 table {

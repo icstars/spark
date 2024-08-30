@@ -3,8 +3,26 @@ body, */
 #root {
     min-height: 100%;
 }
+.g-0
 
+.custom-row-height{
+    min-height: 800px;
+    margin-top: 4%;
 
+}
+
+.container{
+    padding-right: 0;
+}
+
+.col{
+    padding-left: 3.5%;
+    margin-top: 4%;
+    padding-right: 0;
+}
+.row{
+    padding-right: 0;
+}
 .helmet {
     transition: width 2s, height 4s;
 }
