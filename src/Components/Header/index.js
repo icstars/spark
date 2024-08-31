@@ -7,6 +7,14 @@ import BurgerMenu from '../BurgerMenu';
 import HeaderInfo from '../HeaderInfo';
 import './header-style.css';
 
+function Logo({ userId }) {
+    return (
+        <Link className='col-auto p-0' to={`/home/${userId}`}>
+            <img className="logo-icon" src={logo_icon} alt="logo-img"></img>
+        </Link>
+    )
+}
+
 function Header() {
     const userId = localStorage.getItem('userId');
     const navigate = useNavigate();
@@ -23,25 +31,15 @@ function Header() {
     }
 
     // Use the correct method to check if the pathname includes '/Eval'
-    const displayBurger = location.pathname.includes('/Eval');
+    const displayBurger = location.pathname.includes('/Eval') ||  location.pathname.includes('/View');
 
     return (
-        <div className="main-header">
-            <div className="logo-wrapper">
-                {displayBurger && <BurgerMenu />}
-                <Link className='nav-text' to={`/home/${userId}`}>
-                    <img className="logo-icon" src={logo_icon} alt="logo-img"></img>
-                </Link>
-            </div>
-            <div className="header-logout-element">
-                <div className='header-block'>
-                    <HeaderInfo userId={userId} />
-                </div>
-                <button className='btn btn-dark' onClick={handleLogout}>Logout</button>
-            </div>
-            <nav className="main-nav">
-            </nav>
-        </div>
+        <header className='row align-items-center m-0 px-4'>
+            {displayBurger && <BurgerMenu />}
+            <Logo userId={userId} />
+            <HeaderInfo userId={userId} />
+            <button className='btn btn-dark col-auto' onClick={handleLogout}>Logout</button>
+        </header>
     );
 }
 

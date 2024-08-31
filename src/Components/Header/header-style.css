@@ -1,5 +1,6 @@
-.header {
+header {
     text-align: center;
+    gap: 1rem
 }
 
 .main-header {
@@ -8,8 +9,8 @@
 }
 
 .logo-wrapper {
-    float: left;
-    margin-left: 10%;
+    /* float: left;
+    margin-left: 10%; */
     align-items: center;
 
 }

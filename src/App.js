@@ -58,12 +58,12 @@ const Layout = () => {
     <>
       {/* Header section */}
       {HeaderComponent && displayHeaderFooter && (
-        <div className="header">
+        <>
           <Header />
           {/* Helmet is used for managing the document head, like setting the page title dynamically */}
           <Helmet className="helmet">
           </Helmet>
-        </div>
+        </>
       )}
       {/* Main wrapper for the content and navigation */}
       <main className="row container-fluid m-0 p-0">

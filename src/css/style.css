@@ -15,14 +15,6 @@ body, */
     padding-right: 0;
 }
 
-.col{
-    padding-left: 2%;
-    margin-top: 3%;
-    padding-right: 0;
-}
-.row{
-    padding-right: 0;
-}
 .helmet {
     transition: width 2s, height 4s;
 }
