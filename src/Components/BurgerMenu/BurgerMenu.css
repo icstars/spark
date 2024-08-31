@@ -40,9 +40,6 @@
     display: none;
     align-items: center;
     position: absolute;
-    top: 33px;
-    left: 0;
-    right: 0;
     background-color: #f8f8f8;
     border: 1px solid #ddd;
     padding: 10px 0;
@@ -67,7 +64,7 @@
   }
   
   .burger-menu-icon{
-    
+    width: 1.5rem;
   }
   .menu a {
     display: flex;

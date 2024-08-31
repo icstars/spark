@@ -20,7 +20,7 @@ const isAdmin = localStorage.getItem("isAdmin") === "true";
   };
 
   return (
-    <div className="burger-menu col-auto">
+    <div className="burger-menu col-auto p-0">
       <div className={`burger-icon ${isOpen ? 'open' : ''}`} onClick={toggleMenu}>
         <div className="line1"></div>
         <div className="line2"></div>
@@ -32,7 +32,8 @@ const isAdmin = localStorage.getItem("isAdmin") === "true";
 
             <li>
               <Link to={`/home/${userId}`}>
-                <img className="burger-menu-icon" src={profile_icon} />Home
+                <img className="burger-menu-icon" src={profile_icon} />
+                <p className='m-0 ps-2'>Home</p>
               </Link>
             </li>
 
@@ -41,7 +42,8 @@ const isAdmin = localStorage.getItem("isAdmin") === "true";
 
             <li>
               <Link to="/DepMetrics">
-                <img className="burger-menu-icon" src={metrics_icon} />Metrics
+                <img className="burger-menu-icon" src={metrics_icon} />
+                <p className='m-0 ps-2'>Metrics</p>
               </Link>
             </li>
 
@@ -50,7 +52,8 @@ const isAdmin = localStorage.getItem("isAdmin") === "true";
 
             <li>
               <Link to="/People">
-                <img className="burger-menu-icon" src={people_icon} />People
+                <img className="burger-menu-icon" src={people_icon} />
+                <p className='m-0 ps-2'>People</p>
               </Link>
             </li>
 
