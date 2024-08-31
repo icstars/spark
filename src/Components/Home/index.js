@@ -77,7 +77,6 @@ function Home() {
 
       <div className='container'>
         <div className="row">
-          {/* Левая секция: занимает 85% */}
           <div className="col-10">
             <h1>Dashboard</h1>
             {!isTheSamePerson && ( // Проверка перед рендерингом ProfileInfo

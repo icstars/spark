@@ -2,6 +2,8 @@ using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using spark.Models;
 using BCrypt.Net; // Correct reference to BCrypt
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,19 @@ builder.Services.AddDbContext<SparkDb>(options =>
 
 builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
     options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/login";
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Consider SecurePolicy to always if using HTTPS
+        options.Cookie.SameSite = SameSiteMode.Strict;
+        options.Cookie.Name = "MyAppCookie";
+        options.ExpireTimeSpan = TimeSpan.FromHours(1); // Session expiration time
+        options.SlidingExpiration = true; // Sliding expiration to extend session activity
+    });
+
 
 var myPolicy = "mypolicy";
 
