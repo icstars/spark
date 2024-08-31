@@ -7,7 +7,7 @@ import Home from './Components/Home';
 import Header from './Components/Header/';
 import Footer from './Components/Footer';
 import NavMenu from './Components/NavMenu';
-import PageDepDashboard from './Components/RightPanel/PageDepDashboard';
+import DepSidebar from './Components/DepSidebar';
 import DepMetrics from './Components/DepMetrics';
 import People from './Components/People';
 import Login from './Components/Login';
@@ -28,7 +28,7 @@ const Layout = () => {
   // Object mapping routes to their corresponding RightPanel components.
   const rightPanelComponents = {
     // '/home/:id': <PageHome/>,
-    '/DepMetrics': <PageDepDashboard />
+    '/DepMetrics': <DepSidebar />
   };
   const headerComponent = {
     '/Header': <Header />

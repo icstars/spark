@@ -1,8 +1,6 @@
 import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
 
-import '../right-panel-style.css';
-
 function PageHome({ user, userId, isEvaluationExists }) {
     const [isRoleAdmin, setIsRoleAdmin] = useState(false);
 

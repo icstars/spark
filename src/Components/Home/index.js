@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from "react-router-dom";
 import axios from 'axios';
-import PageHome from '../RightPanel/PageHome';
+import HomeSidebar from '../HomeSidebar';
 import Overview from '../Overview';
 import LineChart from '../Charts/LineChart';
 import BarChart from '../Charts/BarChart';
@@ -100,7 +100,7 @@ function Home() {
 
           {/* Правая секция: занимает 15% */}
           <div className="col-2 custom-margin">
-            <PageHome user={user} userId={id} isEvaluationExists={isEvaluationExists} />
+            <HomeSidebar user={user} userId={id} isEvaluationExists={isEvaluationExists} />
           </div>
         </div>
       </div>
