@@ -7,6 +7,14 @@ import BurgerMenu from '../BurgerMenu';
 import HeaderInfo from '../HeaderInfo';
 import './header-style.css';
 
+function Logo({ userId }) {
+    return (
+        <Link className='col-auto' to={`/home/${userId}`}>
+            <img className="logo-icon" src={logo_icon} alt="logo-img"></img>
+        </Link>
+    )
+}
+
 function Header() {
     const userId = localStorage.getItem('userId');
     const navigate = useNavigate();
@@ -26,22 +34,12 @@ function Header() {
     const displayBurger = location.pathname.includes('/Eval');
 
     return (
-        <div className="main-header">
-            <div className="logo-wrapper">
-                {displayBurger && <BurgerMenu />}
-                <Link className='nav-text' to={`/home/${userId}`}>
-                    <img className="logo-icon" src={logo_icon} alt="logo-img"></img>
-                </Link>
-            </div>
-            <div className="header-logout-element">
-                <div className='header-block'>
-                    <HeaderInfo userId={userId} />
-                </div>
-                <button className='btn btn-dark' onClick={handleLogout}>Logout</button>
-            </div>
-            <nav className="main-nav">
-            </nav>
-        </div>
+        <header className='row align-items-center'>
+            {displayBurger && <BurgerMenu />}
+            <Logo userId={userId} />
+            <HeaderInfo userId={userId} />
+            <button className='btn btn-dark col-auto' onClick={handleLogout}>Logout</button>
+        </header>
     );
 }
 

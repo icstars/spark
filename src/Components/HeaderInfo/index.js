@@ -38,13 +38,12 @@ function HeaderInfo({ userId, altText }) {
   }, [userId]);
 
   return (
-    <div className="header-info">
+    <div className='col-auto row align-items-center'>
       {!error && (
-        <div className="header-name">
-          <p className="name-block">{firstName}</p>
-        </div>
+        <p className='col-auto m-0'>{firstName}</p>
       )}
       <img
+      className='col-auto'
         src={profileImageUrl || profile_icon}
         alt={altText || `${firstName} ${lastName}`}
         style={{ width: '75px', height: '75px', borderRadius: '50%' }}

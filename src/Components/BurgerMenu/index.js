@@ -20,7 +20,7 @@ const isAdmin = localStorage.getItem("isAdmin") === "true";
   };
 
   return (
-    <div className="burger-menu">
+    <div className="burger-menu col-auto">
       <div className={`burger-icon ${isOpen ? 'open' : ''}`} onClick={toggleMenu}>
         <div className="line1"></div>
         <div className="line2"></div>
