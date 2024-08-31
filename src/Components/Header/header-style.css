@@ -1,5 +1,6 @@
-.header {
+header {
     text-align: center;
+    gap: 1rem
 }
 
 .main-header {

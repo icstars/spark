@@ -38,17 +38,18 @@ function HeaderInfo({ userId, altText }) {
   }, [userId]);
 
   return (
-    <div className='col-auto row align-items-center'>
+    // <div className='col-auto row align-items-center m-0 ms-auto'></div>
+    <>
       {!error && (
-        <p className='col-auto m-0'>{firstName}</p>
+        <p className='col-auto m-0 p-0 ms-auto'>{firstName}</p>
       )}
       <img
-      className='col-auto'
+      className='col-auto p-0 img-thumbnail'
         src={profileImageUrl || profile_icon}
         alt={altText || `${firstName} ${lastName}`}
-        style={{ width: '75px', height: '75px', borderRadius: '50%' }}
+        style={{ width: '75px', height: 'auto', borderRadius: '50%' }}
       />
-    </div>
+    </>
   );
 }
 

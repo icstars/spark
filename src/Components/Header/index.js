@@ -9,7 +9,7 @@ import './header-style.css';
 
 function Logo({ userId }) {
     return (
-        <Link className='col-auto' to={`/home/${userId}`}>
+        <Link className='col-auto p-0' to={`/home/${userId}`}>
             <img className="logo-icon" src={logo_icon} alt="logo-img"></img>
         </Link>
     )
@@ -31,10 +31,10 @@ function Header() {
     }
 
     // Use the correct method to check if the pathname includes '/Eval'
-    const displayBurger = location.pathname.includes('/Eval');
+    const displayBurger = location.pathname.includes('/Eval') ||  location.pathname.includes('/View');
 
     return (
-        <header className='row align-items-center'>
+        <header className='row align-items-center m-0 px-4'>
             {displayBurger && <BurgerMenu />}
             <Logo userId={userId} />
             <HeaderInfo userId={userId} />
