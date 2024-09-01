@@ -28,7 +28,7 @@ const Layout = () => {
   // Object mapping routes to their corresponding RightPanel components.
   const rightPanelComponents = {
     // '/home/:id': <PageHome/>,
-    '/DepMetrics': <PageDepDashboard />
+    // '/DepMetrics': <PageDepDashboard />
   };
   const headerComponent = {
     '/Header': <Header />

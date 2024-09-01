@@ -2,6 +2,8 @@ using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using spark.Models;
 using BCrypt.Net; // Correct reference to BCrypt
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,19 @@ builder.Services.AddDbContext<SparkDb>(options =>
 
 builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
     options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/login";
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Consider SecurePolicy to always if using HTTPS
+        options.Cookie.SameSite = SameSiteMode.Strict;
+        options.Cookie.Name = "MyAppCookie";
+        options.ExpireTimeSpan = TimeSpan.FromHours(1); // Session expiration time
+        options.SlidingExpiration = true; // Sliding expiration to extend session activity
+    });
+
 
 var myPolicy = "mypolicy";
 
@@ -58,6 +73,20 @@ app.MapPost("/login", async (User employee, SparkDb db) =>
         bool isAdmin = user.is_admin;
         bool isManager = await db.user.AnyAsync(u => u.manager_id == user.id);
 
+        if (isAdmin)
+        {
+            isManager = false;  // Set isManager to false
+
+            // Return the appropriate JSON response
+            return Results.Json(new
+            {
+                success = true,
+                id = user.id,
+                username = user.username,
+                isAdmin = isAdmin,
+                isManager = isManager
+            });
+        }
         return Results.Json(new
         {
             success = true,
@@ -543,7 +572,7 @@ app.MapGet("/manager-user-scores/{managerId}", async (int managerId, SparkDb _co
             return Results.NotFound(new { message = "No evaluations found for the manager's users." });
         }
 
-        // Create a response with user names and scores by topic
+        // Create a response with user names, scores by topic, and total score
         var userScores = evaluations
             .SelectMany(ef => ef.EvaluationOptions, (ef, eo) => new
             {
@@ -563,7 +592,9 @@ app.MapGet("/manager-user-scores/{managerId}", async (int managerId, SparkDb _co
                 {
                     TopicId = ug.TopicId,
                     Score = ug.Score
-                }).ToList()
+                }).ToList(),
+                // Calculate the total score by summing the scores for each user
+                TotalScore = userGroup.Sum(ug => ug.Score)
             })
             .ToList();
 
@@ -575,58 +606,6 @@ app.MapGet("/manager-user-scores/{managerId}", async (int managerId, SparkDb _co
         Console.WriteLine($"Error fetching user scores: {ex.Message}");
         return Results.Problem("An error occurred while processing the request.");
     }
-});
-
-
-//////////////////////
-
-app.MapGet("/employees/admins", async (SparkDb db) =>
-    await db.user.Where(t => t.is_admin).ToListAsync());
-
-app.MapGet("/employees/{id}", async (int id, SparkDb db) =>
-    await db.user.FindAsync(id)
-        is spark.Models.User employee
-            ? Results.Ok(employee)
-            : Results.NotFound());
-
-
-
-app.MapPut("/users/{id}", async (int id, spark.Models.User editEmployee, SparkDb db) =>
-{
-    // Find the existing employee in the database
-    var employee = await db.user.FindAsync(id);
-
-    // If employee not found, return 404 Not Found
-    if (employee is null) return Results.NotFound();
-
-    // Optional: Add validation for the incoming editEmployee data
-    if (editEmployee == null) return Results.BadRequest("Invalid data.");
-
-    // Update fields if they are provided
-    if (!string.IsNullOrEmpty(editEmployee.firstname))
-        employee.firstname = editEmployee.firstname;
-
-    if (!string.IsNullOrEmpty(editEmployee.lastname))
-        employee.lastname = editEmployee.lastname;
-
-    if (!string.IsNullOrEmpty(editEmployee.email))
-        employee.email = editEmployee.email;
-
-    if (!string.IsNullOrEmpty(editEmployee.company_role))
-        employee.company_role = editEmployee.company_role;
-
-
-    employee.department_id = editEmployee.department_id;
-    employee.hired_date = editEmployee.hired_date;
-
-    // Optional: Handle updating the image, password, or other fields if needed
-    // Example: if (editEmployee.ProfileImage != null) { ... }
-
-    // Save changes to the database
-    await db.SaveChangesAsync();
-
-    // Optionally, return the updated resource
-    return Results.NoContent(); // or Results.Ok(employee) if you want to return the updated resource
 });
 
 app.MapPut("/edit/{id}", async (HttpRequest request, int id, SparkDb db) =>
