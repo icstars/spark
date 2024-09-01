@@ -7,7 +7,7 @@
   /* Enable positioning of the button */
 }
 
-.evaluation-view{
+.evaluation-view {
   width: 100%;
 }
 
@@ -16,13 +16,14 @@
   left: 10%;
 } */
 
+
 .h1-evaluation-container {
   text-align: center;
   flex: 1;
   /* Allow the h1 container to take up remaining space */
 }
 
-.return-button{
+.return-button {
   display: flex;
   align-items: center;
 }
@@ -65,18 +66,21 @@
   width: 99%;
   margin-top: 25px;
 
- 
+
 }
 
 .wrapper-element {
- 
+
   position: relative;
   box-shadow: 2px 2px 5px gray;
   margin: 5px;
   border-radius: 3%;
-  padding: 20px; /* Уменьшил padding, чтобы текст не выглядел слишком далеко от границ */
-  height: 200px; /* Задал фиксированную высоту для всех элементов */
-  max-width: 300px; /* Можно задать максимальную ширину, чтобы избежать слишком широких элементов */
+  padding: 20px;
+  /* Уменьшил padding, чтобы текст не выглядел слишком далеко от границ */
+  height: 200px;
+  /* Задал фиксированную высоту для всех элементов */
+  max-width: 300px;
+  /* Можно задать максимальную ширину, чтобы избежать слишком широких элементов */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -87,11 +91,28 @@
   background-color: rgb(203, 203, 203);
 }
 
+.cat-comment-review {
+  margin: 0 auto;
+  margin-top: 3%;
+  margin-bottom: 3%;
+  width: 99%;
+  min-height: 150px;
+  height: auto;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 4px solid #a0a0a0;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  font-size: 16px;
+  resize: none;
+}
+
 .comment-review {
   margin: 0 auto;
   margin-top: 2%;
   width: 95%;
-  height: 150px;
+  min-height: 150px;
+  height: auto;
   padding: 12px 20px;
   box-sizing: border-box;
   border: 2px solid #ccc;
