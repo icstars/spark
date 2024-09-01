@@ -56,14 +56,17 @@ export default function LineChart({ scores }) {
 };
   // Gradient background
   
-
+  const roundToHalf = (num) => {
+    return Math.round(num * 2) / 2;
+};
+const roundedScores = scores.map(score => roundToHalf(score));
   // Data for the chart
   const data = {
     labels: Object.keys(topicNameMap),
     datasets: [
       {
         label: "Points",
-        data: scores,  // Use the scores prop for the data points
+        data: roundedScores,  // Use the scores prop for the data points
         fill: true,
         backgroundColor: (context) => {
           const { chart } = context;

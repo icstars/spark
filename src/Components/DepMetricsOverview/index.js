@@ -43,6 +43,11 @@ const categoryTopicMap = {
     5: [18, 19, 20, 21, 22] // Knowledge Application and Problem Solving Comments topics
 };
 
+// Utility function to round score to nearest 0.5
+const roundToHalf = (num) => {
+    return Math.round(num * 2) / 2;
+};
+
 // Component to display individual topic scores
 function TopicScore({ topicId, score, userScores }) {
     const topicName = topicNameMap[topicId] || `Topic ${topicId}`;
@@ -50,7 +55,7 @@ function TopicScore({ topicId, score, userScores }) {
     const dropdownRef = useRef(null);
     const triggerRef = useRef(null); // Reference to the element triggering the dropdown
     const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
-    // Toggle dropdown visibility
+
     // Toggle dropdown visibility
     const toggleDropdown = () => {
         setDropdownVisible((prev) => !prev);
@@ -79,7 +84,7 @@ function TopicScore({ topicId, score, userScores }) {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
-    
+
     return (
         <div className="row">
             <p
@@ -90,7 +95,7 @@ function TopicScore({ topicId, score, userScores }) {
             >
                 {topicName}
             </p>
-            <p className="col text-end fw-bold">{score}</p>
+            <p className="col text-end fw-bold">{roundToHalf(score)}</p> {/* Round the score */}
 
             {isDropdownVisible && (
                 <div
@@ -106,26 +111,22 @@ function TopicScore({ topicId, score, userScores }) {
                     onMouseLeave={handleMouseLeave}
                 >
                     {userScores.length > 0 ? (
-
                         userScores.map((userScore, index) => (
                             <div key={index} className="dropdown-item">
-                                {userScore.userName} {userScore.userLastName}: {userScore.score}
-
+                                {userScore.userName} {userScore.userLastName}: {roundToHalf(userScore.score)} {/* Round user scores */}
                             </div>
                         ))
                     ) : (
                         <div className="dropdown-item">No scores available</div>
-
                     )}
                 </div>
-
             )}
         </div>
     );
 }
+
 // Component to display a category and its topics
 function CategoryOverview({ categoryId, topics = [], totalScore, userScoresByTopic }) {
-
     const categoryName = categoryNameMap[categoryId] || `Category ${categoryId}`;
     const categoryTopics = categoryTopicMap[categoryId] || [];
 
@@ -133,36 +134,33 @@ function CategoryOverview({ categoryId, topics = [], totalScore, userScoresByTop
         <div className="col-6 flex-column justify-content-start text-start">
             <div className="row border-bottom">
                 <p className="h5 col-auto pb-1">{categoryName}</p>
-                <p className="h5 col text-end">{totalScore}</p>
+                <p className="h5 col text-end">{roundToHalf(totalScore)}</p> {/* Round total score */}
             </div>
             <div>
                 {categoryTopics.map((topicId, index) => {
                     const topic = topics.find(t => t.topic_id === topicId);
-                    const userScores = userScoresByTopic[topicId] || []; // Получаем оценки пользователей для этой темы
+                    const userScores = userScoresByTopic[topicId] || []; // Get user scores for this topic
                     if (topic) {
                         return <TopicScore key={index} topicId={topic.topic_id} score={topic.average_score} userScores={userScores} />;
                     }
-                    return <TopicScore key={index} topicId={topicId} score={0} userScores={userScores} />; // Placeholder для отсутствующих тем
+                    return <TopicScore key={index} topicId={topicId} score={0} userScores={userScores} />; // Placeholder for missing topics
                 })}
             </div>
         </div>
     );
 }
 
-
 // Main Overview component to render all categories
-export default function DepMetricsOverview({ categories = [], userScoresByTopic = {} }) { // Добавляем userScoresByTopic как пропс
-    
+export default function DepMetricsOverview({ categories = [], userScoresByTopic = {} }) {
     return (
         <div className="row gx-5 gy-3">
             {categories.map(category => (
                 <CategoryOverview
-                    key={category.category_id} // Используем category_id из ответа API
-                    categoryId={category.category_id} // Передаем category_id
-                    topics={category.topics || []} // Передаем массив тем
-                    totalScore={category.total_score || 0} // Передаем общий балл
-                    userScoresByTopic={userScoresByTopic} // Передаем оценки пользователей по темам
-                    
+                    key={category.category_id} // Use category_id from API response
+                    categoryId={category.category_id} // Pass category_id
+                    topics={category.topics || []} // Pass topics array
+                    totalScore={category.total_score || 0} // Pass total score
+                    userScoresByTopic={userScoresByTopic} // Pass user scores by topic
                 />
             ))}
         </div>
