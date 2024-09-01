@@ -22,28 +22,15 @@ function DepMetrics() {
     }
 
     axios.get(`http://localhost:5212/manager-user-scores/${id}`)
-      .then(response => {
-        const userScores = response.data;
-        const scoresByTopic = {};
-
-        userScores.forEach(user => {
-          user.topics.forEach(topic => {
-            if (!scoresByTopic[topic.topicId]) {
-              scoresByTopic[topic.topicId] = [];
-            }
-            scoresByTopic[topic.topicId].push({
-              userName: user.userName,
-              userLastName: user.userLastName,
-              score: topic.score
-            });
-          });
-        });
-
-        setUserScoresByTopic(scoresByTopic);
-      })
-      .catch(error => {
-        setError('Failed to get manager scores data');
-      });
+    .then(response => {
+      const userScores = response.data;
+      
+      // Если `userScores` — массив
+      setUserScoresByTopic(userScores || []);
+    })
+    .catch(error => {
+      setError('Failed to get manager scores data');
+    });
 
     axios.get(`http://localhost:5212/department-scores/${id}`)
       .then(response => {
@@ -87,7 +74,7 @@ function DepMetrics() {
           {error && <p className="text-danger">{error}</p>}
         </div>
         <div className="col-2 custom-margin">
-          <PageDepDashboard categories={categories} />
+          <PageDepDashboard categories={categories} userScoresByTopic={userScoresByTopic}/>
         </div>
       </div>
     </div>
