@@ -136,7 +136,7 @@ const roundedScores = scores.map(score => roundToHalf(score));
   };
 
   return (
-    <div className="LineChart" style={{ height: "400px" }}>  {/* Adjust the height */}
+    <div className="Chart"> 
       <Line data={data} options={options} />
     </div>
   );
