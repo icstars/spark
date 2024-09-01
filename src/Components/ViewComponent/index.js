@@ -432,10 +432,20 @@ function ViewComponent() {
           <img className="return-button-icon" src={return_icon} alt="Return" />Return
         </button>
       </div>
-      <div key={evaluationData.manager_id}>
-        <p>Manager ID: {manager.firstname} {manager.lastname}</p>
-        <p>Created: {new Date(evaluationData.created).toLocaleString()}</p>
+      <div className="card  mb-3" key={evaluationData.manager_id} style={{ maxWidth: '400px', margin: 'auto' }}>
+        <div className="card-header border-bottom-0">
+          <h5 className="card-title mb-0">Manager Information</h5>
+        </div>
+        <div className="card-body">
+          <p className="mb-2">
+            <strong>Name:</strong> {manager.firstname} {manager.lastname}
+          </p>
+          <p className="mb-0">
+            <strong>Review date:</strong> {new Date(evaluationData.created).toLocaleDateString()}
+          </p>
+        </div>
       </div>
+
       {evaluationData.categoryComments && evaluationData.categoryComments.length > 0 ? (
         evaluationData.categoryComments.map(comment => (
           <div key={comment.id} >
@@ -465,7 +475,7 @@ function ViewComponent() {
             ) : (
               <p>No Evaluation Options available.</p>
             )}
-            <p><strong>Comment:</strong> {comment.comment || 'No comment provided'}</p>
+            <p className='cat-comment-review'><strong>Category comment:</strong> {comment.comment || 'No comment provided'}</p>
           </div>
         ))
       ) : (

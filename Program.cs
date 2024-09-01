@@ -481,34 +481,45 @@ app.MapGet("/department-scores/{managerId}", async (int managerId, SparkDb _cont
 {
     try
     {
-        // Fetch all users under the specified manager
-        var users = await _context.user
-          .Where(u => u.manager_id == managerId && u.id != 1)
-            .ToListAsync();
+        List<User> users;
 
-        // If no users are found, return a 404 Not Found
+        if (managerId == 1)
+        {
+            // Администратор (id = 1) — выбираем всех пользователей, кроме пользователя с id = 1
+            users = await _context.user
+                .Where(u => u.id != 1) // Исключаем администратора
+                .ToListAsync();
+        }
+        else
+        {
+            // Менеджер — выбираем только тех пользователей, у которых manager_id соответствует managerId
+            users = await _context.user
+                .Where(u => u.manager_id == managerId) // Выбираем пользователей под управлением этого менеджера
+                .ToListAsync();
+        }
+        // Если пользователи не найдены, возвращаем 404 Not Found
         if (users == null || !users.Any())
         {
             return Results.NotFound(new { message = "No users found for the manager." });
         }
 
-        // Extract user IDs
+        // Получаем id всех пользователей
         var userIds = users.Select(u => u.id).ToList();
 
-        // Retrieve evaluation forms for the found users
+        // Извлекаем формы оценки для найденных пользователей
         var evaluations = await _context.evaluation_form
             .Include(ef => ef.EvaluationOptions)
                 .ThenInclude(eo => eo.Topic)
             .Where(ef => userIds.Contains(ef.user_id))
             .ToListAsync();
 
-        // If no evaluations are found, return a 404 Not Found
+        // Если оценки не найдены, возвращаем 404 Not Found
         if (evaluations == null || !evaluations.Any())
         {
             return Results.NotFound(new { message = "No evaluations found for the manager's users." });
         }
 
-        // Group the evaluation options by category and then by topic
+        // Группируем оценки по категориям и темам
         var categoryScores = evaluations
             .SelectMany(ef => ef.EvaluationOptions)
             .GroupBy(eo => eo.Topic.category_id)
@@ -524,7 +535,7 @@ app.MapGet("/department-scores/{managerId}", async (int managerId, SparkDb _cont
                 total_score = categoryGroup.Sum(eo => eo.score)
             }).ToList();
 
-        // Construct response object
+        // Формируем ответ
         var response = new
         {
             managerId = managerId,
@@ -535,21 +546,34 @@ app.MapGet("/department-scores/{managerId}", async (int managerId, SparkDb _cont
     }
     catch (Exception ex)
     {
-        // Log the exception and return a 500 Internal Server Error
+        // Логируем исключение и возвращаем 500 Internal Server Error
         Console.WriteLine($"Error fetching manager scores: {ex.Message}");
         return Results.Problem("An error occurred while processing the request.");
     }
 });
 
+
+
 app.MapGet("/manager-user-scores/{managerId}", async (int managerId, SparkDb _context) =>
 {
     try
     {
-        // Fetch all users under the specified manager
-        var users = await _context.user
-            .Where(u => u.manager_id == managerId)
-            .ToListAsync();
+        List<User> users;
 
+        if (managerId == 1)
+        {
+            // Администратор (id = 1) — выбираем всех пользователей, кроме пользователя с id = 1
+            users = await _context.user
+                .Where(u => u.id != 1) // Исключаем администратора
+                .ToListAsync();
+        }
+        else
+        {
+            // Менеджер — выбираем только тех пользователей, у которых manager_id соответствует managerId
+            users = await _context.user
+                .Where(u => u.manager_id == managerId) // Выбираем пользователей под управлением этого менеджера
+                .ToListAsync();
+        }
         // If no users are found, return a 404 Not Found
         if (users == null || !users.Any())
         {

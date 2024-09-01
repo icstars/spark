@@ -88,7 +88,7 @@ function DepMetrics() {
 
       <div className="row">
         {/* Left Section: Main Content */}
-        <div className="col-10">
+        <div className="col-10 container-width-dashboard">
           <h1>Team's Dashboard</h1>
           {managerId ? (
             <>

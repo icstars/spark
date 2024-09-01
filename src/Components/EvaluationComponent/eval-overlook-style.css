@@ -42,6 +42,7 @@
   text-align: center;
   font-weight: bold;
   font-size: 25px;
+  margin-top: 2%;
 }
 
 .option-wrapper {
@@ -73,12 +74,13 @@
   margin: 5px;
   border-radius: 3%;
   padding: 20px; /* Уменьшил padding, чтобы текст не выглядел слишком далеко от границ */
-  height: 200px; /* Задал фиксированную высоту для всех элементов */
+  height: auto; /* Задал фиксированную высоту для всех элементов */
   max-width: 300px; /* Можно задать максимальную ширину, чтобы избежать слишком широких элементов */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
+  min-height: 200px;
 }
 
 .wrapper-element:hover {
@@ -97,9 +99,10 @@
   box-shadow: 2px 2px 5px gray;
   margin: 5px;
   border-radius: 3%;
-  padding: 20px; /* Уменьшил padding, чтобы текст не выглядел слишком далеко от границ */
-  height: 200px; /* Задал фиксированную высоту для всех элементов */
-  max-width: 300px; /* Можно задать максимальную ширину, чтобы избежать слишком широких элементов */
+  padding: 20px; 
+  min-height: 200px; 
+  height: auto;
+  max-width: 300px; 
   display: flex;
   flex-direction: column;
   justify-content: flex-start;

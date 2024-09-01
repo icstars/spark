@@ -92,7 +92,7 @@ export default function BarChart({ categories }) {
   };
 
   return (
-    <div className="BarChart" style={{ height: "400px" }}>  {/* Adjust the height */}
+    <div className="Chart"> 
       <Bar data={data} options={options} />
     </div>
   );
