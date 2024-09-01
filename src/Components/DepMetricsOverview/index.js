@@ -79,7 +79,7 @@ function TopicScore({ topicId, score, userScores }) {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
-
+    
     return (
         <div className="row">
             <p
@@ -106,21 +106,26 @@ function TopicScore({ topicId, score, userScores }) {
                     onMouseLeave={handleMouseLeave}
                 >
                     {userScores.length > 0 ? (
+
                         userScores.map((userScore, index) => (
                             <div key={index} className="dropdown-item">
                                 {userScore.userName} {userScore.userLastName}: {userScore.score}
+
                             </div>
                         ))
                     ) : (
                         <div className="dropdown-item">No scores available</div>
+
                     )}
                 </div>
+
             )}
         </div>
     );
 }
 // Component to display a category and its topics
 function CategoryOverview({ categoryId, topics = [], totalScore, userScoresByTopic }) {
+
     const categoryName = categoryNameMap[categoryId] || `Category ${categoryId}`;
     const categoryTopics = categoryTopicMap[categoryId] || [];
 
@@ -147,6 +152,7 @@ function CategoryOverview({ categoryId, topics = [], totalScore, userScoresByTop
 
 // Main Overview component to render all categories
 export default function DepMetricsOverview({ categories = [], userScoresByTopic = {} }) { // Добавляем userScoresByTopic как пропс
+    
     return (
         <div className="row gx-5 gy-3">
             {categories.map(category => (
@@ -156,6 +162,7 @@ export default function DepMetricsOverview({ categories = [], userScoresByTopic 
                     topics={category.topics || []} // Передаем массив тем
                     totalScore={category.total_score || 0} // Передаем общий балл
                     userScoresByTopic={userScoresByTopic} // Передаем оценки пользователей по темам
+                    
                 />
             ))}
         </div>

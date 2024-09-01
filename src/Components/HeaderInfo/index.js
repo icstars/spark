@@ -47,7 +47,7 @@ function HeaderInfo({ userId, altText }) {
       className='col-auto p-0 img-thumbnail'
         src={profileImageUrl || profile_icon}
         alt={altText || `${firstName} ${lastName}`}
-        style={{ width: '75px', height: 'auto', borderRadius: '50%' }}
+        style={{ width: '75px', height: '75px', borderRadius: '50%' }}
       />
     </>
   );
