@@ -28,7 +28,7 @@ const Layout = () => {
   // Object mapping routes to their corresponding RightPanel components.
   const rightPanelComponents = {
     // '/home/:id': <PageHome/>,
-    '/DepMetrics': <PageDepDashboard />
+    // '/DepMetrics': <PageDepDashboard />
   };
   const headerComponent = {
     '/Header': <Header />
@@ -58,12 +58,12 @@ const Layout = () => {
     <>
       {/* Header section */}
       {HeaderComponent && displayHeaderFooter && (
-        <div className="header">
+        <>
           <Header />
           {/* Helmet is used for managing the document head, like setting the page title dynamically */}
           <Helmet className="helmet">
           </Helmet>
-        </div>
+        </>
       )}
       {/* Main wrapper for the content and navigation */}
       <main className="row container-fluid m-0 p-0">
