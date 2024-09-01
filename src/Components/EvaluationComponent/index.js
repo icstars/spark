@@ -571,7 +571,7 @@ function EvaluationComponent() {
         </div>
       ))}
 
-      <button type="button" onClick={handleSubmitForm}>Submit form</button>
+      <button type="button" className='btn btn-primary btn-lg people-more-btn' onClick={handleSubmitForm}>Submit form</button>
       {/* Вывод сообщения об ошибке */}
       {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
       {/* Вывод сообщения об успешной отправке */}
