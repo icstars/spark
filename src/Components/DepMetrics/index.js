@@ -14,6 +14,7 @@ function DepMetrics() {
   const [managerId, setManagerId] = useState(null);
   const [scores, setScores] = useState(new Array(22).fill(0));
   const [userScoresByTopic, setUserScoresByTopic] = useState({});
+  const [peopleScores, setPeopleScores] = useState([]); // Для хранения данных людей с total score
 
   useEffect(() => {
     if (!id) {
@@ -21,17 +22,45 @@ function DepMetrics() {
       return;
     }
 
+    // Получение оценок пользователей по темам
     axios.get(`http://localhost:5212/manager-user-scores/${id}`)
-    .then(response => {
-      const userScores = response.data;
-      
-      // Если `userScores` — массив
-      setUserScoresByTopic(userScores || []);
-    })
-    .catch(error => {
-      setError('Failed to get manager scores data');
-    });
+      .then(response => {
+        const userScores = response.data;
+        const scoresByTopic = {};
+        const peopleScoresData = [];
 
+        userScores.forEach(user => {
+          let totalScore = 0;
+
+          user.topics.forEach(topic => {
+            totalScore += topic.score;
+
+            if (!scoresByTopic[topic.topicId]) {
+              scoresByTopic[topic.topicId] = [];
+            }
+            scoresByTopic[topic.topicId].push({
+              userName: user.userName,
+              userLastName: user.userLastName,
+              score: topic.score
+            });
+          });
+
+          // Добавляем пользователя и его общий балл в peopleScoresData
+          peopleScoresData.push({
+            userId: user.userId,
+            userName: user.userName,
+            totalScore: totalScore
+          });
+        });
+
+        setUserScoresByTopic(scoresByTopic);
+        setPeopleScores(peopleScoresData); // Устанавливаем данные людей с total score
+      })
+      .catch(error => {
+        setError('Failed to get manager scores data');
+      });
+
+    // Получение данных по категориям
     axios.get(`http://localhost:5212/department-scores/${id}`)
       .then(response => {
         const { categories, managerId } = response.data;
@@ -66,7 +95,6 @@ function DepMetrics() {
               <LineChart scores={scores} /> {/* Pass scores as a prop */}
               <BarChart categories={categories} />
               <DepMetricsOverview categories={categories} userScoresByTopic={userScoresByTopic} />
-
             </>
           ) : (
             <p>Loading...</p>
@@ -74,7 +102,7 @@ function DepMetrics() {
           {error && <p className="text-danger">{error}</p>}
         </div>
         <div className="col-2 custom-margin">
-          <PageDepDashboard categories={categories} userScoresByTopic={userScoresByTopic}/>
+          <PageDepDashboard categories={categories} userScoresByTopic={peopleScores} /> {/* Передаем peopleScores */}
         </div>
       </div>
     </div>
