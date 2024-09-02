@@ -36,7 +36,7 @@ function Header() {
     return (
         <>
         
-            <header className='row align-items-center m-0 position-fixed w-100 bg-white pb-1 px-4'>
+            <header style={{zIndex: 99}} className='row align-items-center m-0 position-fixed w-100 bg-white pb-1 px-4 shadow-sm'>
                 {displayBurger && <BurgerMenu />}
                 <Logo userId={userId} />
                 <HeaderInfo userId={userId} />
