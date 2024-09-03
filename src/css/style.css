@@ -117,6 +117,9 @@ ul > h3 {
 .right-panel {
     width: 20%;
 }
+.status-message{
+    text-align: center;
+}
 
 /* .right-panel-view-evaluation-button {
     float: right;
@@ -152,3 +155,6 @@ ul > h3 {
 } 
 /*|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| */
 
+.form-margin{
+    margin-right: 18%;
+}

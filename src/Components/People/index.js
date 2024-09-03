@@ -324,11 +324,14 @@ function People() {
             <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
             {isAdmin === 'true' && (
                 <div className='button-wrapper'>
-
-                    <Link to="/Add" className='btn btn-dark'>
-                        Add User
-                    </Link>
-
+                    <div className='left-button-container'>
+                        <Link to="/Add" className='btn btn-dark'>
+                            Add User
+                        </Link>
+                        <Link to="/AddDepartment" className='btn btn-dark add-department-btn'>
+                            Add Department
+                        </Link>
+                    </div>
 
                     <button
                         onClick={handleDeleteSelectedClick}
@@ -472,8 +475,8 @@ function People() {
                             <td className="td-action-b">
                                 {editUserId === p.id ? (
                                     <>
-                                        <button  className='edit-field' onClick={handleSaveClick}>Save</button>
-                                        <button  className='edit-field' onClick={handleCancelClick}>Cancel</button>
+                                        <button className='edit-field' onClick={handleSaveClick}>Save</button>
+                                        <button className='edit-field' onClick={handleCancelClick}>Cancel</button>
                                     </>
                                 ) : (
                                     <div className="ellipsis-container">
