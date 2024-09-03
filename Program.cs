@@ -103,6 +103,16 @@ app.MapPost("/login", async (User employee, SparkDb db) =>
     }
 });
 
+
+app.MapPost("/departments", async (spark.Models.Department dep, SparkDb db) =>
+{
+    db.department.Add(dep);
+    await db.SaveChangesAsync();
+
+    return Results.Created($"/departments/{dep.id}", dep);
+});
+
+
 app.MapGet("/topic", async (SparkDb db) =>
     await db.topic
     .ToListAsync());
@@ -502,6 +512,7 @@ app.MapDelete("/employees/{id}", async (int id, SparkDb db) =>
         }
     }
 });
+
 
 app.MapGet("/department-scores/{managerId}", async (int managerId, SparkDb _context) =>
 {

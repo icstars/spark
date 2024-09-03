@@ -100,9 +100,9 @@ const EditUser = () => {
     }
 
     return (
-        <div className="container mt-5 " >
+        <div className="container mt-5" >
            
-            <form onSubmit={handleSubmit} encType="multipart/form-data">
+            <form className='form-margin' onSubmit={handleSubmit} encType="multipart/form-data">
             
                 <ul className="list-group">
                 <h2 className="mb-4">Edit Employee</h2>
