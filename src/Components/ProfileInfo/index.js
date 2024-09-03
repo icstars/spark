@@ -41,9 +41,8 @@ function ProfileInfo({ userId, altText }) {
 
   return (
     <div>
-      <img
+      <img  className='col-auto p-0 img-thumbnail'
         src={profileImageUrl || profile_icon} // Use fetched image or fallback
-        alt={altText || `${firstName} ${lastName}`}
         style={{ width: '100px', height: '100px', borderRadius: '50%' }}
       />
       {error && <p>{error}</p>}

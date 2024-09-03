@@ -26,7 +26,7 @@ function People() {
     const [deleteSelected, setDeleteSelected] = useState([]); // State for storing selected users for deletion
 
     const currentUserId = parseInt(localStorage.getItem('userId')); // Fetch the current user ID as an integer
-    const isAdmin = localStorage.getItem('isAdmin');
+    const isAdmin = localStorage.getItem('isAdmin') ;
 
     const handleDeleteClick = (id) => {
         if (id == currentUserId) {
@@ -310,18 +310,23 @@ function People() {
             <Helmet><title>People</title></Helmet>
             {/* Компонент поиска */}
             <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-            <div className='button-wrapper'>
-                <Link to="/Add" className='btn btn-dark'>
-                    Add User
-                </Link>
-                <button
-                    onClick={handleDeleteSelectedClick}
-                    className='btn btn-danger'
-                    disabled={deleteSelected.length === 0} // Disable button if no users selected
-                >
-                    Delete Selected
-                </button>
-            </div>
+            {isAdmin === 'true' && (
+                <div className='button-wrapper'>
+
+                    <Link to="/Add" className='btn btn-dark'>
+                        Add User
+                    </Link>
+
+
+                    <button
+                        onClick={handleDeleteSelectedClick}
+                        className='btn btn-danger'
+                        disabled={deleteSelected.length === 0} // Disable button if no users selected
+                    >
+                        Delete Selected
+                    </button>
+                </div>
+            )}
             <table className="people-container">
                 <thead>
                     <tr>

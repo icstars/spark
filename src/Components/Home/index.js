@@ -8,6 +8,7 @@ import LineChart from '../Charts/LineChart';
 import BarChart from '../Charts/BarChart';
 import ProfileInfo from '../ProfileInfo';
 import profile_icon from '../People/img/profile.png';
+import NoData from '../img/no-data.svg'
 import './Home.css';
 
 function Home() {
@@ -82,7 +83,6 @@ function Home() {
             {!isTheSamePerson && ( // Проверка перед рендерингом ProfileInfo
               <ProfileInfo
                 userId={id}
-                altText={user ? `${user.firstname} ${user.lastname}` : "Default Avatar"}
               />
             )}
             {user ? (
@@ -93,7 +93,13 @@ function Home() {
                 <Overview categories={categories} />
               </>
             ) : (
-              <p>Data is not available right now</p>
+              <div className='no-data'>
+                <p>Data is not available right now</p>
+                <div className='data'>
+                  <img src={NoData}
+                  ></img>
+                </div>
+              </div>
             )}
           </div>
 
