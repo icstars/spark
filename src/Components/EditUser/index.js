@@ -22,13 +22,15 @@ const EditUser = () => {
     const [file, setFile] = useState(null);
     const [departments, setDepartments] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [errorMessage, setErrorMessage] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
 
     useEffect(() => {
         const element = document.querySelector('.custom-row-height');
         if (element) {
-          element.classList.remove('custom-row-height');
+            element.classList.remove('custom-row-height');
         }
-      }, []);
+    }, []);
 
     useEffect(() => {
         const fetchEmployee = async () => {
@@ -87,8 +89,10 @@ const EditUser = () => {
 
             if (response.status === 204) {
                 alert('Employee updated successfully!');
+                setSuccessMessage('Employee updated successfully!');
             } else {
                 alert('Failed to update employee.');
+                setErrorMessage('Failed to update employee!');
             }
         } catch (error) {
             console.error('Error updating employee:', error);
@@ -101,11 +105,11 @@ const EditUser = () => {
 
     return (
         <div className="container mt-5" >
-           
+
             <form className='form-margin' onSubmit={handleSubmit} encType="multipart/form-data">
-            
+
                 <ul className="list-group">
-                <h2 className="mb-4">Edit Employee</h2>
+                    <h2 className="mb-4">Edit Employee</h2>
                     <li className="list-group-item">
                         <label className="form-label">First Name:</label>
                         <input
@@ -243,7 +247,7 @@ const EditUser = () => {
                     <button type="submit" className="btn btn-primary mt-3">Update Employee</button>
                 </ul>
 
-               
+
             </form>
         </div>
     );

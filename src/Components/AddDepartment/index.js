@@ -42,7 +42,7 @@ function AddDepartment() {
     };
 
     return (
-        <div className="container mt-5 form-margin">
+        <div className="container mt-5">
             <form className='form-margin' onSubmit={handleSubmit}>
                 <ul className="list-group">
                     <li className="list-group-item">
@@ -54,14 +54,14 @@ function AddDepartment() {
                             onChange={handleInputChange} // Add onChange handler
                         />
                     </li>
-                    <button type="submit" className="btn btn-primary mt-3">
+                    <button type="submit form-margin" className="btn btn-primary mt-3">
                         Add Department
                     </button>
                 </ul>
 
 
             </form>
-            <div className="status-message">
+            <div className="status-message form-margin">
                 {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
                 {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
             </div>
