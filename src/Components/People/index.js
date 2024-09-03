@@ -26,7 +26,7 @@ function People() {
     const [deleteSelected, setDeleteSelected] = useState([]); // State for storing selected users for deletion
 
     const currentUserId = parseInt(localStorage.getItem('userId')); // Fetch the current user ID as an integer
-    const isAdmin = localStorage.getItem('isAdmin') ;
+    const isAdmin = localStorage.getItem('isAdmin');
 
     const handleDeleteClick = (id) => {
         if (id == currentUserId) {
@@ -330,7 +330,9 @@ function People() {
             <table className="people-container">
                 <thead>
                     <tr>
-                        <th><input type="checkbox" checked={selectAll} onChange={handleSelectAll} /></th>
+                        {isAdmin === "true" && (
+                            <th><input type="checkbox" checked={selectAll} onChange={handleSelectAll} /></th>
+                        )}
                         <th>Image</th>
                         <th className='sort' onClick={() => handleSort('name')}>
                             Full Name{sortField === 'name' && (sortOrder === 'asc' ? '▲' : '▼')}</th>
@@ -346,8 +348,9 @@ function People() {
                 </thead>
                 <tbody>
                     {filteredPeople.map(p => (
-                        <tr key={p.id}>
+                        <tr key={p.id}>{isAdmin === "true" && (
                             <td><input type="checkbox" checked={selectedRows[p.id] || false} onChange={() => handleRowSelect(p.id)} /></td>
+                        )}
                             <td className='img-box'>
                                 {p.img ? (
                                     <img className='img'

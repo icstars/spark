@@ -28,7 +28,7 @@ thead {
 } */
 
 th {
-  text-align: left;
+  text-align: center;
   border-bottom: 1px solid;
   padding: 10px;
 }
@@ -45,6 +45,7 @@ td {
   color: #6C757D;
   padding: 10px;
   border-bottom: 1px solid #6C757D;
+  text-align: center;
 }
 
 .td-email {
@@ -180,14 +181,6 @@ td {
 
 
 .img {
-  position: absolute;
-  /* Абсолютное позиционирование */
-  left: 0;
-  /* Прижать к левому краю */
-  top: 50%;
-  /* Сместить на 50% по высоте */
-  transform: translateY(-50%);
-  /* Сместить на половину высоты картинки вверх для центрирования по вертикали */
   width: 50px;
   /* Ширина картинки */
   height: 50px;

@@ -420,6 +420,32 @@ app.MapGet("/images/{id}", async (int id, SparkDb db) =>
 app.MapGet("/departments", async (SparkDb db) =>
     await db.department.ToListAsync());
 
+app.MapPut("/users/{id}", async (int id, spark.Models.User editEmployee, SparkDb db) =>
+{
+    // Find the existing employee in the database
+    var employee = await db.user.FindAsync(id);
+    // If employee not found, return 404 Not Found
+    if (employee is null) return Results.NotFound();
+    // Optional: Add validation for the incoming editEmployee data
+    if (editEmployee == null) return Results.BadRequest("Invalid data.");
+    // Update fields if they are provided
+    if (!string.IsNullOrEmpty(editEmployee.firstname))
+        employee.firstname = editEmployee.firstname;
+    if (!string.IsNullOrEmpty(editEmployee.lastname))
+        employee.lastname = editEmployee.lastname;
+    if (!string.IsNullOrEmpty(editEmployee.email))
+        employee.email = editEmployee.email;
+    if (!string.IsNullOrEmpty(editEmployee.company_role))
+        employee.company_role = editEmployee.company_role;
+    employee.department_id = editEmployee.department_id;
+    employee.hired_date = editEmployee.hired_date;
+    // Optional: Handle updating the image, password, or other fields if needed
+    // Example: if (editEmployee.ProfileImage != null) { ... }
+    // Save changes to the database
+    await db.SaveChangesAsync();
+    // Optionally, return the updated resource
+    return Results.NoContent(); // or Results.Ok(employee) if you want to return the updated resource
+});
 
 app.MapPut("/employees/{id}", async (int id, spark.Models.User inputEmployee, SparkDb db) =>
 {
