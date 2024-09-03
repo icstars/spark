@@ -48,7 +48,7 @@ function Header() {
         navigate('/Login');
     }
 
-    const displayBurger = location.pathname.includes('/Eval') || location.pathname.includes('/View') && localStorage.isAdmin == "true" || localStorage.isManager == "true";
+    const displayBurger = location.pathname.includes('/Eval') || location.pathname.includes('/View') && (localStorage.isAdmin == "true" || localStorage.isManager == "true");
 
     return (
         <>
