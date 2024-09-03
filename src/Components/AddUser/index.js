@@ -75,7 +75,7 @@ function AddUser() {
     };
 
     return (
-        <div className="container mt-5 form-margin" >
+        <div className="container mt-5" >
 
             <form className='form-margin' onSubmit={handleSubmit} encType="multipart/form-data">
                 <ul className="list-group">
@@ -200,7 +200,7 @@ function AddUser() {
                     <button type="submit" className="btn btn-primary mt-3" FormData>Add User</button>
                 </ul>
             </form>
-            <div className="status-message">
+            <div className="status-message form-margin">
                 {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
                 {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
             </div>
