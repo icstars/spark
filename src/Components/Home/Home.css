@@ -31,4 +31,14 @@
     flex: 0 0 16.6667%;
     max-width: 16.6667%;
   }
+
+  .data{
+      display: flex;
+      flex-direction: column;
+  }
   
+  .no-data img {
+    align-self: center;
+    width: 500px;
+    height: 400px;
+  }

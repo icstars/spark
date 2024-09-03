@@ -31,15 +31,20 @@ function Header() {
     }
 
     // Use the correct method to check if the pathname includes '/Eval'
-    const displayBurger = location.pathname.includes('/Eval') ||  location.pathname.includes('/View');
+    const displayBurger = location.pathname.includes('/Eval') || location.pathname.includes('/View');
 
     return (
-        <header className='row align-items-center m-0 px-4'>
-            {displayBurger && <BurgerMenu />}
-            <Logo userId={userId} />
-            <HeaderInfo userId={userId} />
-            <button className='btn btn-dark col-auto' onClick={handleLogout}>Logout</button>
-        </header>
+        <>
+        
+            <header style={{zIndex: 99}} className='row align-items-center m-0 position-fixed w-100 bg-white pb-1 px-4 shadow-sm'>
+                {displayBurger && <BurgerMenu />}
+                <Logo userId={userId} />
+                <HeaderInfo userId={userId} />
+                <button className='btn btn-dark col-auto' onClick={handleLogout}>Logout</button>
+            </header>
+            <div className='p-5 bg-white'></div>
+        </>
+
     );
 }
 
