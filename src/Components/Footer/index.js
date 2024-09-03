@@ -4,7 +4,7 @@ import './footer-style.css';
 function Footer() {
     return (
         <footer className="footer text-light py-5">
-            <div className="container py-4 mb-4git ">
+            <div className="container py-4 mb-4">
                 <div className="row">
                     <div className="col-md-3">
                         <h5 className='fw-bold'>Contact Information</h5>
