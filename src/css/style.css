@@ -50,7 +50,6 @@ body, */
     min-height: 40px;
     color: #FFFFFF;
     padding: 1rem 0 6rem;
-    display: flex;
     align-items: flex-start;
     justify-content: center;
 }
