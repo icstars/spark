@@ -3,11 +3,11 @@ import './footer-style.css';
 
 function Footer() {
     return (
-        <footer className="footer text-light py-4">
-            <div className="container">
+        <footer className="footer text-light py-5">
+            <div className="container py-4 mb-4git ">
                 <div className="row">
                     <div className="col-md-3">
-                        <h5>Contact Information</h5>
+                        <h5 className='fw-bold'>Contact Information</h5>
                         <ul className="list-unstyled">
                             <li>
                                 <a href="/Support-Contact" className="text-light" aria-label="Quick Links: Support Contact">
@@ -22,7 +22,7 @@ function Footer() {
                         </ul>
                     </div>
                     <div className="col-md-3">
-                        <h5>Legal Information</h5>
+                        <h5 className='fw-bold'>Legal Information</h5>
                         <ul className="list-unstyled">
                             <li>
                                 <a href="/Privacy-Policy" className="text-light" aria-label="Quick Links: Privacy Policy">
@@ -42,7 +42,7 @@ function Footer() {
                         </ul>
                     </div>
                     <div className="col-md-3">
-                        <h5>Company Information</h5>
+                        <h5 className='fw-bold'>Company Information</h5>
                         <ul className="list-unstyled">
                             <li>
                                 <a href="/Company-Name" className="text-light" aria-label="Quick Links: Company Name">
@@ -57,7 +57,7 @@ function Footer() {
                         </ul>
                     </div>
                     <div className="col-md-3">
-                        <h5>Accessibility and Help</h5>
+                        <h5 className='fw-bold'>Accessibility and Help</h5>
                         <ul className="list-unstyled">
                             <li>
                                 <a href="/Help-Center-Link" className="text-light" aria-label="Quick Links: Help Center Link">
@@ -74,7 +74,7 @@ function Footer() {
                 </div>
                 <div className="row mt-4">
                     <div className="col-md-3">
-                        <h5>Social Media Links</h5>
+                        <h5 className='fw-bold'>Social Media Links</h5>
                         <ul className="list-unstyled">
                             <li>
                                 <a href="/Social-Media-Icon" className="text-light" aria-label="Quick Links: Social Media Icon">
@@ -84,7 +84,7 @@ function Footer() {
                         </ul>
                     </div>
                     <div className="col-md-3">
-                        <h5>Copyright Notice</h5>
+                        <h5 className='fw-bold'>Copyright Notice</h5>
                         <ul className="list-unstyled">
                             <li>
                                 <a href="/Copyright-Statement" className="text-light" aria-label="Quick Links: Copyright Statement">
@@ -94,7 +94,7 @@ function Footer() {
                         </ul>
                     </div>
                     <div className="col-md-3">
-                        <h5>Application Version</h5>
+                        <h5 className='fw-bold'>Application Version</h5>
                         <ul className="list-unstyled">
                             <li>
                                 <a href="/Link-to-phone-app" className="text-light" aria-label="Quick Links: Link to phone app">
@@ -104,6 +104,15 @@ function Footer() {
                         </ul>
                     </div>
                 </div>
+            </div>
+            <div className='border-top pt-3'>
+                <ul className='list-unstyled d-flex justify-content-center' style={{gap: '1rem'}}> 
+                    <li className='fw-bold'>Legal and Privacy </li>
+                    <li className='fw-bold'> Non-Discrimination Notice</li>
+                    <li className='fw-bold'> Language Assistance</li>
+                    <li className='fw-bold'>Interoperability</li>
+                    <li className='fw-bold'>Transparency in Coverage</li>
+                </ul>
             </div>
         </footer>
     );
