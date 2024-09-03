@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 import checkmark_icon from "./img/check.png";
@@ -296,12 +296,42 @@ function People() {
 
     // Three dotes dropdown menu
     const handleMenuToggle = (id) => {
-        if (openMenuId === id) {
-            setOpenMenuId(null); // Close the menu if it's already open
-        } else {
-            setOpenMenuId(id); // Open the menu for the clicked item
+        setOpenMenuId(openMenuId === id ? null : id); // Open or close the menu
+    };
+    const [isDropdownVisible, setDropdownVisible] = useState(false);
+    const dropdownRef = useRef(null);
+    const triggerRef = useRef(null); // Reference to the element triggering the dropdown
+    const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
+
+    // Toggle dropdown visibility
+    const toggleDropdown = () => {
+        setDropdownVisible((prev) => !prev);
+        if (!isDropdownVisible && triggerRef.current) {
+            const rect = triggerRef.current.getBoundingClientRect();
+            setDropdownPosition({ top: rect.bottom + window.scrollY, left: rect.left + window.scrollX });
         }
     };
+
+    // Close the dropdown when clicking outside
+    const handleClickOutside = (event) => {
+        if (dropdownRef.current && !dropdownRef.current.contains(event.target) && triggerRef.current !== event.target) {
+            setOpenMenuId(null); // Close any open menu
+        }
+    };
+
+
+    // Close the dropdown when the mouse leaves
+    const handleMouseLeave = () => {
+        setOpenMenuId(null);
+    };
+
+    useEffect(() => {
+        // Add event listener to handle click outside
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
 
     const handleDeleteSelectedClick = () => {
         if (deleteSelected.length === 0) {
@@ -487,7 +517,9 @@ function People() {
                                             &#x2026; {/* This represents the three dots */}
                                         </button>
                                         {openMenuId === p.id && (
-                                            <div className="dropdown-menu2">
+                                            <div className="dropdown-menu2"
+                                                ref={dropdownRef}
+                                                onMouseLeave={handleMouseLeave}>
                                                 <button onClick={() => window.location.href = `/Eval/${p.id}`}>
                                                     <img src={checkmark_icon} alt="checkmark" /> Evaluate
                                                 </button>
