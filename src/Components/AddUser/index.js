@@ -16,6 +16,8 @@ function AddUser() {
     });
     const [image, setImage] = useState(null);
     const [department, setDepartments] = useState([]);
+    const [errorMessage, setErrorMessage] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
 
     useEffect(() => {
         // Fetch departments
@@ -64,16 +66,18 @@ function AddUser() {
                     'Content-Type': 'multipart/form-data',
                 },
             });
+            setSuccessMessage('Added user successfully!');
             console.log('User created:', response.data);
         } catch (error) {
             console.error('There was an error!', error);
+            setErrorMessage('Failed to create a new user!');
         }
     };
 
     return (
-        <div className="container mt-5 " >
+        <div className="container mt-5 form-margin" >
 
-            <form onSubmit={handleSubmit} encType="multipart/form-data">
+            <form className='form-margin' onSubmit={handleSubmit} encType="multipart/form-data">
                 <ul className="list-group">
                     <h2>Add User Form</h2>
                     <li className="list-group-item">
@@ -193,9 +197,13 @@ function AddUser() {
                         <input type="file" className="form-control" onChange={handleImageChange} />
                     </li>
 
-                    <button type="submit" className="btn btn-primary mt-3"FormData>Add User</button>
+                    <button type="submit" className="btn btn-primary mt-3" FormData>Add User</button>
                 </ul>
             </form>
+            <div className="status-message">
+                {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
+                {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+            </div>
         </div >
     );
 }

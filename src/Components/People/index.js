@@ -8,6 +8,8 @@ import profile_icon from "./img/profile.png"
 import './people-style.css';
 import ConfirmationModal from '../ConfirmationModal';
 import SearchBar from '../SearchBar';
+import { color } from 'chart.js/helpers';
+import axios from 'axios';
 
 function People() {
     const [people, setPeople] = useState([]);
@@ -119,6 +121,16 @@ function People() {
                 setLoading(false);
             }
         };
+        const fetchDepartments = async () => {
+            try {
+                const response = await axios.get('http://localhost:5212/departments');
+                setDepartments(response.data);
+            } catch (error) {
+                console.error('Error fetching departments:', error);
+            }
+        };
+
+        fetchDepartments();
         fetchData();
     }, [currentUserId]);
 
@@ -312,11 +324,14 @@ function People() {
             <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
             {isAdmin === 'true' && (
                 <div className='button-wrapper'>
-
-                    <Link to="/Add" className='btn btn-dark'>
-                        Add User
-                    </Link>
-
+                    <div className='left-button-container'>
+                        <Link to="/Add" className='btn btn-dark'>
+                            Add User
+                        </Link>
+                        <Link to="/AddDepartment" className='btn btn-dark add-department-btn'>
+                            Add Department
+                        </Link>
+                    </div>
 
                     <button
                         onClick={handleDeleteSelectedClick}
@@ -372,12 +387,14 @@ function People() {
                                         <input
                                             type="text"
                                             name="firstname"
+                                            className='edit-field'
                                             value={editFormValues.firstname}
                                             onChange={handleInputChange}
                                         />
                                         <input
                                             type="text"
                                             name="lastname" // <-- Added lastname input
+                                            className='edit-field'
                                             value={editFormValues.lastname}
                                             onChange={handleInputChange}
                                         />
@@ -393,6 +410,7 @@ function People() {
                                     <input
                                         type="date"
                                         name="hired_date"
+                                        className='edit-field'
                                         value={editFormValues.hired_date}  // Use the raw string from the state
                                         onChange={handleInputChange}
                                     />
@@ -404,6 +422,7 @@ function People() {
                                 {editUserId === p.id ? (
                                     <select
                                         name="department_id"
+                                        className='edit-field'
                                         value={editFormValues.department_id}
                                         onChange={handleInputChange}
                                     >
@@ -423,6 +442,7 @@ function People() {
                                     <input
                                         type="text"
                                         name="company_role"
+                                        className='edit-field'
                                         value={editFormValues.company_role}
                                         onChange={handleInputChange}
                                     />
@@ -435,6 +455,7 @@ function People() {
                                     <input
                                         type="text"
                                         name="email"
+                                        className='edit-field'
                                         value={editFormValues.email}
                                         onChange={handleInputChange}
                                     />
@@ -454,8 +475,8 @@ function People() {
                             <td className="td-action-b">
                                 {editUserId === p.id ? (
                                     <>
-                                        <button onClick={handleSaveClick}>Save</button>
-                                        <button onClick={handleCancelClick}>Cancel</button>
+                                        <button className='edit-field' onClick={handleSaveClick}>Save</button>
+                                        <button className='edit-field' onClick={handleCancelClick}>Cancel</button>
                                     </>
                                 ) : (
                                     <div className="ellipsis-container">

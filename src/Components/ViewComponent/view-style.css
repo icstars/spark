@@ -69,23 +69,6 @@
 
 }
 
-.wrapper-element {
-
-  position: relative;
-  box-shadow: 2px 2px 5px gray;
-  margin: 5px;
-  border-radius: 3%;
-  padding: 20px;
-  /* Уменьшил padding, чтобы текст не выглядел слишком далеко от границ */
-  height: 200px;
-  /* Задал фиксированную высоту для всех элементов */
-  max-width: 300px;
-  /* Можно задать максимальную ширину, чтобы избежать слишком широких элементов */
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-}
 
 .wrapper-element:hover {
   background-color: rgb(203, 203, 203);

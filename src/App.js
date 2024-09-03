@@ -18,6 +18,7 @@ import PrivateRoute from './Components/PrivateRoute';
 import ViewComponent from './Components/ViewComponent';
 import AddUser from './Components/AddUser';
 import EditUser from './Components/EditUser';
+import AddDepartment from './Components/AddDepartment';
 // import PageHome from './Components/RightPanel/PageHome';
 
 // Layout component defines the structure of the page with Header, Footer, and dynamic content based on routes.
@@ -86,6 +87,7 @@ const Layout = () => {
               <Route path="/View/:id" element={<PrivateRoute allowedRoles={['admin', 'manager', 'employee']} > <ViewComponent /> </PrivateRoute>} />
               <Route path="/Add" element={<PrivateRoute allowedRoles={['admin']} > <AddUser /> </PrivateRoute>} />
               <Route path="/EditUser/:id" element={<PrivateRoute allowedRoles={['admin']} > <EditUser /> </PrivateRoute>} />
+              <Route path='/AddDepartment' element={<PrivateRoute allowedRoles={['admin']} > <AddDepartment /> </PrivateRoute>} />
               {/* Редирект на страницу логина для несуществующих маршрутов */}
               <Route path="*" element={<Navigate to="/Login" />} />
             </Routes>
