@@ -48,15 +48,14 @@ function Header() {
         navigate('/Login');
     }
 
-    const displayBurger = location.pathname.includes('/Eval') || location.pathname.includes('/View');
+    const displayBurger = location.pathname.includes('/Eval') || location.pathname.includes('/View') && localStorage.isAdmin == "true" || localStorage.isManager == "true";
 
     return (
         <>
             <header 
-                style={{ zIndex: 99, top: visible ? '0' : '-100px', transition: 'top 0.1s ease-in-out' }} 
+                style={{ zIndex: 99, top: visible ? '0' : '-100px', transition: 'top 0.1s ease-in-out' }}
                 className='row align-items-center m-0 position-fixed w-100 bg-white pb-1 px-4 shadow-sm'>
-                {displayBurger && <BurgerMenu />}
-                <Logo userId={userId} />
+                {displayBurger ? <BurgerMenu /> : <Logo userId={userId} />}
                 <HeaderInfo userId={userId} />
                 <button className='btn btn-dark col-auto' onClick={handleLogout}>Logout</button>
             </header>
