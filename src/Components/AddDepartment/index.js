@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { Helmet } from 'react-helmet-async';
 
 function AddDepartment() {
     const [errorMessage, setErrorMessage] = useState('');
@@ -43,6 +44,7 @@ function AddDepartment() {
 
     return (
         <div className="container mt-5">
+        <Helmet> <title>Add Department</title></Helmet>
             <form className='form-margin' onSubmit={handleSubmit}>
                 <ul className="list-group">
                     <li className="list-group-item">

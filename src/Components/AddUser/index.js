@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Helmet } from 'react-helmet-async';
 
 function AddUser() {
     const [user, setUser] = useState({
@@ -76,7 +77,7 @@ function AddUser() {
 
     return (
         <div className="container mt-5" >
-
+            <Helmet> <title>Add User</title></Helmet>
             <form className='form-margin' onSubmit={handleSubmit} encType="multipart/form-data">
                 <ul className="list-group">
                     <h2>Add User Form</h2>

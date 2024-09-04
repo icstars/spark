@@ -424,7 +424,7 @@ function ViewComponent() {
   return (
     <div className="evaluation-view">
       <Helmet>
-        <title>Evaluation</title>
+        <title>Overview Evaluation</title>
       </Helmet>
       <h1>This is {person.firstname}'s rubrics</h1>
       <div>

@@ -74,8 +74,12 @@ function Home() {
 
   return (
     <>
-      <Helmet> <title>Home</title></Helmet>
-
+      {isTheSamePerson && (
+        <Helmet> <title>Home</title></Helmet>
+      )}
+      {!isTheSamePerson && (
+         <Helmet> <title>Employee Dashboard</title></Helmet>
+      )}
       <div className='container'>
         <div className="row">
           <div className="col-10">

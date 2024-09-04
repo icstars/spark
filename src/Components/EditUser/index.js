@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import './edit.css'
+import { Helmet } from 'react-helmet-async';
 
 const EditUser = () => {
     const { id } = useParams();
@@ -105,7 +106,7 @@ const EditUser = () => {
 
     return (
         <div className="container mt-5" >
-
+            <Helmet> <title>Edit User</title></Helmet>
             <form className='form-margin' onSubmit={handleSubmit} encType="multipart/form-data">
 
                 <ul className="list-group">
