@@ -362,7 +362,6 @@ function People() {
                             Add Department
                         </Link>
                     </div>
-
                     <button
                         onClick={handleDeleteSelectedClick}
                         className='btn btn-danger'
@@ -517,7 +516,8 @@ function People() {
                                             &#x2026; {/* This represents the three dots */}
                                         </button>
                                         {openMenuId === p.id && (
-                                            <div className="dropdown-menu2"
+                                            <div
+                                                className={isAdmin === 'true' ? 'dropdown-menu-admin' : 'dropdown-menu-manager'}
                                                 ref={dropdownRef}
                                                 onMouseLeave={handleMouseLeave}>
                                                 <button onClick={() => window.location.href = `/Eval/${p.id}`}>
@@ -526,9 +526,11 @@ function People() {
                                                 <button onClick={() => handleEditClick(p)}>
                                                     <img src={edit_icon} alt="edit" /> Edit
                                                 </button>
-                                                <button onClick={() => handleDeleteClick(p.id)}>
-                                                    <img src={delete_icon} alt="delete" /> Delete
-                                                </button>
+                                                {isAdmin === 'true' && (
+                                                    <button onClick={() => handleDeleteClick(p.id)}>
+                                                        <img src={delete_icon} alt="delete" /> Delete
+                                                    </button>
+                                                )}
                                             </div>
                                         )}
                                     </div>
