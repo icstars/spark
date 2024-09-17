@@ -261,7 +261,6 @@ app.MapGet("/dep-rating/{departmentId}", async (int departmentId, SparkDb _conte
     return Results.Ok(response);
 });
 
-
 app.MapGet("/rating/{userId}", async (int userId, SparkDb _context) =>
 {
     var oneYearAgo = DateTime.Now.AddYears(-1);
@@ -292,7 +291,6 @@ app.MapGet("/rating/{userId}", async (int userId, SparkDb _context) =>
         total_score = group.Sum(eo => eo.score)
     }).ToList();
 
-
     var response = new
     {
         evaluationForm.id,
@@ -303,7 +301,6 @@ app.MapGet("/rating/{userId}", async (int userId, SparkDb _context) =>
 
     return Results.Ok(response);
 });
-
 
 app.MapGet("/evaluate/user/{userId}", async (int userId, SparkDb _context) =>
 {
@@ -355,8 +352,6 @@ app.MapGet("/evaluate/user/{userId}", async (int userId, SparkDb _context) =>
 
     return Results.Ok(response);
 });
-
-
 
 app.MapPost("/employees-with-image", async (HttpRequest request, SparkDb db) =>
 {
@@ -417,7 +412,6 @@ app.MapPost("/employees-with-image", async (HttpRequest request, SparkDb db) =>
     });
 });
 
-
 app.MapGet("/images/{id}", async (int id, SparkDb db) =>
 {
     var user = await db.user.FindAsync(id);
@@ -449,12 +443,8 @@ app.MapPut("/users/{id}", async (int id, spark.Models.User editEmployee, SparkDb
         employee.company_role = editEmployee.company_role;
     employee.department_id = editEmployee.department_id;
     employee.hired_date = editEmployee.hired_date;
-    // Optional: Handle updating the image, password, or other fields if needed
-    // Example: if (editEmployee.ProfileImage != null) { ... }
-    // Save changes to the database
     await db.SaveChangesAsync();
-    // Optionally, return the updated resource
-    return Results.NoContent(); // or Results.Ok(employee) if you want to return the updated resource
+    return Results.NoContent();
 });
 
 app.MapPut("/employees/{id}", async (int id, spark.Models.User inputEmployee, SparkDb db) =>

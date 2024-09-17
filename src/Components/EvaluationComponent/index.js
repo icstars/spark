@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import './eval-overlook-style.css';
-
+import SelfEvaluationModal from '../SelfEvaluationModal';
 
 
 function EvaluationComponent() {
@@ -19,6 +19,7 @@ function EvaluationComponent() {
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [userFirstName, setUserFirstName] = useState('');
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
 
@@ -27,8 +28,7 @@ function EvaluationComponent() {
 
     // Check if the logged-in user is trying to evaluate themselves
     if (loggedInUserId === parseInt(id)) {
-      alert("User can't evaluate himself");
-      navigate(-1);
+      setShowModal(true);
       return;
     }
 
@@ -180,6 +180,11 @@ function EvaluationComponent() {
       setErrorMessage('Failed to submit evaluation form');
     }
   };
+
+  const handleClose = () => {
+    setShowModal(false);
+    navigate(-1);
+  }
 
   // Структура данных для разделов и подразделов с `id` для каждой категории и опции
   const sections = [
@@ -511,6 +516,12 @@ function EvaluationComponent() {
       <Helmet>
         <title>Evaluation</title>
       </Helmet>
+      {showModal &&(
+        <SelfEvaluationModal
+        message = "User can't evaluate himself"
+        onClose = {handleClose}
+        />
+      )}
       <div>
         <h1>{userFirstName}'s rubrics</h1>
       </div>
