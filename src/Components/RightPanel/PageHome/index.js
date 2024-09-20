@@ -1,10 +1,9 @@
 import { Link } from 'react-router-dom';
-import React, { useState } from 'react';
+import React from 'react';
 
 import '../right-panel-style.css';
 
 function PageHome({ user, userId, isEvaluationExists }) {
-    const [isRoleAdmin, setIsRoleAdmin] = useState(false);
     const isAdmin = localStorage.getItem('isAdmin') === 'true';
     const isManager = localStorage.getItem('isManager') === 'true'
     const managerId = localStorage.getItem('userId');
