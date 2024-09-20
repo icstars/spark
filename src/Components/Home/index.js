@@ -42,7 +42,7 @@ function Home() {
         setIsLoading(false); // Устанавливаем загрузку в false после завершения проверки
       });
 
-    const isTheSame = id == userId; // Проверяем совпадение ID пользователя
+    const isTheSame = id === userId; // Проверяем совпадение ID пользователя
     setIsTheSamePerson(isTheSame);
     // Получение данных об оценке и информации о пользователе
     axios.get(`http://localhost:5212/rating/${id}`)
@@ -70,7 +70,7 @@ function Home() {
 
         setError('Failed to get evaluation data');
       });
-  }, [id]);
+  }, [id,userId]);
 
   return (
     <>
@@ -100,7 +100,7 @@ function Home() {
               <div className='no-data'>
                 <p>Data is not available right now</p>
                 <div className='data'>
-                  <img src={NoData}
+                  <img src={NoData} alt="No data available illustration" 
                   ></img>
                 </div>
               </div>
