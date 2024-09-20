@@ -63,7 +63,7 @@ function EvaluationComponent() {
         setError('Failed to fetch user department');
         console.error(error);
       });
-  }, [id]);
+  }, [id, navigate]);
 
   // Handler for selecting ratings
   const handleRatingChange = (categoryId, topicId, optionId) => {
@@ -163,7 +163,7 @@ function EvaluationComponent() {
       });
 
       console.log(response);
-      const data = await response.json();
+      // const data = await response.json();
 
 
 

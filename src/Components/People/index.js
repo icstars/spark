@@ -8,7 +8,6 @@ import profile_icon from "./img/profile.png"
 import './people-style.css';
 import ConfirmationModal from '../ConfirmationModal';
 import SearchBar from '../SearchBar';
-import { color } from 'chart.js/helpers';
 import axios from 'axios';
 
 function People() {
@@ -31,7 +30,7 @@ function People() {
     const isAdmin = localStorage.getItem('isAdmin');
 
     const handleDeleteClick = (id) => {
-        if (id == currentUserId) {
+        if (id === currentUserId) {
             alert("You cannot delete your own account.");
             return;
         }
@@ -132,7 +131,7 @@ function People() {
 
         fetchDepartments();
         fetchData();
-    }, [currentUserId]);
+    }, [currentUserId, isAdmin]);
 
     useEffect(() => {
         const filtered = people.filter(person =>
@@ -276,8 +275,9 @@ function People() {
                     break;
                 case 'title':
                     // Directly access the title for sorting
-                    aField = '${a.title}'.toLowerCase();
-                    bField = '${b.title}'.toLowerCase();
+                    aField = a.company_role?.toLowerCase() || '';
+                    bField = b.company_role?.toLowerCase() || '';
+                    console.log(`aField: ${aField}, bField: ${bField}`); // Добавим вывод в консоль
                     break;
                 default:
                     aField = '';
@@ -298,27 +298,16 @@ function People() {
     const handleMenuToggle = (id) => {
         setOpenMenuId(openMenuId === id ? null : id); // Open or close the menu
     };
-    const [isDropdownVisible, setDropdownVisible] = useState(false);
+
     const dropdownRef = useRef(null);
     const triggerRef = useRef(null); // Reference to the element triggering the dropdown
-    const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
-
-    // Toggle dropdown visibility
-    const toggleDropdown = () => {
-        setDropdownVisible((prev) => !prev);
-        if (!isDropdownVisible && triggerRef.current) {
-            const rect = triggerRef.current.getBoundingClientRect();
-            setDropdownPosition({ top: rect.bottom + window.scrollY, left: rect.left + window.scrollX });
-        }
-    };
-
+    
     // Close the dropdown when clicking outside
     const handleClickOutside = (event) => {
         if (dropdownRef.current && !dropdownRef.current.contains(event.target) && triggerRef.current !== event.target) {
             setOpenMenuId(null); // Close any open menu
         }
     };
-
 
     // Close the dropdown when the mouse leaves
     const handleMouseLeave = () => {

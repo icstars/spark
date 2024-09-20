@@ -334,19 +334,6 @@ const getCategoryTitleById = (categoryId) => {
   return section ? section.title : `Unknown Category (ID: ${categoryId})`;
 };
 
-
-// Функция для получения текста опции по `topicId` и `score`
-const getOptionTextByScore = (topicId, score) => {
-  // Проходим по разделам и подразделам
-  for (const section of sections) {
-    const subSection = section.subSections.find(sub => sub.id === topicId);
-    if (subSection) {
-      const option = subSection.options.find(opt => opt.id === score);
-      return option ? option.text : `Score: ${score}`;
-    }
-  }
-  return `${score}`;
-};
 const getSubSectionTitle = (topicId) => {
   // Проходим по разделам и подразделам
   for (const section of sections) {
@@ -357,6 +344,7 @@ const getSubSectionTitle = (topicId) => {
   }
   return `Unknown Topic (ID: ${topicId})`;
 };
+
 const getSubSectionOptions = (topicId) => {
   for (const section of sections) {
     const subSection = section.subSections.find(sub => sub.id === topicId);
