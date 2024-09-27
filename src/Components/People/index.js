@@ -7,6 +7,7 @@ import delete_icon from "./img/delete.png";
 import profile_icon from "./img/profile.png"
 import './people-style.css';
 import ConfirmationModal from '../ConfirmationModal';
+import DeleteYourselfModal from '../DeleteYourselfModal';
 import SearchBar from '../SearchBar';
 import axios from 'axios';
 
@@ -20,6 +21,7 @@ function People() {
     const [selectAll, setSelectAll] = useState(false);
     const [selectedRows, setSelectedRows] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
+    const [isDeleteYourselfModalOpen, setIsDeleteYourselfModalOpen] = useState(false);
     const [deleteUserId, setDeleteUserId] = useState(null); // State to hold the ID of the user to delete
     const [statuses, setStatuses] = useState({});
     const [searchQuery, setSearchQuery] = useState(''); // Состояние для поиска
@@ -31,12 +33,13 @@ function People() {
 
     const handleDeleteClick = (id) => {
         if (id === currentUserId) {
-            alert("You cannot delete your own account.");
+            setIsDeleteYourselfModalOpen(true);
             return;
         }
         setDeleteUserId(id); // Set the ID of the user to delete
         setIsModalOpen(true); // Open the confirmation modal
     };
+
 
     // Confirm delete action
     // Confirm delete action for single user
@@ -73,6 +76,7 @@ function People() {
     // Cancel delete action
     const handleCancelDelete = () => {
         setIsModalOpen(false); // Simply close the modal
+        setIsDeleteYourselfModalOpen(false);
         setDeleteUserId(null);
     };
 
@@ -529,6 +533,11 @@ function People() {
                     ))}
                 </tbody>
             </table>
+            <DeleteYourselfModal
+                isOpen={isDeleteYourselfModalOpen}
+                onCancel={handleCancelDelete}
+                message="You cannot delete your own account!"
+            />
             {/* Confirmation Modal */}
             <ConfirmationModal
                 isOpen={isModalOpen}
