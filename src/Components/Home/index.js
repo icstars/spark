@@ -109,7 +109,7 @@ function Home() {
 
           {/* Правая секция: занимает 15% */}
           <div className="col-2 custom-margin">
-            <PageHome user={user} userId={id} isEvaluationExists={isEvaluationExists} />
+            <PageHome user={user} userId={id} isEvaluationExists={isEvaluationExists} isLoading={isLoading} />
           </div>
         </div>
       </div>

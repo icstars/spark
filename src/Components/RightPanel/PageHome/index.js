@@ -3,7 +3,7 @@ import React from 'react';
 
 import '../right-panel-style.css';
 
-function PageHome({ user, userId, isEvaluationExists }) {
+function PageHome({ user, userId, isEvaluationExists, isLoading }) {
     const isAdmin = localStorage.getItem('isAdmin') === 'true';
     const isManager = localStorage.getItem('isManager') === 'true'
     const managerId = localStorage.getItem('userId');
@@ -21,10 +21,16 @@ function PageHome({ user, userId, isEvaluationExists }) {
                     </Link>
                 )}
 
-                {isEvaluationExists && ( // Conditionally render the Evaluation button
-                    <Link to={`/View/${userId}`} className='col-12 py-1 btn btn-dark'>
-                        View evaluation
-                    </Link>
+                {isLoading ? ( // Пока загружается, показываем неактивную кнопку
+                    <button className='col-12 py-1 btn btn-dark' disabled>
+                        Loading...
+                    </button>
+                ) : (
+                    isEvaluationExists && (
+                        <Link to={`/View/${userId}`} className='col-12 py-1 btn btn-dark'>
+                            View evaluation
+                        </Link>
+                    )
                 )}
                 {!isEvaluationExists && (isAdmin || isManager) && !isTheSamePerson && ( // Conditionally render the Evaluation button
                     <Link to={`/Eval/${userId}`} className='col-12 py-1 btn btn-dark'>
