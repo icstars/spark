@@ -305,7 +305,7 @@ function People() {
 
     const dropdownRef = useRef(null);
     const triggerRef = useRef(null); // Reference to the element triggering the dropdown
-    
+
     // Close the dropdown when clicking outside
     const handleClickOutside = (event) => {
         if (dropdownRef.current && !dropdownRef.current.contains(event.target) && triggerRef.current !== event.target) {
@@ -486,10 +486,12 @@ function People() {
                                 )}
                             </td>
                             <td className='th-status'>
-                                {statuses[p.id] === 'Done' ? (
-                                    <button className="td-status-a">Done</button>
-                                ) : (
-                                    <button className="td-status-b">Not Done</button>
+                                {statuses[p.id] !== undefined && ( // Проверка, если данные статуса загружены
+                                    statuses[p.id] === 'Done' ? (
+                                        <button className="td-status-a">Done</button>
+                                    ) : (
+                                        <button className="td-status-b">Not Done</button>
+                                    )
                                 )}
                             </td>
 
