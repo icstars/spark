@@ -106,7 +106,7 @@ function TopicScore({ topicId, score, userScores }) {
                         top: `${dropdownPosition.top}px`,
                         left: `${dropdownPosition.left}px`,
                         zIndex: 1000,
-                        width: '150px',
+                        width: 'auto',
                     }}
                     onMouseLeave={handleMouseLeave}
                 >
@@ -136,7 +136,7 @@ function CategoryOverview({ categoryId, topics = [], totalScore, userScoresByTop
                 <p className="h5 col-auto pb-1">{categoryName}</p>
                 <p className="h5 col text-end">{roundToHalf(totalScore)}</p> {/* Round total score */}
             </div>
-            <div>
+            <div className='cat-score-wrapper'>
                 {categoryTopics.map((topicId, index) => {
                     const topic = topics.find(t => t.topic_id === topicId);
                     const userScores = userScoresByTopic[topicId] || []; // Get user scores for this topic
